@@ -1,0 +1,49 @@
+return (
+  <div className="login-container">
+    <h2>تسجيل الدخول</h2>
+    <input
+      type="text"
+      placeholder="اسم المستخدم"
+      value={loginName}
+      onChange={e => setLoginName(e.target.value)}
+    />
+    <input
+      type="password"
+      placeholder="كلمة المرور"
+      value={loginPass}
+      onChange={e => setLoginPass(e.target.value)}
+    />
+    <button
+      className="start-button"
+      onClick={() => {
+        if (loginName && loginPass) {
+          setUser({ id: Date.now(), name: loginName });
+          setShowLogin(false);
+          setError('');
+        } else setError('يرجى إدخال جميع البيانات');
+      }}
+    >
+      دخول
+    </button>
+    {error && <div className="notification-bar">{error}</div>}
+  </div>
+);
+
+// الصفحة الرئيسية (الإعداد)
+if (gameState === 'setup') {
+  return (
+    <div className="game-container">
+      {/* زر تسجيل الدخول أعلى الصفحة */}
+      <div style={{textAlign: 'left', marginBottom: 10}}>
+        <button className="login-btn" onClick={() => setShowLogin(true)}>تسجيل الدخول</button>
+      </div>
+      <div className="header">
+        <div className="title-container">
+          <h1 className="game-title">تحدي الجمعة</h1>
+          <p className="subtitle">لعبة الأسئلة التنافسية</p>
+        </div>
+      </div>
+      {/* باقي محتوى الصفحة الرئيسية */}
+    </div>
+  );
+}

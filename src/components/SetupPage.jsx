@@ -1,0 +1,281 @@
+import { 
+  Container,
+  Box,
+  Typography,
+  Card,
+  Grid,
+  TextField,
+  Button,
+  Chip,
+  IconButton,
+  Paper
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { styled } from '@mui/material/styles';
+
+
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  background: 'rgba(255, 255, 255, 0.1)',
+  backdropFilter: 'blur(10px)',
+  borderRadius: '20px',
+  padding: theme.spacing(3),
+  marginBottom: theme.spacing(3),
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+  border: '1px solid rgba(255, 255, 255, 0.1)'
+}));
+
+const CategoryButton = styled(Button)(({ theme, selected }) => ({
+  width: '100%',
+  height: '100px',
+  borderRadius: '15px',
+  background: selected ? 'rgba(76, 201, 240, 0.3)' : 'rgba(255, 255, 255, 0.15)',
+  border: selected ? '2px solid #4cc9f0' : 'none',
+  '&:hover': {
+    background: selected ? 'rgba(76, 201, 240, 0.4)' : 'rgba(255, 255, 255, 0.25)'
+  }
+}));
+
+const SetupPage = ({ 
+  teams,
+  selectedCategories,
+  basicCategories,
+  handleTeamNameChange,
+  handleCategorySelection,
+  startGame,
+  error,
+  setShowLogin,
+  user
+}) => {
+  return (
+    <Container maxWidth="lg">
+      {/* زر تسجيل الدخول */}
+      {!user && (
+        <Box sx={{ position: 'absolute', right: 20, top: 20,  }}>
+          <Button 
+            variant="outlined" 
+            onClick={() => setShowLogin(true)}
+            sx={{
+              padding: '16px 32px',
+              fontSize: '2.0rem',
+              fontWeight: 'bold',
+              color: 'white',
+              borderColor: 'white',
+              '&:hover': {
+                borderColor: 'gold',
+                color: 'gold'
+              }
+            }}
+          >
+            تسجيل الدخول
+          </Button>
+        </Box>
+      )}
+
+      <Box textAlign="center" mb={6} pt={4}>
+        <Typography variant="h2" component="h1" 
+          sx={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingY: 4,
+            color: 'gold',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            fontWeight: 800,
+            mb: 2
+          }}>
+          تحدي الجمعة
+        </Typography>
+
+        {/* شرح اللعبة */}
+        <Box sx={{ 
+            
+          maxWidth: 600, 
+          margin: '0 auto', 
+          padding: 2,
+          backgroundColor: 'rgba(255,255,255,0.1)',
+          borderRadius: 2
+        }}>
+          <Typography variant="h5" sx={{color: '#e0e0e0', mb: 1, }}>
+            🎮 لعبة تحدي الجمعة هي منافسة ثقافية بين فريقين
+          </Typography>
+          <Typography variant="h5" sx={{ color: '#e0e0e0', mb: 1 }}>
+            ⏱️ لكل سؤال 60 ثانية للإجابة
+          </Typography>
+          <Typography variant="h5" sx={{ color: '#e0e0e0', mb: 1 }}>
+            🎯 اختر 6 فئات مختلفة من مجموعة متنوعة من المواضيع
+          </Typography>
+          <Typography variant="h5" sx={{ color: '#e0e0e0'}}>
+            🏆 الفريق الذي يجمع أكبر عدد من النقاط يفوز باللعبة
+          </Typography>
+        </Box>
+      </Box>
+
+      <StyledCard >
+        <Typography variant="h4" gutterBottom sx={{ color: 'gold', textAlign: 'center' }}>
+          أسماء الفرق
+        </Typography>
+        <Grid container spacing={3} justifyContent="center" alignItems="center">
+          <Grid item xs={12} md={6}>
+            <TextField 
+              fullWidth
+              label="الفريق الأول"
+              value={teams.team1}
+              onChange={(e) => handleTeamNameChange('team1', e.target.value)}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  color: 'white',
+                  '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.23)' },
+                },
+                '& .MuiInputLabel-root': { color: 'white' }
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              label="الفريق الثاني"
+              value={teams.team2}
+              onChange={(e) => handleTeamNameChange('team2', e.target.value)}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  color: 'white',
+                  '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.23)' },
+                },
+                '& .MuiInputLabel-root': { color: 'white' }
+              }}
+            />
+          </Grid>
+        </Grid>
+      </StyledCard>
+
+      <StyledCard>
+        <Typography variant="h4" gutterBottom sx={{ color: 'gold', textAlign: 'center' }}>
+          اختيار الفئات
+        </Typography>
+        <Typography variant="subtitle1" gutterBottom sx={{ color: '#e0e0e0', textAlign: 'center' }}>
+          اختر 6 فئات من القائمة أدناه ({selectedCategories.length} / 6)
+        </Typography>
+        
+        <Grid container spacing={2} justifyContent="center" alignItems="center">
+          {Object.entries(basicCategories).map(([category, data]) => (
+            <Grid item xs={12} sm={6} md={4} key={category}>
+              <Paper
+                sx={{  
+                  p: 2,
+                  background: data.color,
+                  borderRadius: '15px'
+                }}
+              >
+                <Typography variant="h6" gutterBottom>
+                  {category}
+                </Typography>
+                <Grid container spacing={1}>
+                  {data.subcategories.map((subcat) => {
+                    const isSelected = selectedCategories.includes(subcat.id);
+                    return (
+                      <Grid item xs={12} key={subcat.id}>
+                        <CategoryButton
+                          selected={isSelected}
+                          onClick={() => handleCategorySelection(subcat.id)}
+                        >
+                          <Box display="flex" alignItems="center" gap={2}>
+                            <img 
+                              src={subcat.image} 
+                              alt={subcat.name}
+                              style={{
+                                width: 40,
+                                height: 40,
+                                borderRadius: '50%',
+                                border: '2px solid gold'
+                              }}
+                            />
+                            <Typography>{subcat.name}</Typography>
+                          </Box>
+                        </CategoryButton>
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      </StyledCard>
+
+      {selectedCategories.length > 0 && (
+        <StyledCard>
+          <Typography variant="h6" gutterBottom sx={{ color: '#e0e0e0' }}>
+            الفئات المختارة
+          </Typography>
+          <Box display="flex" flexWrap="wrap" gap={1}>
+            {selectedCategories.map(id => {
+              const category = Object.values(basicCategories)
+                .flatMap(cat => cat.subcategories)
+                .find(sub => sub.id === id);
+              return (
+                <Chip
+                  key={id}
+                  label={category?.name}
+                  onDelete={() => handleCategorySelection(id)}
+                  deleteIcon={<DeleteIcon />}
+                  sx={{
+                    background: 'rgba(255,255,255,0.2)',
+                    color: 'white',
+                    '& .MuiChip-deleteIcon': {
+                      color: 'white'
+                    }
+                  }}
+                />
+              );
+            })}
+          </Box>
+        </StyledCard>
+      )}
+
+      <Box textAlign="center" mt={4}>
+        <Button
+          variant="contained"
+          size="large"
+          onClick={startGame}
+          disabled={selectedCategories.length !== 6 || !teams.team1 || !teams.team2}
+          sx={{
+            background: 'linear-gradient(90deg, #FFD700, #ffb300)',
+            color: '#222',
+            fontSize: '1.2rem',
+            fontWeight: 'bold',
+            padding: '12px 40px',
+            '&:disabled': {
+              background: '#888',
+              color: '#fff'
+            }
+          }}
+        >
+          ابدأ اللعبة
+        </Button>
+      </Box>
+
+      {error && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 20,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: '#ff5252',
+            color: '#fff',
+            padding: '16px 32px',
+            borderRadius: '16px',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.2)',
+            zIndex: 9999
+          }}
+        >
+          {error}
+        </Box>
+      )}
+    </Container>
+  );
+};
+
+export default SetupPage;
