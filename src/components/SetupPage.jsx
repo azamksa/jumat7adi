@@ -101,10 +101,10 @@ const SetupPage = ({
             🎮 لعبة تحدي الجمعة هي منافسة ثقافية بين فريقين
           </Typography>
           <Typography variant="h5" sx={{ color: '#e0e0e0', mb: 1 }}>
-            ⏱️ لكل سؤال 60 ثانية للإجابة
+            ⏱️ لكل سؤال 60 ثانية للإجابة و30 ثانية للفريق الأخرى
           </Typography>
           <Typography variant="h5" sx={{ color: '#e0e0e0', mb: 1 }}>
-            🎯 اختر 6 فئات مختلفة من مجموعة متنوعة من المواضيع
+            🎯 اختر 3 فئات مختلفة لكل فريق و 6 المجموع
           </Typography>
           <Typography variant="h5" sx={{ color: '#e0e0e0'}}>
             🏆 الفريق الذي يجمع أكبر عدد من النقاط يفوز باللعبة
@@ -185,13 +185,13 @@ const SetupPage = ({
                               src={subcat.image} 
                               alt={subcat.name}
                               style={{
-                                width: 40,
-                                height: 40,
+                                width: 100,
+                                height: 100,
                                 borderRadius: '50%',
-                                border: '2px solid gold'
+                                border: '2px solid black'
                               }}
                             />
-                            <Typography>{subcat.name}</Typography>
+<Typography sx={{ color: 'white', fontSize: '1.5rem' }}>{subcat.name}</Typography>
                           </Box>
                         </CategoryButton>
                       </Grid>

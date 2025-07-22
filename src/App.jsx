@@ -3,6 +3,7 @@ import './App.css';
 import SetupPage from './components/SetupPage';
 import Login from './components/Login';
 
+
 const FridayChallenge = () => {
   const [gameState, setGameState] = useState('setup');
   const [teams, setTeams] = useState({ team1: '', team2: '' });
@@ -36,70 +37,70 @@ const FridayChallenge = () => {
         { id: 'champions', name: 'دوري الأبطال', image: '/images/champions.png' }
       ]
     },
-    'أفلام': {
+    'أفلام ومسلسلات': {
       icon: '🎬',
       color: '#9C27B0',
       subcategories: [
-        { id: 'hollywood', name: 'هوليوود', image: '🎭' },
-        { id: 'arabic_movies', name: 'أفلام عربية', image: '🎪' },
-        { id: 'animation', name: 'أفلام الرسوم المتحركة', image: '🎨' },
-        { id: 'action', name: 'أفلام الأكشن', image: '💥' },
-        { id: 'comedy', name: 'أفلام الكوميديا', image: '😂' }
+        { id: 'hollywood', name: 'هوليوود', image: '/images/hollywood.png' },
+        { id: 'TvShow', name: 'مسلسلات', image: '/images/TvShow.png' },
+        { id: 'animation', name: 'الرسوم المتحركة', image: '/images/animation.png' },
+        { id: 'game_of_thrones', name: 'قيم اوف ثرونز', image: '/images/game_of_thrones.png' },
+        { id: 'breaking_bad', name: 'بريكن باد', image: '/images/breaking_bad.png' },
+        { id: 'from', name: 'فروم', image: '/images/from.png' },
       ]
     },
-    'موضة': {
+    'العالم': {
       icon: '👗',
       color: '#E91E63',
       subcategories: [
-        { id: 'luxury_brands', name: 'العلامات الفاخرة', image: '💎' },
-        { id: 'street_fashion', name: 'موضة الشارع', image: '👟' },
-        { id: 'accessories', name: 'الإكسسوارات', image: '👜' },
-        { id: 'beauty', name: 'الجمال والعناية', image: '💄' },
-        { id: 'fashion_history', name: 'تاريخ الموضة', image: '🕰️' }
+        { id: 'flags', name: 'اعلام دول', image: '/images/flags.png' },
+        { id: 'icons', name: 'شعارات دول', image: '/images/icons.png' },
+        { id: 'Tourist_attractions', name: 'معالم سياحية', image: '/images/Tourist_attractions.png' },
+        { id: 'capital', name: 'عاصمة', image: '/images/capital.png' },
+        { id: 'map', name: 'الخريطة', image: '/images/map.png' }
       ]
     },
     'مطبخ': {
       icon: '🍳',
       color: '#FF9800',
       subcategories: [
-        { id: 'arabic_cuisine', name: 'المطبخ العربي', image: '🥘' },
-        { id: 'international', name: 'المطبخ العالمي', image: '🌍' },
-        { id: 'desserts', name: 'الحلويات', image: '🍰' },
-        { id: 'healthy_food', name: 'الطعام الصحي', image: '🥗' },
-        { id: 'cooking_tips', name: 'نصائح الطبخ', image: '👨‍🍳' }
+        { id: 'arabic_cuisine', name: 'المطبخ العربي', image: '/images/arabic_cuisine.png' },
+        { id: 'international', name: 'المطبخ العالمي', image: '/images/international.png' },
+        { id: 'desserts', name: 'الحلويات', image: '/images/desserts.png' },
+        { id: 'what_is_the_food', name: 'وش الاكله', image: '/images/what_is_the_food.png' },
       ]
     },
-    'تكنولوجيا': {
-      icon: '💻',
-      color: '#00b4d8',
-      subcategories: [
-        { id: 'smartphones', name: 'الهواتف الذكية', image: '📱' },
-        { id: 'internet', name: 'الإنترنت', image: '🌐' }
-      ]
-    },
-    'تاريخ': {
-      icon: '🏺',
-      color: '#b68900',
-      subcategories: [
-        { id: 'arab_history', name: 'تاريخ العرب', image: '🕌' }
-      ]
-    },
-    'رياضيات': {
-      icon: '➗',
-      color: '#43aa8b',
-      subcategories: [
-        { id: 'math_easy', name: 'رياضيات سهلة', image: '🔢' },
-        { id: 'math_hard', name: 'رياضيات صعبة', image: '🧮' }
-      ]
-    },
-    'موسيقى': {
-      icon: '🎵',
-      color: '#ffb300',
-      subcategories: [
-        { id: 'arabic_music', name: 'موسيقى عربية', image: '🪘' },
-        { id: 'international_music', name: 'موسيقى عالمية', image: '🎸' }
-      ]
-    }
+    // 'تكنولوجيا': {
+    //   icon: '💻',
+    //   color: '#00b4d8',
+    //   subcategories: [
+    //     { id: 'smartphones', name: 'الهواتف الذكية', image: '/images/champions.png' },
+    //     { id: 'internet', name: 'الإنترنت', image: '/images/champions.png' }
+    //   ]
+    // },
+    // 'تاريخ': {
+    //   icon: '🏺',
+    //   color: '#b68900',
+    //   subcategories: [
+    //     { id: 'arab_history', name: 'تاريخ العرب', image: '/images/champions.png' }
+    //   ]
+    // },
+    // 'رياضيات': {
+    //   icon: '➗',
+    //   color: '#43aa8b',
+    //   subcategories: [
+    //     { id: 'math_easy', name: 'رياضيات سهلة', image: '/images/champions.png' },
+    //     { id: 'math_hard', name: 'رياضيات صعبة', image: '/images/champions.png' }
+    //   ]
+    // },
+    // 'موسيقى': {
+    //   icon: '🎵',
+    //   color: '#ffb300',
+    //   subcategories: [
+    //     { id: 'arabic_music', name: 'موسيقى عربية', image: '/images/champions.png' },
+    //     { id: 'international_music', name: 'موسيقى عالمية', image: '/images/champions.png' }
+    //   ]
+    // }
   };
 
   // الأسئلة (مثال، أضف المزيد حسب الحاجة)
@@ -144,7 +145,7 @@ const FridayChallenge = () => {
       700: { question: 'ما هو أكبر فوز في تاريخ دوري الأبطال؟', answer: 'برشلونة 7-1 باير ليفركوزن' },
       800: { question: 'من هو أصغر لاعب سجل في دوري الأبطال؟', answer: 'أنسو فاتي' }
     },
-    math_easy: {
+    hollywood: {
       300: { question: 'ما هو ناتج 2 + 2؟', answer: '4' },
       400: { question: 'ما هو العدد الزوجي بين 1 و 10؟', answer: '2, 4, 6, 8, 10' },
       500: { question: 'كم زاوية توجد في مثلث قائم الزاوية؟', answer: '2 زاوية' },
@@ -152,7 +153,7 @@ const FridayChallenge = () => {
       700: { question: 'ما هو العدد الذي يأتي بعد 9 مباشرة؟', answer: '10' },
       800: { question: 'إذا كانت الساعة الآن 3:00، فمتى ستكون بعد ساعتين؟', answer: '5:00' }
     },
-    math_hard: {
+    animation: {
       300: { question: 'ما نتيجة 12 × 12؟', answer: '144' },
       400: { question: 'كم يساوي الجذر التربيعي لـ 169؟', answer: '13' },
       500: { question: 'ما هو العدد الأولي التالي بعد 17؟', answer: '19' },
@@ -160,7 +161,7 @@ const FridayChallenge = () => {
       700: { question: 'ما هو حاصل قسمة 144 على 12؟', answer: '12' },
       800: { question: 'ما هو العدد الذي إذا ضربته بنفسه يعطي 225؟', answer: '15' }
     },
-    arab_history: {
+    game_of_thrones: {
       300: { question: 'من هو مؤسس الدولة الأموية؟', answer: 'معاوية بن أبي سفيان' },
       400: { question: 'ما هي العاصمة الأولى للدولة العباسية؟', answer: 'الكوفة' },
       500: { question: 'من هو القائد الذي فتح الأندلس؟', answer: 'طارق بن زياد' },
@@ -168,14 +169,94 @@ const FridayChallenge = () => {
       700: { question: 'من هو الصحابي الذي لقب بـ "أسد الله"؟', answer: 'حمزة بن عبد المطلب' },
       800: { question: 'ما هي السنة التي هاجر فيها النبي محمد إلى المدينة المنورة؟', answer: '622م' }
     },
-    arabic_music: {
+    breaking_bad: {
       300: { question: 'من هو فنان العرب؟', answer: 'محمد عبده' },
       400: { question: 'ما اسم آلة موسيقية وترية مشهورة في العالم العربي؟', answer: 'العود' },
       500: { question: 'من غنى أغنية الأماكن؟', answer: 'محمد عبده' },
       600: { question: 'من هو ملحن النشيد الوطني السعودي؟', answer: 'سراج عمر' },
       700: { question: 'ما اسم أول ألبوم للفنان عبدالمجيد عبدالله؟', answer: 'سيد أهلي' },
       800: { question: 'من هو مؤسس فرقة الأخوة البحرينية؟', answer: 'ناصر صالح' }
-    }
+    },
+    from: {
+      300: { question: 'من هو فنان العرب؟', answer: 'محمد عبده' },
+      400: { question: 'ما اسم آلة موسيقية وترية مشهورة في العالم العربي؟', answer: 'العود' },
+      500: { question: 'من غنى أغنية الأماكن؟', answer: 'محمد عبده' },
+      600: { question: 'من هو ملحن النشيد الوطني السعودي؟', answer: 'سراج عمر' },
+      700: { question: 'ما اسم أول ألبوم للفنان عبدالمجيد عبدالله؟', answer: 'سيد أهلي' },
+      800: { question: 'من هو مؤسس فرقة الأخوة البحرينية؟', answer: 'ناصر صالح' }
+    },
+    flags: {
+      300: { question: 'من هو فنان العرب؟', answer: 'محمد عبده' },
+      400: { question: 'ما اسم آلة موسيقية وترية مشهورة في العالم العربي؟', answer: 'العود' },
+      500: { question: 'من غنى أغنية الأماكن؟', answer: 'محمد عبده' },
+      600: { question: 'من هو ملحن النشيد الوطني السعودي؟', answer: 'سراج عمر' },
+      700: { question: 'ما اسم أول ألبوم للفنان عبدالمجيد عبدالله؟', answer: 'سيد أهلي' },
+      800: { question: 'من هو مؤسس فرقة الأخوة البحرينية؟', answer: 'ناصر صالح' }
+    },
+    icons: {
+      300: { question: 'من هو فنان العرب؟', answer: 'محمد عبده' },
+      400: { question: 'ما اسم آلة موسيقية وترية مشهورة في العالم العربي؟', answer: 'العود' },
+      500: { question: 'من غنى أغنية الأماكن؟', answer: 'محمد عبده' },
+      600: { question: 'من هو ملحن النشيد الوطني السعودي؟', answer: 'سراج عمر' },
+      700: { question: 'ما اسم أول ألبوم للفنان عبدالمجيد عبدالله؟', answer: 'سيد أهلي' },
+      800: { question: 'من هو مؤسس فرقة الأخوة البحرينية؟', answer: 'ناصر صالح' }
+    },
+    Tourist_attractions: {
+      300: { question: 'من هو فنان العرب؟', answer: 'محمد عبده' },
+      400: { question: 'ما اسم آلة موسيقية وترية مشهورة في العالم العربي؟', answer: 'العود' },
+      500: { question: 'من غنى أغنية الأماكن؟', answer: 'محمد عبده' },
+      600: { question: 'من هو ملحن النشيد الوطني السعودي؟', answer: 'سراج عمر' },
+      700: { question: 'ما اسم أول ألبوم للفنان عبدالمجيد عبدالله؟', answer: 'سيد أهلي' },
+      800: { question: 'من هو مؤسس فرقة الأخوة البحرينية؟', answer: 'ناصر صالح' }
+    },
+    capital: {
+      300: { question: 'من هو فنان العرب؟', answer: 'محمد عبده' },
+      400: { question: 'ما اسم آلة موسيقية وترية مشهورة في العالم العربي؟', answer: 'العود' },
+      500: { question: 'من غنى أغنية الأماكن؟', answer: 'محمد عبده' },
+      600: { question: 'من هو ملحن النشيد الوطني السعودي؟', answer: 'سراج عمر' },
+      700: { question: 'ما اسم أول ألبوم للفنان عبدالمجيد عبدالله؟', answer: 'سيد أهلي' },
+      800: { question: 'من هو مؤسس فرقة الأخوة البحرينية؟', answer: 'ناصر صالح' }
+    },
+    map: {
+      300: { question: 'من هو فنان العرب؟', answer: 'محمد عبده' },
+      400: { question: 'ما اسم آلة موسيقية وترية مشهورة في العالم العربي؟', answer: 'العود' },
+      500: { question: 'من غنى أغنية الأماكن؟', answer: 'محمد عبده' },
+      600: { question: 'من هو ملحن النشيد الوطني السعودي؟', answer: 'سراج عمر' },
+      700: { question: 'ما اسم أول ألبوم للفنان عبدالمجيد عبدالله؟', answer: 'سيد أهلي' },
+      800: { question: 'من هو مؤسس فرقة الأخوة البحرينية؟', answer: 'ناصر صالح' }
+    },
+    arabic_cuisine: {
+      300: { question: 'من هو فنان العرب؟', answer: 'محمد عبده' },
+      400: { question: 'ما اسم آلة موسيقية وترية مشهورة في العالم العربي؟', answer: 'العود' },
+      500: { question: 'من غنى أغنية الأماكن؟', answer: 'محمد عبده' },
+      600: { question: 'من هو ملحن النشيد الوطني السعودي؟', answer: 'سراج عمر' },
+      700: { question: 'ما اسم أول ألبوم للفنان عبدالمجيد عبدالله؟', answer: 'سيد أهلي' },
+      800: { question: 'من هو مؤسس فرقة الأخوة البحرينية؟', answer: 'ناصر صالح' }
+    },
+    international: {
+      300: { question: 'من هو فنان العرب؟', answer: 'محمد عبده' },
+      400: { question: 'ما اسم آلة موسيقية وترية مشهورة في العالم العربي؟', answer: 'العود' },
+      500: { question: 'من غنى أغنية الأماكن؟', answer: 'محمد عبده' },
+      600: { question: 'من هو ملحن النشيد الوطني السعودي؟', answer: 'سراج عمر' },
+      700: { question: 'ما اسم أول ألبوم للفنان عبدالمجيد عبدالله؟', answer: 'سيد أهلي' },
+      800: { question: 'من هو مؤسس فرقة الأخوة البحرينية؟', answer: 'ناصر صالح' }
+    },
+    desserts: {
+      300: { question: 'من هو فنان العرب؟', answer: 'محمد عبده' },
+      400: { question: 'ما اسم آلة موسيقية وترية مشهورة في العالم العربي؟', answer: 'العود' },
+      500: { question: 'من غنى أغنية الأماكن؟', answer: 'محمد عبده' },
+      600: { question: 'من هو ملحن النشيد الوطني السعودي؟', answer: 'سراج عمر' },
+      700: { question: 'ما اسم أول ألبوم للفنان عبدالمجيد عبدالله؟', answer: 'سيد أهلي' },
+      800: { question: 'من هو مؤسس فرقة الأخوة البحرينية؟', answer: 'ناصر صالح' }
+    },
+    what_is_the_food: {
+      300: { question: 'من هو فنان العرب؟', answer: 'محمد عبده' },
+      400: { question: 'ما اسم آلة موسيقية وترية مشهورة في العالم العربي؟', answer: 'العود' },
+      500: { question: 'من غنى أغنية الأماكن؟', answer: 'محمد عبده' },
+      600: { question: 'من هو ملحن النشيد الوطني السعودي؟', answer: 'سراج عمر' },
+      700: { question: 'ما اسم أول ألبوم للفنان عبدالمجيد عبدالله؟', answer: 'سيد أهلي' },
+      800: { question: 'من هو مؤسس فرقة الأخوة البحرينية؟', answer: 'ناصر صالح' }
+    },
   };
 
   useEffect(() => {
