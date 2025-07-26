@@ -8,33 +8,76 @@ import {
   Button,
   Chip,
   IconButton,
-  Paper
+  Paper,
+  Tooltip
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { styled } from '@mui/material/styles';
-
-
+import { useState } from 'react';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   background: 'rgba(255, 255, 255, 0.1)',
   backdropFilter: 'blur(10px)',
   borderRadius: '20px',
-  padding: theme.spacing(3),
-  marginBottom: theme.spacing(3),
-  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+  padding: theme.spacing(5), // increased padding for larger size
+  marginBottom: theme.spacing(5), // increased margin
+  boxShadow: '0 12px 48px rgba(0, 0, 0, 0.3)', // stronger shadow
   border: '1px solid rgba(255, 255, 255, 0.1)'
 }));
 
 const CategoryButton = styled(Button)(({ theme, selected }) => ({
-  width: '100%',
-  height: '100px',
-  borderRadius: '15px',
+  width: '200px',
+  height: '250px', // taller vertical rectangle
+  borderRadius: '10px',
   background: selected ? 'rgba(76, 201, 240, 0.3)' : 'rgba(255, 255, 255, 0.15)',
   border: selected ? '2px solid #4cc9f0' : 'none',
+  position: 'relative',
+  overflow: 'hidden',
+  padding: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   '&:hover': {
     background: selected ? 'rgba(76, 201, 240, 0.4)' : 'rgba(255, 255, 255, 0.25)'
   }
 }));
+
+const CategoryImage = styled('img')({
+  position: 'absolute',
+  top: 20,
+  left: 0,
+  width: '100%',
+  height: '80%',
+  objectFit: 'fill',
+  opacity: 0.4, // slightly transparent
+  filter: 'brightness(0.8)',
+  transition: 'opacity 0.3s ease',
+  zIndex: 1,
+});
+
+const CategoryText = styled(Typography)({
+  position: 'relative',
+  color: 'white',
+  fontSize: '1.8rem',
+  fontWeight: 'bold',
+  textShadow: '0 0 8px rgba(0,0,0,0.7)',
+  userSelect: 'none',
+  zIndex: 2,
+  textAlign: 'center',
+});
+
+const InfoIconButton = styled(IconButton)({
+  position: 'absolute',
+  top: '8px',
+  left: '8px',
+  color: 'white',
+  backgroundColor: 'rgba(0,0,0,0.3)',
+  zIndex: 3,
+  '&:hover': {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  }
+});
 
 const SetupPage = ({ 
   teams,
@@ -47,6 +90,13 @@ const SetupPage = ({
   setShowLogin,
   user
 }) => {
+  // State to track which category's description tooltip is open (for click)
+  const [openTooltipId, setOpenTooltipId] = useState(null);
+
+  const handleInfoClick = (id) => {
+    setOpenTooltipId(openTooltipId === id ? null : id);
+  };
+
   return (
     <Container maxWidth="lg">
       {/* زر تسجيل الدخول */}
@@ -180,19 +230,30 @@ const SetupPage = ({
                           selected={isSelected}
                           onClick={() => handleCategorySelection(subcat.id)}
                         >
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <img 
-                              src={subcat.image} 
-                              alt={subcat.name}
-                              style={{
-                                width: 100,
-                                height: 100,
-                                borderRadius: '50%',
-                                border: '2px solid black'
+                          <CategoryImage 
+                            src={subcat.image} 
+                            alt={subcat.name}
+                          />
+                          <CategoryText>{subcat.name}</CategoryText>
+<Tooltip 
+  title={<span style={{ fontSize: '1.2rem' }}>{subcat.description}</span>} 
+  open={openTooltipId === subcat.id} 
+  onClose={() => setOpenTooltipId(null)} 
+  disableFocusListener 
+  disableHoverListener
+  disableTouchListener
+  placement="top"
+>
+                            <InfoIconButton 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleInfoClick(subcat.id);
                               }}
-                            />
-<Typography sx={{ color: 'white', fontSize: '1.5rem' }}>{subcat.name}</Typography>
-                          </Box>
+                              aria-label="info"
+                            >
+                              <ErrorOutlineIcon />
+                            </InfoIconButton>
+                          </Tooltip>
                         </CategoryButton>
                       </Grid>
                     );

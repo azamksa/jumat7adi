@@ -30,44 +30,44 @@ const FridayChallenge = () => {
       icon: '/images/saudi-league.png',
       color: '#4CAF50',
       subcategories: [
-        { id: 'saudi_league', name: 'الدوري السعودي', image: '/images/saudi-league.png' },
-        { id: 'english_league', name: 'الدوري الإنجليزي', image: '/images/english-league.png' },
-        { id: 'clasico', name: 'الكلاسيكو', image: '/images/clasico.png' },
-        { id: 'world_cup', name: 'كأس العالم', image: '/images/world-cup.png' },
-        { id: 'champions', name: 'دوري الأبطال', image: '/images/champions.png' }
+        { id: 'saudi_league', name: 'الدوري السعودي', image: '/images/saudi-league.png', description: 'هذه الفئة ستحتوي على أسئلة في الدوري السعودي وما يشمله من أشياء لها علاقة به' },
+        { id: 'english_league', name: 'الدوري الإنجليزي', image: '/images/english-league.png', description: 'هذه الفئة ستحتوي على أسئلة في الدوري الإنجليزي الممتاز وما يشمله من أشياء لها علاقة به' },
+        { id: 'clasico', name: 'الكلاسيكو', image: '/images/clasico.png', description: 'هذه الفئة ستحتوي على أسئلة في مباريات الكلاسيكو بين ريال مدريد وبرشلونة' },
+        { id: 'world_cup', name: 'كأس العالم', image: '/images/world-cup.png', description: 'هذه الفئة ستحتوي على أسئلة في بطولة كأس العالم لكرة القدم' },
+        { id: 'champions', name: 'دوري الأبطال', image: '/images/champions.png', description: 'هذه الفئة ستحتوي على أسئلة في دوري أبطال أوروبا لكرة القدم' }
       ]
     },
     'أفلام ومسلسلات': {
       icon: '🎬',
       color: '#9C27B0',
       subcategories: [
-        { id: 'hollywood', name: 'هوليوود', image: '/images/hollywood.png' },
-        { id: 'TvShow', name: 'مسلسلات', image: '/images/TvShow.png' },
-        { id: 'animation', name: 'الرسوم المتحركة', image: '/images/animation.png' },
-        { id: 'game_of_thrones', name: 'قيم اوف ثرونز', image: '/images/game_of_thrones.png' },
-        { id: 'breaking_bad', name: 'بريكن باد', image: '/images/breaking_bad.png' },
-        { id: 'from', name: 'فروم', image: '/images/from.png' },
+        { id: 'hollywood', name: 'هوليوود', image: '/images/hollywood.png', description: 'هذه الفئة ستحتوي على أسئلة في أفلام هوليوود والمسلسلات' },
+        { id: 'TvShow', name: 'مسلسلات', image: '/images/TvShow.png', description: 'هذه الفئة ستحتوي على أسئلة في المسلسلات التلفزيونية' },
+        { id: 'animation', name: 'الرسوم المتحركة', image: '/images/animation.png', description: 'هذه الفئة ستحتوي على أسئلة في الرسوم المتحركة' },
+        { id: 'game_of_thrones', name: 'قيم اوف ثرونز', image: '/images/game_of_thrones.png', description: 'هذه الفئة ستحتوي على أسئلة في مسلسل قيم اوف ثرونز' },
+        { id: 'breaking_bad', name: 'بريكن باد', image: '/images/breaking_bad.png', description: 'هذه الفئة ستحتوي على أسئلة في مسلسل بريكن باد' },
+        { id: 'from', name: 'فروم', image: '/images/from.png', description: 'هذه الفئة ستحتوي على أسئلة في مسلسل فروم' },
       ]
     },
     'العالم': {
       icon: '👗',
       color: '#E91E63',
       subcategories: [
-        { id: 'flags', name: 'اعلام دول', image: '/images/flags.png' },
-        { id: 'icons', name: 'شعارات دول', image: '/images/icons.png' },
-        { id: 'Tourist_attractions', name: 'معالم سياحية', image: '/images/Tourist_attractions.png' },
-        { id: 'capital', name: 'عاصمة', image: '/images/capital.png' },
-        { id: 'map', name: 'الخريطة', image: '/images/map.png' }
+        { id: 'flags', name: 'اعلام دول', image: '/images/flags.png', description: 'هذه الفئة ستحتوي على أسئلة في أعلام الدول' },
+        { id: 'icons', name: 'شعارات دول', image: '/images/icons.png', description: 'هذه الفئة ستحتوي على أسئلة في شعارات الدول' },
+        { id: 'Tourist_attractions', name: 'معالم سياحية', image: '/images/Tourist_attractions.png', description: 'هذه الفئة ستحتوي على أسئلة في المعالم السياحية' },
+        { id: 'capital', name: 'عاصمة', image: '/images/capital.png', description: 'هذه الفئة ستحتوي على أسئلة في عواصم الدول' },
+        { id: 'map', name: 'الخريطة', image: '/images/map.png', description: 'هذه الفئة ستحتوي على أسئلة في الخرائط' }
       ]
     },
     'مطبخ': {
       icon: '🍳',
       color: '#FF9800',
       subcategories: [
-        { id: 'arabic_cuisine', name: 'المطبخ العربي', image: '/images/arabic_cuisine.png' },
-        { id: 'international', name: 'المطبخ العالمي', image: '/images/international.png' },
-        { id: 'desserts', name: 'الحلويات', image: '/images/desserts.png' },
-        { id: 'what_is_the_food', name: 'وش الاكله', image: '/images/what_is_the_food.png' },
+        { id: 'arabic_cuisine', name: 'المطبخ العربي', image: '/images/arabic_cuisine.png', description: 'هذه الفئة ستحتوي على أسئلة في المطبخ العربي' },
+        { id: 'international', name: 'المطبخ العالمي', image: '/images/international.png', description: 'هذه الفئة ستحتوي على أسئلة في المطبخ العالمي' },
+        { id: 'desserts', name: 'الحلويات', image: '/images/desserts.png', description: 'هذه الفئة ستحتوي على أسئلة في الحلويات' },
+        { id: 'what_is_the_food', name: 'وش الاكله', image: '/images/what_is_the_food.png', description: 'هذه الفئة ستحتوي على أسئلة في الأكلات' },
       ]
     },
     // 'تكنولوجيا': {
@@ -406,60 +406,70 @@ const FridayChallenge = () => {
 
   // الصفحة الرئيسية (الإعداد)
   if (gameState === 'setup') {
-    return (
-      <>
-        <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 10000 }}>
-          {user ? (
-            <div style={{ position: 'relative', display: 'inline-block' }}>
-              <span
-                onClick={() => setShowLogout(!showLogout)}
+  return (
+    <>
+      <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 10000 }}>
+        {user ? (
+          <div style={{ position: 'relative', display: 'inline-block' }}>
+            <span
+              onClick={() => setShowLogout(!showLogout)}
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                padding: '8px 16px',
+                userSelect: 'none',
+              }}
+            >
+              {user.name || user.email}
+            </span>
+            {showLogout && (
+              <div
                 style={{
-                  color: 'white',
-                  fontWeight: 'bold',
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  backgroundColor: '#333',
+                  padding: '10px',
+                  borderRadius: '4px',
                   cursor: 'pointer',
-                  padding: '8px 16px',
-                  userSelect: 'none',
+                  zIndex: 1000,
+                }}
+                onClick={() => {
+                  setUser(null);
+                  setShowLogout(false);
+                  setShowLogin(false);
                 }}
               >
-                {user.name || user.email}
-              </span>
-              {showLogout && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '100%',
-                    right: 0,
-                    backgroundColor: '#333',
-                    padding: '10px',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    zIndex: 1000,
-                  }}
-                  onClick={() => {
-                    setUser(null);
-                    setShowLogout(false);
-                    setShowLogin(false);
-                  }}
-                >
-                  تسجيل الخروج
-                </div>
-              )}
-            </div>
-          ) : null}
-        </div>
-        <SetupPage
-          teams={teams}
-          selectedCategories={selectedCategories}
-          basicCategories={basicCategories}
-          handleTeamNameChange={handleTeamNameChange}
-          handleCategorySelection={handleCategorySelection}
-          startGame={startGame}
-          error={error}
-          setShowLogin={setShowLogin}
-          user={user}
-        />
-      </>
-    );
+                تسجيل الخروج
+              </div>
+            )}
+          </div>
+        ) : null}
+      </div>
+      <SetupPage
+        teams={teams}
+        selectedCategories={selectedCategories}
+        basicCategories={basicCategories}
+        handleTeamNameChange={handleTeamNameChange}
+        handleCategorySelection={handleCategorySelection}
+        startGame={startGame}
+        error={error}
+        setShowLogin={setShowLogin}
+        user={user}
+      />
+      <footer style={{
+        marginTop: 40,
+        padding: '20px 0',
+        textAlign: 'center',
+        color: '#888',
+        fontSize: '0.9rem',
+        borderTop: '1px solid #444'
+      }}>
+        هذا الموقع مصمم من مطور سعودي لهدف إنشاء لعبة تجمع الأهل والأصدقاء للاستمتاع. جميع الحقوق محفوظة.
+      </footer>
+    </>
+  );
   }
 
   // صفحة النتائج
