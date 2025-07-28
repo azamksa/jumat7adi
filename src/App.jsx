@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import SetupPage from './components/SetupPage';
+import QuestionsListPage from './components/QuestionsListPage';
+import QuestionPage from './components/QuestionPage';
+import AnswerPage from './components/AnswerPage';
 import Login from './components/Login';
 
 
@@ -406,253 +409,156 @@ const FridayChallenge = () => {
 
   // الصفحة الرئيسية (الإعداد)
   if (gameState === 'setup') {
-  return (
-    <>
-      <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 10000 }}>
-        {user ? (
-          <div style={{ position: 'relative', display: 'inline-block' }}>
-            <span
-              onClick={() => setShowLogout(!showLogout)}
-              style={{
-                color: 'white',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                padding: '8px 16px',
-                userSelect: 'none',
-              }}
-            >
-              {user.name || user.email}
-            </span>
-            {showLogout && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '100%',
-                  right: 0,
-                  backgroundColor: '#333',
-                  padding: '10px',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  zIndex: 1000,
-                }}
-                onClick={() => {
-                  setUser(null);
-                  setShowLogout(false);
-                  setShowLogin(false);
-                }}
-              >
-                تسجيل الخروج
-              </div>
-            )}
-          </div>
-        ) : null}
-      </div>
-      <SetupPage
-        teams={teams}
-        selectedCategories={selectedCategories}
-        basicCategories={basicCategories}
-        handleTeamNameChange={handleTeamNameChange}
-        handleCategorySelection={handleCategorySelection}
-        startGame={startGame}
-        error={error}
-        setShowLogin={setShowLogin}
-        user={user}
-      />
-      <footer style={{
-        marginTop: 40,
-        padding: '20px 0',
-        textAlign: 'center',
-        color: '#888',
-        fontSize: '0.9rem',
-        borderTop: '1px solid #444'
-      }}>
-        هذا الموقع مصمم من مطور سعودي لهدف إنشاء لعبة تجمع الأهل والأصدقاء للاستمتاع. جميع الحقوق محفوظة.
-      </footer>
-    </>
-  );
-  }
-
-  // صفحة النتائج
-  if (gameState === 'results') {
-    const winner = scores.team1 > scores.team2 ? teams.team1 : scores.team2 > scores.team1 ? teams.team2 : null;
     return (
-      <div className="results-container">
-        <div className="results-card">
-          <div className="trophy-animation">🏆</div>
-          <h1 className="winner-title">
-            {winner ? `🎉 ${winner}` : '🤝 تعادل'}
-          </h1>
-          <p className="winner-subtitle">
-            {winner ? 'الفائز بتحدي الجمعة!' : 'اللعبة انتهت بالتعادل!'}
-          </p>
-          <div className="scores-container">
-            <div className="team-score-card team1-score">
-              <h3>{teams.team1}</h3>
-              <div className="score-value">{scores.team1}</div>
-              <p>نقطة</p>
-            </div>
-            <div className="vs-text">VS</div>
-            <div className="team-score-card team2-score">
-              <h3>{teams.team2}</h3>
-              <div className="score-value">{scores.team2}</div>
-              <p>نقطة</p>
-            </div>
-          </div>
-          <button onClick={resetGame} className="new-game-btn">
-            لعبة جديدة
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // صفحة السؤال (تظهر إذا كان هناك سؤال أو إذا كنا نعرض الإجابة)
-  if (gameState === 'question' && (currentQuestion || showAnswer)) {
-    return (
-      <div className="question-container">
-        <div className="question-card" style={{maxWidth: 1100, minHeight: 600, padding: '60px 30px'}}>
-          <div className="question-header" style={{marginBottom: 20}}>
-            <button className="back-button" onClick={() => setGameState('game')}>
-              &larr; العودة
-            </button>
-            <div className="team-turn">
-              <h2>دور {activeTeam === 'team1' ? teams.team1 : teams.team2}</h2>
-            </div>
-            <div className="timer-display">
-              <div className="timer-icon">⏱️</div>
-              <div className="timer-value">{timer}</div>
-            </div>
-          </div>
-          <div className="question-content">
-            <div className="question-points-display">
-              {currentQuestion.points} نقطة
-            </div>
-            <div className="question-text big-question" style={{fontSize: '2.5rem', margin: '30px 0'}}>
-              {currentQuestion.question}
-            </div>
-            {/* مستقبلاً: صورة أو فيديو للسؤال */}
-            {currentQuestion.image && (
-              <img src={currentQuestion.image} alt="" style={{maxWidth: '100%', borderRadius: 16, margin: '20px auto'}} />
-            )}
-            {currentQuestion.video && (
-              <video src={currentQuestion.video} controls style={{maxWidth: '100%', borderRadius: 16, margin: '20px auto'}} />
-            )}
-          </div>
-          <div className="timer-controls" style={{marginBottom: 10}}>
-            <button onClick={skipTime} className="control-btn skip-btn">
-              تخطي الوقت
-            </button>
-            <button onClick={togglePauseTimer} className={`control-btn ${isTimerPaused ? 'resume-btn' : 'pause-btn'}`}>
-              {isTimerPaused ? 'استئناف' : 'إيقاف'}
-            </button>
-            <button onClick={resetTimer} className="control-btn reset-btn">
-              إعادة الوقت
-            </button>
-          </div>
-          {(showAnswer || timer === 0) && (
-            <div className="answer-section">
-              <div className="correct-answer">
-                <h3>الإجابة الصحيحة:</h3>
-                <p>{currentQuestion?.answer}</p>
-              </div>
-              <div className="answer-options">
-                <button
-                  onClick={() => answerQuestion(true, 'team1')}
-                  className="answer-btn team1-btn"
-                >
-                  {teams.team1} أجاب صحيح
-                </button>
-                <button
-                  onClick={() => answerQuestion(true, 'team2')}
-                  className="answer-btn team2-btn"
-                >
-                  {teams.team2} أجاب صحيح
-                </button>
-                <button
-                  onClick={() => answerQuestion(false)}
-                  className="answer-btn no-answer-btn"
-                >
-                  لا أحد أجاب صحيح
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      <>
+        <UserMenu user={user} setUser={setUser} setShowLogin={setShowLogin} showLogout={showLogout} setShowLogout={setShowLogout} />
+        <SetupPage
+          teams={teams}
+          selectedCategories={selectedCategories}
+          basicCategories={basicCategories}
+          handleTeamNameChange={handleTeamNameChange}
+          handleCategorySelection={handleCategorySelection}
+          startGame={startGame}
+          error={error}
+          setShowLogin={setShowLogin}
+          user={user}
+        />
+        <Footer />
+      </>
     );
   }
 
   // صفحة الأسئلة
   if (gameState === 'game') {
-    const allSubcategories = Object.values(basicCategories).flatMap(cat => cat.subcategories);
-    const pointValues = [300, 400, 500, 600, 700, 800];
     return (
-      <div className="game-container">
-        <div className="score-board" style={{marginBottom: 18}}>
-          <div className="team-score team1">
-            <h3>{teams.team1}</h3>
-            <div className="score-edit">
-              <button onClick={() => setScores(s => ({ ...s, team1: Math.max(0, s.team1 - 100) }))}>-</button>
-              <p>{scores.team1}</p>
-              <button onClick={() => setScores(s => ({ ...s, team1: s.team1 + 100 }))}>+</button>
-            </div>
-          </div>
-          <div className="game-title-container">
-            <h2 style={{marginBottom: 6}}>تحدي الجمعة</h2>
-            <div className="turn-indicator" style={{margin: 0, fontSize: '1.1rem', padding: '8px 12px'}}>
-              <span className="arrow">{categoryPickerTeam === 'team1' ? '⬅️' : '➡️'}</span>
-              <span className="turn-team">{teams[categoryPickerTeam]} يختار الفئة ويبدأ الإجابة</span>
-            </div>
-          </div>
-          <div className="team-score team2">
-            <h3>{teams.team2}</h3>
-            <div className="score-edit">
-              <button onClick={() => setScores(s => ({ ...s, team2: Math.max(0, s.team2 - 100) }))}>-</button>
-              <p>{scores.team2}</p>
-              <button onClick={() => setScores(s => ({ ...s, team2: s.team2 + 100 }))}>+</button>
-            </div>
-          </div>
-        </div>
-        <div className="questions-horizontal-grid" style={{padding: '10px 2px', marginTop: 10}}>
-          <div className="categories-row" style={{marginBottom: 6}}>
-            {selectedCategories.map(categoryId => {
-              const category = allSubcategories.find(sub => sub.id === categoryId);
-              const categoryData = Object.values(basicCategories).find(cat =>
-                cat.subcategories.some(sub => sub.id === categoryId)
-              );
-              return (
-                <div key={categoryId} className="category-header-horizontal" style={{ backgroundColor: categoryData?.color, minWidth: 80, padding: '6px 8px' }}>
-                  <div className="category-icon">
-                    <img src={category?.image} alt={category?.name} style={{width: 48, height: 48, borderRadius: '50%'}} />
-                  </div>
-                  <h3 style={{fontSize: '1rem', margin: 0}}>{category?.name}</h3>
-                </div>
-              );
-            })}
-          </div>
-          {pointValues.map(points => (
-            <div className="questions-row" key={points} style={{marginBottom: 4}}>
-              {selectedCategories.map(categoryId => {
-                const questionId = `${categoryId}-${points}`;
-                const isAnswered = answeredQuestions.has(questionId);
-                return (
-                  <div
-                    key={questionId}
-                    onClick={() => !isAnswered && selectQuestion(categoryId, points)}
-                    className={`question-point-horizontal ${isAnswered ? 'answered' : ''}`}
-                    style={{minWidth: 80, fontSize: '1.1rem', padding: '10px 0'}}
-                  >
-                    {points}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-        </div>
+      <div style={{
+        width: '100vw',
+        height: '100vh',
+        margin: 0,
+        padding: 0,
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        background: 'linear-gradient(135deg, #1a1e5b, #862d2d)'
+      }}>
+        <QuestionsListPage
+          teams={teams}
+          scores={scores}
+          setScores={setScores}
+          selectedCategories={selectedCategories}
+          basicCategories={basicCategories}
+          answeredQuestions={answeredQuestions}
+          selectQuestion={selectQuestion}
+          categoryPickerTeam={categoryPickerTeam}
+        />
       </div>
     );
   }
+
+  // صفحة عرض السؤال
+  if (gameState === 'question' && currentQuestion && !showAnswer) {
+    return (
+      <QuestionPage
+        currentQuestion={currentQuestion}
+        timer={timer}
+        isTimerPaused={isTimerPaused}
+        togglePauseTimer={togglePauseTimer}
+        resetTimer={resetTimer}
+        skipTime={skipTime}
+        setGameState={setGameState}
+        activeTeam={activeTeam}
+        teams={teams}
+        showAnswer={showAnswer}
+        setShowAnswer={setShowAnswer}
+      />
+    );
+  }
+
+  // صفحة عرض الإجابة
+  if (showAnswer) {
+    return (
+      <AnswerPage
+        currentQuestion={currentQuestion}
+        teams={teams}
+        activeTeam={activeTeam}
+        answerQuestion={answerQuestion}
+        setGameState={setGameState}
+      />
+    );
+  }
+
+  // صفحة النتائج
+  if (gameState === 'results') {
+    return (
+      <ResultsPage
+        teams={teams}
+        scores={scores}
+        resetGame={resetGame}
+      />
+    );
+  }
 };
+
+// كومبوننت القائمة العلوية للمستخدم
+const UserMenu = ({ user, setUser, setShowLogin, showLogout, setShowLogout }) => {
+  if (!user) return null;
+  
+  return (
+    <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 10000 }}>
+      <div style={{ position: 'relative', display: 'inline-block' }}>
+        <span
+          onClick={() => setShowLogout(!showLogout)}
+          style={{
+            color: 'white',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            padding: '8px 16px',
+            userSelect: 'none',
+          }}
+        >
+          {user.name || user.email}
+        </span>
+        {showLogout && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '100%',
+              right: 0,
+              backgroundColor: '#333',
+              padding: '10px',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              zIndex: 1000,
+            }}
+            onClick={() => {
+              setUser(null);
+              setShowLogout(false);
+              setShowLogin(false);
+            }}
+          >
+            تسجيل الخروج
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// كومبوننت الفوتر
+const Footer = () => (
+  <footer style={{
+    marginTop: 40,
+    padding: '20px 0',
+    textAlign: 'center',
+    color: '#888',
+    fontSize: '0.9rem',
+    borderTop: '1px solid #444'
+  }}>
+    هذا الموقع مصمم من مطور سعودي لهدف إنشاء لعبة تجمع الأهل والأصدقاء للاستمتاع. جميع الحقوق محفوظة.
+  </footer>
+);
 
 export default FridayChallenge;
 

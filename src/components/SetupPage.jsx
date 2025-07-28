@@ -98,7 +98,21 @@ const SetupPage = ({
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container
+      maxWidth="xxl"
+      sx={{
+        minHeight: '100vh',
+        width: '100vw',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: 'linear-gradient(135deg, #1a237e, #0d47a1)',
+        padding: 0,
+        margin: 0, // زيادة المسافة بين الصفحة الرئيسية والصفحة الفرعية
+        // overflowY: 'auto' // نسمح بالتمرير فقط في الصفحة الرئيسية
+      }}
+    >
       {/* زر تسجيل الدخول */}
       {!user && (
         <Box sx={{ position: 'absolute', right: 20, top: 20,  }}>
@@ -340,3 +354,17 @@ const SetupPage = ({
 };
 
 export default SetupPage;
+
+// مثال لأنماط الصفحة الرئيسية
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center', // وسط عمودي
+    alignItems: 'center',     // وسط أفقي
+    minHeight: '100vh',
+    width: '100vw',
+    background: 'linear-gradient(135deg, #1a237e, #0d47a1)'
+  },
+  // باقي الأنماط حسب الحاجة
+};

@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body, #root {
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+body {
+  background: linear-gradient(135deg, #1a237e, #0d47a1) !important;
+  /* أزرق غامق - يمكنك تعديل الألوان حسب الرغبة */
+}
