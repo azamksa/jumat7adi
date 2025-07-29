@@ -5,47 +5,310 @@ const AnswerPage = ({
   teams,
   answerQuestion,
 }) => {
-  const styles = {
-    container: {
-      display: 'flex',
-      width: '100vw',
-      height: '100vh',
-      justifyContent: 'flex-start',
-      alignItems: 'flex-start',
-      padding: '0',
-      margin: '0',
-      background: 'linear-gradient(135deg, #1a237e, #0d47a1)',
-      overflow: 'hidden'
-    }
-    // ... باقي الأنماط
-  };
 
   return (
-    <div className="answer-section" style={styles.container}>
-      <div className="correct-answer">
-        <h3>الإجابة الصحيحة:</h3>
-        <p>{currentQuestion?.answer}</p>
+    <div style={{
+      width: '100vw',
+      height: '100vh',
+      margin: 0,
+      padding: 0,
+      background: 'linear-gradient(135deg, #1a237e, #0d47a1)',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontFamily: 'Arial, sans-serif',
+      overflow: 'hidden'
+    }}>
+      
+      {/* Header with checkmark icon */}
+      <div style={{
+        position: 'absolute',
+        top: '20px',
+        left: '20px',
+        right: '20px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        zIndex: 10
+      }}>
+        <div></div> {/* Empty div for spacing */}
+
+        {/* Answer indicator circle */}
+        <div style={{
+          position: 'relative',
+          width: '100px',
+          height: '100px',
+          borderRadius: '50%',
+          background: 'rgba(76, 175, 80, 0.2)',
+          border: '4px solid #4CAF50',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backdropFilter: 'blur(10px)',
+          animation: 'pulse 2s infinite'
+        }}>
+          <span style={{
+            fontSize: '3rem',
+            color: '#4CAF50',
+            zIndex: 1
+          }}>
+            ✓
+          </span>
+        </div>
       </div>
-      <div className="answer-options">
+
+      {/* Main Answer Card */}
+      <div style={{
+        background: 'rgba(0, 0, 0, 0.3)',
+        borderRadius: '30px',
+        padding: '260px 10px',
+        width: '1500px',
+        textAlign: 'center',
+        backdropFilter: 'blur(20px)',
+        border: '2px solid rgba(255, 255, 255, 0.1)',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        
+        {/* Decorative elements */}
+        <div style={{
+          position: 'absolute',
+          top: '-50px',
+          right: '-50px',
+          width: '100px',
+          height: '100px',
+          borderRadius: '50%',
+          background: 'linear-gradient(45deg, rgba(76, 175, 80, 0.3), rgba(255, 255, 255, 0.1))',
+          filter: 'blur(20px)'
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '-30px',
+          left: '-30px',
+          width: '80px',
+          height: '80px',
+          borderRadius: '50%',
+          background: 'linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(255, 255, 255, 0.1))',
+          filter: 'blur(15px)'
+        }} />
+
+        {/* Points indicator */}
+        <div style={{
+          position: 'absolute',
+          top: '20px',
+          right: '30px',
+          background: 'linear-gradient(45deg, #4CAF50, #45a049)',
+          color: 'white',
+          padding: '8px 20px',
+          borderRadius: '25px',
+          fontSize: '1.2rem',
+          fontWeight: 'bold',
+          boxShadow: '0 4px 15px rgba(76, 175, 80, 0.3)'
+        }}>
+          {currentQuestion.points} نقطة
+        </div>
+
+        {/* Answer header */}
+        <div style={{
+          marginBottom: '40px',
+          padding: '15px 30px',
+          background: 'rgba(76, 175, 80, 0.2)',
+          borderRadius: '50px',
+          display: 'inline-block',
+          backdropFilter: 'blur(10px)',
+          border: '2px solid rgba(76, 175, 80, 0.3)'
+        }}>
+          <h2 style={{
+            margin: 0,
+            fontSize: '2.2rem',
+            color: '#4CAF50',
+            fontWeight: 'bold'
+          }}>
+            الإجابة الصحيحة
+          </h2>
+        </div>
+
+        {/* Answer text */}
+        <div style={{
+          fontSize: '3rem',
+          fontWeight: 'bold',
+          color: 'white',
+          lineHeight: '1.3',
+          margin: '40px 0',
+          textShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
+          wordBreak: 'break-word',
+          padding: '20px',
+          background: 'rgba(76, 175, 80, 0.1)',
+          borderRadius: '20px',
+          border: '2px solid rgba(76, 175, 80, 0.2)'
+        }}>
+          {currentQuestion.answer}
+        </div>
+
+        {/* Answer Image/Video if exists */}
+        {currentQuestion.answerImage && (
+          <img 
+            src={currentQuestion.answerImage} 
+            alt="" 
+            style={{ 
+              maxWidth: '100%', 
+              maxHeight: '300px',
+              borderRadius: '20px', 
+              margin: '30px auto',
+              display: 'block',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+              border: '3px solid rgba(76, 175, 80, 0.3)'
+            }} 
+          />
+        )}
+
+        {currentQuestion.answerVideo && (
+          <video 
+            src={currentQuestion.answerVideo} 
+            controls 
+            style={{ 
+              maxWidth: '100%', 
+              maxHeight: '300px',
+              borderRadius: '20px', 
+              margin: '30px auto',
+              display: 'block',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+              border: '3px solid rgba(76, 175, 80, 0.3)'
+            }} 
+          />
+        )}
+
+        {/* Original question reminder (smaller) */}
+        <div style={{
+          marginTop: '40px',
+          padding: '15px',
+          background: 'rgba(255, 255, 255, 0.05)',
+          borderRadius: '15px',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
+          <p style={{
+            margin: 0,
+            fontSize: '1.5rem',
+            color: 'rgba(255, 255, 255, 0.7)',
+            fontStyle: 'italic'
+          }}>
+            السؤال: {currentQuestion.question}
+          </p>
+        </div>
+      </div>
+
+      {/* Answer evaluation buttons */}
+      <div style={{
+        position: 'absolute',
+        bottom: '30px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        display: 'flex',
+        gap: '25px',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
+      }}>
         <button
           onClick={() => answerQuestion(true, 'team1')}
-          className="answer-btn team1-btn"
+          style={{
+            background: 'linear-gradient(45deg, #4CAF50, #45a049)',
+            border: 'none',
+            borderRadius: '50px',
+            color: 'white',
+            padding: '18px 35px',
+            fontSize: '1.3rem',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 8px 25px rgba(76, 175, 80, 0.4)',
+            backdropFilter: 'blur(10px)',
+            minWidth: '200px'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.transform = 'translateY(-3px)';
+            e.target.style.boxShadow = '0 12px 35px rgba(76, 175, 80, 0.5)';
+          }}
+          onMouseOut={(e) => {
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 8px 25px rgba(76, 175, 80, 0.4)';
+          }}
         >
-          {teams.team1} أجاب صحيح
+          ✓ {teams.team1} أجاب صحيح
         </button>
+
         <button
           onClick={() => answerQuestion(true, 'team2')}
-          className="answer-btn team2-btn"
+          style={{
+            background: 'linear-gradient(45deg, #9C27B0, #7B1FA2)',
+            border: 'none',
+            borderRadius: '50px',
+            color: 'white',
+            padding: '18px 35px',
+            fontSize: '1.3rem',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 8px 25px rgba(156, 39, 176, 0.4)',
+            backdropFilter: 'blur(10px)',
+            minWidth: '200px'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.transform = 'translateY(-3px)';
+            e.target.style.boxShadow = '0 12px 35px rgba(156, 39, 176, 0.5)';
+          }}
+          onMouseOut={(e) => {
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 8px 25px rgba(156, 39, 176, 0.4)';
+          }}
         >
-          {teams.team2} أجاب صحيح
+          ✓ {teams.team2} أجاب صحيح
         </button>
+
         <button
           onClick={() => answerQuestion(false)}
-          className="answer-btn no-answer-btn"
+          style={{
+            background: 'linear-gradient(45deg, #607D8B, #455A64)',
+            border: 'none',
+            borderRadius: '50px',
+            color: 'white',
+            padding: '18px 35px',
+            fontSize: '1.3rem',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 8px 25px rgba(96, 125, 139, 0.4)',
+            backdropFilter: 'blur(10px)',
+            minWidth: '200px'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.transform = 'translateY(-3px)';
+            e.target.style.boxShadow = '0 12px 35px rgba(96, 125, 139, 0.5)';
+          }}
+          onMouseOut={(e) => {
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 8px 25px rgba(96, 125, 139, 0.4)';
+          }}
         >
-          لا أحد أجاب صحيح
+          ✗ لا أحد أجاب صحيح
         </button>
       </div>
+
+      {/* CSS Animation */}
+      <style jsx>{`
+        @keyframes pulse {
+          0% {
+            box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+          }
+          70% {
+            box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+          }
+          100% {
+            box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+          }
+        }
+      `}</style>
     </div>
   );
 };
