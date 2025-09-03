@@ -326,12 +326,15 @@ const UserMenu = ({ user, setUser, setShowLogin, showLogout, setShowLogout }) =>
 // كومبوننت الفوتر
 const Footer = () => (
   <footer style={{
-    marginTop: 40,
+    width: '100%',
     padding: '20px 0',
-    textAlign: 'center',
+    textAlign: 'right', // تغيير من center إلى right
     color: '#888',
     fontSize: '0.9rem',
-    borderTop: '1px solid #444'
+    borderTop: '1px solid #444',
+    backdropFilter: 'blur(10px)',
+    marginTop: 'auto',
+    paddingRight: '100px' // إضافة مسافة من اليمين
   }}>
     هذا الموقع مصمم من مطور سعودي لهدف إنشاء لعبة تجمع الأهل والأصدقاء للاستمتاع. جميع الحقوق محفوظة.
   </footer>

@@ -174,16 +174,21 @@ const SetupPage = ({
           اختر 6 فئات من القائمة أدناه ({selectedCategories.length} / 6)
         </Typography>
         
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
           {Object.entries(basicCategories).map(([category, data]) => (
             <Grid item xs={12} sm={6} md={4} key={category}>
-              <Paper sx={{ p: 2, background: data.color, borderRadius: '15px' }}>
+              <Paper sx={{ 
+                p: 2, 
+                background: data.color, 
+                borderRadius: '15px',
+                textAlign: 'center'  // إضافة محاذاة النص للمركز
+              }}>
                 <Typography variant="h6" gutterBottom>
                   {category}
                 </Typography>
-                <Grid container spacing={1}>
+                <Grid container spacing={1} sx={{ justifyContent: 'center' }}>  {/* إضافة justifyContent */}
                   {data.subcategories.map((subcat) => (
-                    <Grid item xs={12} key={subcat.id}>
+                    <Grid item xs={12} key={subcat.id} sx={{ display: 'flex', justifyContent: 'center' }}>  {/* إضافة محاذاة للمركز */}
                       <CategoryButton
                         selected={selectedCategories.includes(subcat.id)}
                         onClick={() => handleCategorySelection(subcat.id)}
