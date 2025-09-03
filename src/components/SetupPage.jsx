@@ -1,3 +1,4 @@
+import React from 'react';
 import { 
   Container,
   Box,
@@ -7,28 +8,24 @@ import {
   TextField,
   Button,
   Chip,
-  IconButton,
-  Paper,
-  Tooltip
+  Paper
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { styled } from '@mui/material/styles';
-import { useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   background: 'rgba(255, 255, 255, 0.1)',
   backdropFilter: 'blur(10px)',
   borderRadius: '20px',
-  padding: theme.spacing(5), // increased padding for larger size
-  marginBottom: theme.spacing(5), // increased margin
-  boxShadow: '0 12px 48px rgba(0, 0, 0, 0.3)', // stronger shadow
+  padding: theme.spacing(5),
+  marginBottom: theme.spacing(5),
+  boxShadow: '0 12px 48px rgba(0, 0, 0, 0.3)',
   border: '1px solid rgba(255, 255, 255, 0.1)'
 }));
 
 const CategoryButton = styled(Button)(({ theme, selected }) => ({
   width: '200px',
-  height: '250px', // taller vertical rectangle
+  height: '250px',
   borderRadius: '10px',
   background: selected ? 'rgba(76, 201, 240, 0.3)' : 'rgba(255, 255, 255, 0.15)',
   border: selected ? '2px solid #4cc9f0' : 'none',
@@ -44,39 +41,10 @@ const CategoryButton = styled(Button)(({ theme, selected }) => ({
 }));
 
 const CategoryImage = styled('img')({
-  position: 'absolute',
-  top: 20,
-  left: 0,
   width: '100%',
-  height: '80%',
-  objectFit: 'fill',
-  opacity: 0.4, // slightly transparent
-  filter: 'brightness(0.8)',
-  transition: 'opacity 0.3s ease',
-  zIndex: 1,
-});
-
-const CategoryText = styled(Typography)({
-  position: 'relative',
-  color: 'white',
-  fontSize: '1.8rem',
-  fontWeight: 'bold',
-  textShadow: '0 0 8px rgba(0,0,0,0.7)',
-  userSelect: 'none',
-  zIndex: 2,
-  textAlign: 'center',
-});
-
-const InfoIconButton = styled(IconButton)({
-  position: 'absolute',
-  top: '8px',
-  left: '8px',
-  color: 'white',
-  backgroundColor: 'rgba(0,0,0,0.3)',
-  zIndex: 3,
-  '&:hover': {
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  }
+  height: '100%',
+  objectFit: 'cover',
+  opacity: 0.6
 });
 
 const SetupPage = ({ 
@@ -90,13 +58,6 @@ const SetupPage = ({
   setShowLogin,
   user
 }) => {
-  // State to track which category's description tooltip is open (for click)
-  const [openTooltipId, setOpenTooltipId] = useState(null);
-
-  const handleInfoClick = (id) => {
-    setOpenTooltipId(openTooltipId === id ? null : id);
-  };
-
   return (
     <Container
       maxWidth="xxl"
@@ -109,13 +70,11 @@ const SetupPage = ({
         alignItems: 'center',
         background: 'linear-gradient(135deg, #1a237e, #0d47a1)',
         padding: 0,
-        margin: 0, // زيادة المسافة بين الصفحة الرئيسية والصفحة الفرعية
-        // overflowY: 'auto' // نسمح بالتمرير فقط في الصفحة الرئيسية
+        margin: 0
       }}
     >
-      {/* زر تسجيل الدخول */}
       {!user && (
-        <Box sx={{ position: 'absolute', right: 20, top: 20,  }}>
+        <Box sx={{ position: 'absolute', right: 20, top: 20 }}>
           <Button 
             variant="outlined" 
             onClick={() => setShowLogin(true)}
@@ -139,11 +98,6 @@ const SetupPage = ({
       <Box textAlign="center" mb={6} pt={4}>
         <Typography variant="h2" component="h1" 
           sx={{ 
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingY: 4,
             color: 'gold',
             textShadow: '0 2px 10px rgba(0,0,0,0.5)',
             fontWeight: 800,
@@ -152,35 +106,33 @@ const SetupPage = ({
           تحدي الجمعة
         </Typography>
 
-        {/* شرح اللعبة */}
         <Box sx={{ 
-            
           maxWidth: 600, 
           margin: '0 auto', 
           padding: 2,
           backgroundColor: 'rgba(255,255,255,0.1)',
           borderRadius: 2
         }}>
-          <Typography variant="h5" sx={{color: '#e0e0e0', mb: 1, }}>
+          <Typography variant="h5" sx={{color: '#e0e0e0', mb: 1}}>
             🎮 لعبة تحدي الجمعة هي منافسة ثقافية بين فريقين
           </Typography>
-          <Typography variant="h5" sx={{ color: '#e0e0e0', mb: 1 }}>
+          <Typography variant="h5" sx={{color: '#e0e0e0', mb: 1}}>
             ⏱️ لكل سؤال 60 ثانية للإجابة و30 ثانية للفريق الأخرى
           </Typography>
-          <Typography variant="h5" sx={{ color: '#e0e0e0', mb: 1 }}>
+          <Typography variant="h5" sx={{color: '#e0e0e0', mb: 1}}>
             🎯 اختر 3 فئات مختلفة لكل فريق و 6 المجموع
           </Typography>
-          <Typography variant="h5" sx={{ color: '#e0e0e0'}}>
+          <Typography variant="h5" sx={{color: '#e0e0e0'}}>
             🏆 الفريق الذي يجمع أكبر عدد من النقاط يفوز باللعبة
           </Typography>
         </Box>
       </Box>
 
-      <StyledCard >
+      <StyledCard>
         <Typography variant="h4" gutterBottom sx={{ color: 'gold', textAlign: 'center' }}>
           أسماء الفرق
         </Typography>
-        <Grid container spacing={3} justifyContent="center" alignItems="center">
+        <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <TextField 
               fullWidth
@@ -222,56 +174,37 @@ const SetupPage = ({
           اختر 6 فئات من القائمة أدناه ({selectedCategories.length} / 6)
         </Typography>
         
-        <Grid container spacing={2} justifyContent="center" alignItems="center">
+        <Grid container spacing={2}>
           {Object.entries(basicCategories).map(([category, data]) => (
             <Grid item xs={12} sm={6} md={4} key={category}>
-              <Paper
-                sx={{  
-                  p: 2,
-                  background: data.color,
-                  borderRadius: '15px'
-                }}
-              >
+              <Paper sx={{ p: 2, background: data.color, borderRadius: '15px' }}>
                 <Typography variant="h6" gutterBottom>
                   {category}
                 </Typography>
                 <Grid container spacing={1}>
-                  {data.subcategories.map((subcat) => {
-                    const isSelected = selectedCategories.includes(subcat.id);
-                    return (
-                      <Grid item xs={12} key={subcat.id}>
-                        <CategoryButton
-                          selected={isSelected}
-                          onClick={() => handleCategorySelection(subcat.id)}
+                  {data.subcategories.map((subcat) => (
+                    <Grid item xs={12} key={subcat.id}>
+                      <CategoryButton
+                        selected={selectedCategories.includes(subcat.id)}
+                        onClick={() => handleCategorySelection(subcat.id)}
+                      >
+                        <CategoryImage src={subcat.image} alt={subcat.name} />
+                        <Typography
+                          sx={{
+                            position: 'absolute',
+                            color: 'white',
+                            fontSize: '1.2rem',
+                            fontWeight: 'bold',
+                            textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                            textAlign: 'center',
+                            padding: '0 8px'
+                          }}
                         >
-                          <CategoryImage 
-                            src={subcat.image} 
-                            alt={subcat.name}
-                          />
-                          <CategoryText>{subcat.name}</CategoryText>
-<Tooltip 
-  title={<span style={{ fontSize: '1.2rem' }}>{subcat.description}</span>} 
-  open={openTooltipId === subcat.id} 
-  onClose={() => setOpenTooltipId(null)} 
-  disableFocusListener 
-  disableHoverListener
-  disableTouchListener
-  placement="top"
->
-                            <InfoIconButton 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleInfoClick(subcat.id);
-                              }}
-                              aria-label="info"
-                            >
-                              <ErrorOutlineIcon />
-                            </InfoIconButton>
-                          </Tooltip>
-                        </CategoryButton>
-                      </Grid>
-                    );
-                  })}
+                          {subcat.name}
+                        </Typography>
+                      </CategoryButton>
+                    </Grid>
+                  ))}
                 </Grid>
               </Paper>
             </Grid>
@@ -313,7 +246,10 @@ const SetupPage = ({
         <Button
           variant="contained"
           size="large"
-          onClick={startGame}
+          onClick={() => {
+            console.log('Start button clicked'); // للتأكد من عمل الزر
+            startGame();
+          }}
           disabled={selectedCategories.length !== 6 || !teams.team1 || !teams.team2}
           sx={{
             background: 'linear-gradient(90deg, #FFD700, #ffb300)',

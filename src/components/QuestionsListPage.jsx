@@ -1,4 +1,3 @@
-import { Scale } from 'lucide-react';
 import React from 'react';
 
 const QuestionsListPage = ({
@@ -11,9 +10,22 @@ const QuestionsListPage = ({
   selectQuestion,
   categoryPickerTeam,
 }) => {
-  // استخراج الفئات الفرعية
-  const allSubcategories = Object.values(basicCategories).flatMap(cat => cat.subcategories);
-  
+  // تعديل دالة استخراج الفئات الفرعية
+  const getSubcategories = () => {
+    const allSubcategories = [];
+    Object.entries(basicCategories).forEach(([_, category]) => {
+      if (category.subcategories) {
+        category.subcategories.forEach(sub => {
+          allSubcategories.push(sub);
+        });
+      }
+    });
+    return allSubcategories;
+  };
+
+  const allSubcategories = getSubcategories();
+  const pointValues = [300, 400, 500, 600, 700, 800];
+
   // الأنماط المشتركة
   const styles = {
     container: {
@@ -173,8 +185,6 @@ const QuestionsListPage = ({
     }
   };
 
-  const pointValues = [300, 400, 500, 600, 700, 800];
-
   return (
     <div style={styles.container}>
       <div style={styles.mainContent}>
@@ -201,9 +211,12 @@ const QuestionsListPage = ({
 
           {/* مؤشر الدور */}
           <div style={styles.turnIndicator}>
-            <span>{teams[categoryPickerTeam]} يختار الفئة</span>
-            <span style={{ fontSize: '24px' }}>
-              {categoryPickerTeam === 'team1' ? '⟵' : '⟶'}
+            <span style={{ fontSize: '35px' }}>
+              {categoryPickerTeam === 'team1' ? '⟵' : ''}
+            </span>
+            <span>{teams[categoryPickerTeam]} يختار الفئة </span>
+            <span style={{ fontSize: '35px' }}>
+              {categoryPickerTeam === 'team1' ? '' : '⟶'}
             </span>
           </div>
 
@@ -233,21 +246,29 @@ const QuestionsListPage = ({
           <div style={styles.categoryHeader}>
             {selectedCategories.map(categoryId => {
               const category = allSubcategories.find(sub => sub.id === categoryId);
+              if (!category) return null;
+              
+              const parentCategory = Object.values(basicCategories).find(
+                cat => cat.subcategories?.some(sub => sub.id === categoryId)
+              );
+              
               return (
                 <div 
                   key={categoryId} 
                   style={{
                     ...styles.categoryItem,
-                    background: basicCategories[categoryId]?.color || 'rgba(255,255,255,0.1)'
+                    background: parentCategory?.color || 'rgba(255,255,255,0.1)'
                   }}
                 >
-                  <img 
-                    src={category?.image} 
-                    alt={category?.name}
-                    style={styles.categoryImage}
-                  />
+                  {category.image && (
+                    <img 
+                      src={category.image} 
+                      alt={category.name}
+                      style={styles.categoryImage}
+                    />
+                  )}
                   <h3 style={styles.categoryTitle}>
-                    {category?.name || ''}
+                    {category.name}
                   </h3>
                 </div>
               );
@@ -262,8 +283,21 @@ const QuestionsListPage = ({
                 return (
                   <div
                     key={`${categoryId}-${points}`}
-                    onClick={() => !isAnswered && selectQuestion(categoryId, points)}
-                    style={styles.pointsCell(isAnswered)}
+                    onClick={() => {
+                      if (!isAnswered) {
+                        console.log('Clicking cell:', { categoryId, points });
+                        selectQuestion(categoryId, points);
+                      }
+                    }}
+                    style={{
+                      ...styles.pointsCell(isAnswered),
+                      cursor: isAnswered ? 'default' : 'pointer',
+                      // إضافة تأثير عند التحويم
+                      '&:hover': !isAnswered && {
+                        background: 'rgba(255,255,255,0.3)',
+                        transform: 'scale(1.05)'
+                      }
+                    }}
                   >
                     {isAnswered ? '' : points}
                   </div>

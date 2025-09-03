@@ -39,14 +39,38 @@ const QuestionPage = ({
         alignItems: 'center',
         zIndex: 10
       }}>
-        <button 
+       
+
+        
+      </div>
+
+      {/* Main Question Card */}
+      <div style={{
+        background: 'rgba(0, 0, 0, 0.3)',
+        borderRadius: '30px',
+        padding: '260px 10px',
+        width: '1500px',
+        textAlign: 'center',
+        backdropFilter: 'blur(20px)',
+        border: '2px solid rgba(255, 255, 255, 0.1)',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        
+         <button 
           onClick={() => setGameState('game')}
           style={{
+            position: 'relative',
+            zIndex: 1,
+            top: '-250px',
+            left: '-650px',
             background: 'rgba(255, 255, 255, 0.2)',
             border: 'none',
             borderRadius: '50px',
             color: 'white',
             padding: '12px 24px',
+            right: '20px',
             fontSize: '1.2rem',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
@@ -61,8 +85,10 @@ const QuestionPage = ({
         {/* Timer Circle */}
         <div style={{
           position: 'relative',
-          width: '100px',
-          height: '100px',
+          width: '150px',
+          height: '150px',
+          top: '-300px',
+          right: '-1325px',
           borderRadius: '50%',
           background: 'rgba(255, 255, 255, 0.1)',
           border: '4px solid rgba(255, 255, 255, 0.3)',
@@ -75,8 +101,8 @@ const QuestionPage = ({
             position: 'absolute',
             top: '-4px',
             left: '-4px',
-            width: '100px',
-            height: '100px',
+            width: '150px',
+            height: '150px',
             borderRadius: '50%',
             border: '4px solid transparent',
             borderTop: timer > 10 ? '4px solid #4CAF50' : '4px solid #f44336',
@@ -84,7 +110,7 @@ const QuestionPage = ({
             transition: 'transform 1s linear'
           }} />
           <span style={{
-            fontSize: '2rem',
+            fontSize: timer > 10 ? '3.5rem' : '5.5rem', // حذفنا السطر المكرر
             fontWeight: 'bold',
             color: timer > 10 ? '#4CAF50' : '#f44336',
             zIndex: 1
@@ -92,23 +118,7 @@ const QuestionPage = ({
             {timer}
           </span>
         </div>
-      </div>
 
-      {/* Main Question Card */}
-      <div style={{
-        background: 'rgba(0, 0, 0, 0.3)',
-        borderRadius: '30px',
-        padding: '260px 10px',
-        // maxWidth: '900px',
-        width: '1500px',
-        textAlign: 'center',
-        backdropFilter: 'blur(20px)',
-        border: '2px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        
         {/* Decorative elements */}
         <div style={{
           position: 'absolute',
@@ -135,7 +145,7 @@ const QuestionPage = ({
         <div style={{
           position: 'absolute',
           top: '20px',
-          right: '30px',
+          right: '700px',
           background: 'linear-gradient(45deg, #FFD700, #FFA500)',
           color: '#1a237e',
           padding: '8px 20px',
@@ -149,6 +159,9 @@ const QuestionPage = ({
 
         {/* Team indicator */}
         <div style={{
+          position: 'absolute',
+          top: '80px',
+          right: '700px',
           marginBottom: '10px',
           padding: '15px 30px',
           background: 'rgba(255, 255, 255, 0.1)',
@@ -166,49 +179,69 @@ const QuestionPage = ({
           </h2>
         </div>
 
-        {/* Question text */}
+        {/* Question text with image/video */}
         <div style={{
-          fontSize: '3rem',
-          fontWeight: 'bold',
-          color: 'white',
-          lineHeight: '1.3',
-          margin: '40px 0',
-          textShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
-          wordBreak: 'break-word'
+          position: 'relative',
+          top: '-300px',
+          // right: '700px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '20px'
         }}>
-          {currentQuestion.question}
+          <div style={{
+            fontSize: '3rem',
+            fontWeight: 'bold',
+            color: 'white',
+            lineHeight: '1.3',
+            textShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
+            wordBreak: 'break-word'
+          }}>
+            {currentQuestion.question}
+          </div>
+
+          {/* Image if exists */}
+          {currentQuestion.image && (
+            <img 
+              src={currentQuestion.image} 
+              alt="صورة السؤال"
+              style={{
+                maxWidth: '800px',
+                maxHeight: '400px',
+                objectFit: 'contain',
+                borderRadius: '15px',
+                boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)'
+              }}
+            />
+          )}
+
+          {/* Video if exists */}
+          {currentQuestion.video && (
+            <video 
+              controls
+              preload="metadata"
+              playsInline
+              controlsList="nodownload"
+              style={{
+                width: '50%', // تعديل العرض
+                maxWidth: '1000px', // تقليل العرض الأقصى
+                height: 'auto',
+                aspectRatio: '16/9',
+                objectFit: 'contain',
+                borderRadius: '15px',
+                boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)',
+                backgroundColor: '#000',
+                margin: '20px auto', // إضافة هوامش
+                display: 'block' // تحسين المحاذاة
+              }}
+            >
+              <source 
+                src={currentQuestion.video} 
+                type="video/mp4"
+              />
+            </video>
+          )}
         </div>
-
-        {/* Image/Video if exists */}
-        {currentQuestion.image && (
-          <img 
-            src={currentQuestion.image} 
-            alt="" 
-            style={{ 
-              maxWidth: '100%', 
-              maxHeight: '300px',
-              borderRadius: '20px', 
-              margin: '30px auto',
-              display: 'block',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)'
-            }} 
-          />
-        )}
-
-        {currentQuestion.video && (
-          <video 
-            src={currentQuestion.video} 
-            controls 
-            style={{ 
-              maxWidth: '100%', 
-              maxHeight: '300px',
-              borderRadius: '20px', 
-              margin: '30px auto',
-              display: 'block',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)'
-            }} 
-          />
-        )}
       </div>
 
       {/* Control buttons */}

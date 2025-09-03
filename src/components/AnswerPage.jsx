@@ -4,6 +4,7 @@ const AnswerPage = ({
   currentQuestion,
   teams,
   answerQuestion,
+  setShowAnswer,
 }) => {
 
   return (
@@ -21,24 +22,64 @@ const AnswerPage = ({
       overflow: 'hidden'
     }}>
       
-      {/* Header with checkmark icon */}
+      
+
+      {/* Main Answer Card */}
+      <div style={{
+        background: 'rgba(0, 0, 0, 0.3)',
+        borderRadius: '30px',
+        padding: '260px 10px',
+        width: '1500px',
+        textAlign: 'center',
+        backdropFilter: 'blur(20px)',
+        border: '2px solid rgba(255, 255, 255, 0.1)',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        
+         {/* Header with checkmark icon */}
       <div style={{
         position: 'absolute',
-        top: '20px',
-        left: '20px',
+        top: '90px',
+        left: '-100px',
         right: '20px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         zIndex: 10
       }}>
-        <div></div> {/* Empty div for spacing */}
+        <button 
+          onClick={() => setShowAnswer(false)}
+          style={{
+          position: 'relative',
+          zIndex: 1,
+          top: '-80px',
+          left: '120px', 
+          background: 'rgba(255, 255, 255, 0.2)',
+          border: 'none',
+          // left: '400px',
+          borderRadius: '50px',
+          color: 'white',
+          padding: '12px 24px',
+          fontSize: '1.2rem',
+          cursor: 'pointer',
+          transition: 'all 0.3s ease',
+          backdropFilter: 'blur(10px)'
+          }}
+          onMouseOver={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
+          onMouseOut={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
+        >
+          ← العودة للسؤال
+        </button>
 
         {/* Answer indicator circle */}
-        <div style={{
+        {/* <div style={{
           position: 'relative',
-          width: '100px',
-          height: '100px',
+          width: '150px',
+          height: '150px',
+          top: '-80px',
+          right: '0px',
           borderRadius: '50%',
           background: 'rgba(76, 175, 80, 0.2)',
           border: '4px solid #4CAF50',
@@ -55,23 +96,10 @@ const AnswerPage = ({
           }}>
             ✓
           </span>
-        </div>
+        </div> */}
       </div>
 
-      {/* Main Answer Card */}
-      <div style={{
-        background: 'rgba(0, 0, 0, 0.3)',
-        borderRadius: '30px',
-        padding: '260px 10px',
-        width: '1500px',
-        textAlign: 'center',
-        backdropFilter: 'blur(20px)',
-        border: '2px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        
+
         {/* Decorative elements */}
         <div style={{
           position: 'absolute',
@@ -98,7 +126,7 @@ const AnswerPage = ({
         <div style={{
           position: 'absolute',
           top: '20px',
-          right: '30px',
+          right: '700px',
           background: 'linear-gradient(45deg, #4CAF50, #45a049)',
           color: 'white',
           padding: '8px 20px',
@@ -110,8 +138,11 @@ const AnswerPage = ({
           {currentQuestion.points} نقطة
         </div>
 
-        {/* Answer header */}
+        {/* Answer header
         <div style={{
+          position: 'absolute',
+          top: '80px',
+          right: '640px',
           marginBottom: '40px',
           padding: '15px 30px',
           background: 'rgba(76, 175, 80, 0.2)',
@@ -128,62 +159,75 @@ const AnswerPage = ({
           }}>
             الإجابة الصحيحة
           </h2>
-        </div>
+        </div> */}
 
-        {/* Answer text */}
+        {/* Answer text with media */}
         <div style={{
-          fontSize: '3rem',
-          fontWeight: 'bold',
-          color: 'white',
-          lineHeight: '1.3',
-          margin: '40px 0',
-          textShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
-          wordBreak: 'break-word',
-          padding: '20px',
-          background: 'rgba(76, 175, 80, 0.1)',
-          borderRadius: '20px',
-          border: '2px solid rgba(76, 175, 80, 0.2)'
+          position: 'relative',
+          top: '-150px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '10px'
         }}>
-          {currentQuestion.answer}
+          <div style={{
+            fontSize: '3rem',
+            fontWeight: 'bold',
+            color: 'white',
+            lineHeight: '1.3',
+            textShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
+            wordBreak: 'break-word',
+            padding: '10px',
+            background: 'rgba(76, 175, 80, 0.1)',
+            borderRadius: '20px',
+            border: '2px solid rgba(76, 175, 80, 0.2)',
+            width: '100%',
+            textAlign: 'center'
+          }}>
+             الإجابة الصحيحة :  {currentQuestion.answer}
+          </div>
+
+          {/* Answer Image if exists */}
+          {currentQuestion.answerImage && (
+            <img 
+              src={currentQuestion.answerImage} 
+              alt="صورة الإجابة" 
+              style={{ 
+                maxWidth: '800px',
+                maxHeight: '400px',
+                objectFit: 'contain',
+                borderRadius: '20px',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                border: '3px solid rgba(76, 175, 80, 0.3)'
+              }} 
+            />
+          )}
+
+          {/* Answer Video if exists */}
+          {currentQuestion.answerVideo && (
+            <video 
+              controls
+              autoPlay
+              style={{ 
+                maxWidth: '800px',
+                maxHeight: '400px',
+                borderRadius: '20px',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                border: '3px solid rgba(76, 175, 80, 0.3)'
+              }} 
+            >
+              <source src={currentQuestion.answerVideo} type="video/mp4" />
+              المتصفح لا يدعم تشغيل الفيديو
+            </video>
+          )}
         </div>
-
-        {/* Answer Image/Video if exists */}
-        {currentQuestion.answerImage && (
-          <img 
-            src={currentQuestion.answerImage} 
-            alt="" 
-            style={{ 
-              maxWidth: '100%', 
-              maxHeight: '300px',
-              borderRadius: '20px', 
-              margin: '30px auto',
-              display: 'block',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-              border: '3px solid rgba(76, 175, 80, 0.3)'
-            }} 
-          />
-        )}
-
-        {currentQuestion.answerVideo && (
-          <video 
-            src={currentQuestion.answerVideo} 
-            controls 
-            style={{ 
-              maxWidth: '100%', 
-              maxHeight: '300px',
-              borderRadius: '20px', 
-              margin: '30px auto',
-              display: 'block',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-              border: '3px solid rgba(76, 175, 80, 0.3)'
-            }} 
-          />
-        )}
 
         {/* Original question reminder (smaller) */}
         <div style={{
-          marginTop: '40px',
-          padding: '15px',
+          position: 'relative',
+          top: '-140px',
+          marginTop: '5px',
+          padding: '5px',
           background: 'rgba(255, 255, 255, 0.05)',
           borderRadius: '15px',
           border: '1px solid rgba(255, 255, 255, 0.1)'
@@ -235,7 +279,35 @@ const AnswerPage = ({
             e.target.style.boxShadow = '0 8px 25px rgba(76, 175, 80, 0.4)';
           }}
         >
-          ✓ {teams.team1} أجاب صحيح
+            ✓ أجاب فريق {teams.team1}        
+          </button>
+
+          <button
+          onClick={() => answerQuestion(false)}
+          style={{
+            background: 'linear-gradient(45deg, #607D8B, #455A64)',
+            border: 'none',
+            borderRadius: '50px',
+            color: 'white',
+            padding: '18px 35px',
+            fontSize: '1.3rem',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 8px 25px rgba(96, 125, 139, 0.4)',
+            backdropFilter: 'blur(10px)',
+            minWidth: '200px'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.transform = 'translateY(-3px)';
+            e.target.style.boxShadow = '0 12px 35px rgba(96, 125, 139, 0.5)';
+          }}
+          onMouseOut={(e) => {
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 8px 25px rgba(96, 125, 139, 0.4)';
+          }}
+        >
+          ✗ لا أحد أجاب
         </button>
 
         <button
@@ -263,36 +335,10 @@ const AnswerPage = ({
             e.target.style.boxShadow = '0 8px 25px rgba(156, 39, 176, 0.4)';
           }}
         >
-          ✓ {teams.team2} أجاب صحيح
+          ✓ أجاب فريق {teams.team2} 
         </button>
 
-        <button
-          onClick={() => answerQuestion(false)}
-          style={{
-            background: 'linear-gradient(45deg, #607D8B, #455A64)',
-            border: 'none',
-            borderRadius: '50px',
-            color: 'white',
-            padding: '18px 35px',
-            fontSize: '1.3rem',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: '0 8px 25px rgba(96, 125, 139, 0.4)',
-            backdropFilter: 'blur(10px)',
-            minWidth: '200px'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.transform = 'translateY(-3px)';
-            e.target.style.boxShadow = '0 12px 35px rgba(96, 125, 139, 0.5)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = '0 8px 25px rgba(96, 125, 139, 0.4)';
-          }}
-        >
-          ✗ لا أحد أجاب صحيح
-        </button>
+        
       </div>
 
       {/* CSS Animation */}
