@@ -8,9 +8,9 @@ import Login from './components/Login';
 import { basicCategories } from './data/categories';
 import { questions } from './data/questions';
 
-
 const FridayChallenge = () => {
   const [gameState, setGameState] = useState('setup');
+  const [fadeOut, setFadeOut] = useState(false);
   const [teams, setTeams] = useState({ team1: '', team2: '' });
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [scores, setScores] = useState({ team1: 0, team2: 0 });
@@ -22,12 +22,26 @@ const FridayChallenge = () => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [error, setError] = useState('');
   const [categoryPickerTeam, setCategoryPickerTeam] = useState(Math.random() < 0.5 ? 'team1' : 'team2');
-  const [user, setUser] = useState(null); // لا يوجد مستخدم افتراضي
-  const [showLogout, setShowLogout] = useState(false);
-  const [showLogin, setShowLogin] = useState(false); // تحكم في ظهور صفحة الدخول
-  const [loginName, setLoginName] = useState('');
-  const [loginPass, setLoginPass] = useState('');
+  const [user, setUser] = useState(null);
+  const [showLogin, setShowLogin] = useState(false);
+
   const timerRef = useRef(null);
+
+  // فحص localStorage عند تشغيل التطبيق
+  useEffect(() => {
+    const savedToken = localStorage.getItem('token');
+    const savedUser = localStorage.getItem('user');
+    
+    if (savedToken && savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+        console.log('✅ User restored from localStorage');
+      } catch (error) {
+        console.error('❌ Error parsing saved user:', error);
+        localStorage.clear();
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (timer > 0 && !isTimerPaused && gameState === 'question') {
@@ -37,6 +51,7 @@ const FridayChallenge = () => {
     } else if (timer === 0 && gameState === 'question') {
       handleTimerEnd();
     }
+
     return () => clearTimeout(timerRef.current);
   }, [timer, gameState, isTimerPaused]);
 
@@ -45,8 +60,9 @@ const FridayChallenge = () => {
       setActiveTeam(categoryPickerTeam === 'team1' ? 'team2' : 'team1');
       setTimer(30);
     } else {
+      // انتقل لصفحة الإجابة تلقائياً
+      setGameState('answer');
       setShowAnswer(true);
-      // احذف أي انتقال تلقائي هنا
     }
   };
 
@@ -71,42 +87,51 @@ const FridayChallenge = () => {
   };
 
   const startGame = () => {
+    // التحقق من تسجيل الدخول أولاً
+    if (!user) {
+      alert('يجب أن تقوم بتسجيل الدخول قبل بدء اللعب!');
+      setShowLogin(true);
+      return;
+    }
+
     if (!teams.team1 || !teams.team2) {
       setError('يرجى إدخال أسماء الفريقين');
       return;
     }
+
     if (selectedCategories.length !== 6) {
       setError('يجب اختيار 6 فئات فقط');
       return;
     }
+
     setError('');
     setGameState('game');
   };
 
   const selectQuestion = (category, points) => {
-    console.log('Selecting question:', { category, points }); // إضافة للتتبع
-    const questionId = `${category}-${points}`;
-    
-    if (!answeredQuestions.has(questionId)) {
-      // البحث عن السؤال في ملف الأسئلة
-      const question = questions[category]?.packages[0]?.find(q => q.points === points);
-      
-      if (question) {
-        setCurrentQuestion({
-          ...question,
-          category,
-          id: questionId
-        });
-        setGameState('question');
-        setTimer(60);
-        setIsTimerPaused(false);
-        setShowAnswer(false);
-        setActiveTeam(categoryPickerTeam);
+    console.log('Selecting question:', { category, points });
+    setFadeOut(true);
+    setTimeout(() => {
+      const questionId = `${category}-${points}`;
+      if (!answeredQuestions.has(questionId)) {
+        const question = questions[category]?.packages[0]?.find(q => q.points === points);
+        if (question) {
+          setCurrentQuestion({
+            ...question,
+            category,
+            id: questionId
+          });
+          setGameState('question');
+          setTimer(60);
+          setIsTimerPaused(false);
+          setShowAnswer(false);
+          setActiveTeam(categoryPickerTeam);
+          setFadeOut(false);
+        }
       }
-    }
+    }, 300);
   };
 
-  // تصحيح العودة للأسئلة بعد الإجابة أو انتهاء الوقت
   const answerQuestion = (correct, team = null) => {
     if (correct && team) {
       setScores(prev => ({
@@ -114,20 +139,21 @@ const FridayChallenge = () => {
         [team]: prev[team] + currentQuestion.points
       }));
     }
-    setAnsweredQuestions(prev => new Set([...prev, currentQuestion.id]));
-    setCurrentQuestion(null);
-    setShowAnswer(false);
-    setCategoryPickerTeam(prev => prev === 'team1' ? 'team2' : 'team1');
 
-    // بعد تحديد النتيجة، ارجع مباشرة لصفحة الأسئلة
+    setAnsweredQuestions(prev => new Set([...prev, currentQuestion.id]));
+    setFadeOut(true);
     setTimeout(() => {
-      // إذا انتهت كل الأسئلة انتقل للنتائج، غير ذلك ارجع لقائمة الأسئلة
+      setCurrentQuestion(null);
+      setShowAnswer(false);
+      setCategoryPickerTeam(prev => prev === 'team1' ? 'team2' : 'team1');
+      
       if (answeredQuestions.size + 1 >= selectedCategories.length * 6) {
         setGameState('results');
       } else {
         setGameState('game');
       }
-    }, 400); // تأخير بسيط ليظهر زر النتيجة للمستخدم
+      setFadeOut(false);
+    }, 400);
   };
 
   const resetGame = () => {
@@ -154,26 +180,40 @@ const FridayChallenge = () => {
     setTimer(activeTeam === categoryPickerTeam ? 60 : 30);
   };
 
-  // صفحة تسجيل الدخول (تظهر فقط عند الضغط على زر تسجيل الدخول)
+  // دالة تسجيل الدخول
+  const handleLogin = (userData) => {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('token', userData.token || 'dummy-token');
+    setShowLogin(false);
+    setError('');
+    console.log('✅ User logged in:', userData);
+  };
+
+  // دالة التسجيل
+  const handleRegister = (userData) => {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('token', userData.token || 'dummy-token');
+    setShowLogin(false);
+    setError('');
+    console.log('✅ User registered:', userData);
+  };
+
+  // دالة تسجيل الخروج
+  const handleLogout = () => {
+    localStorage.clear();
+    setUser(null);
+    setError('');
+    setShowLogin(false);
+    resetGame();
+    console.log('✅ User logged out successfully');
+  };
+
+  // إذا طُلبت صفحة تسجيل الدخول، اعرضها
   if (showLogin) {
-    const handleLogin = ({ nameOrEmail, password }) => {
-      if (nameOrEmail && password) {
-        setUser({ id: Date.now(), name: nameOrEmail });
-        setShowLogin(false);
-        setError('');
-      } else {
-        setError('يرجى إدخال جميع البيانات');
-      }
-    };
-
-    const handleRegister = ({ name, email, password }) => {
-      setUser({ id: Date.now(), name });
-      setShowLogin(false);
-      setError('');
-    };
-
     return (
-      <Login
+      <Login 
         onLogin={handleLogin}
         onRegister={handleRegister}
         error={error}
@@ -182,42 +222,60 @@ const FridayChallenge = () => {
     );
   }
 
-  // الصفحة الرئيسية (الإعداد)
-  if (gameState === 'setup') {
-    return (
-      <>
-        <UserMenu user={user} setUser={setUser} setShowLogin={setShowLogin} showLogout={showLogout} setShowLogout={setShowLogout} />
+  // اعرض اللعبة (بغض النظر عن تسجيل الدخول)
+  return (
+    <div className="app" style={{
+      animation: fadeOut ? 'fadeOut 0.3s ease-out forwards' : 'fadeIn 0.4s ease-in',
+      opacity: 1
+    }}>
+      <style>{`
+        @keyframes fadeOut {
+          from {
+            opacity: 1;
+          }
+          to {
+            opacity: 0;
+          }
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
+      {/* زر تسجيل الخروج (يظهر فقط إذا كان المستخدم مسجل دخول)
+      {user && (
+        <div className="simple-user-bar">
+          <span className="user-greeting">مرحباً، {user.name}</span>
+          <button 
+            onClick={handleLogout}
+            className="simple-logout-button"
+          >
+            تسجيل الخروج
+          </button>
+        </div>
+      )} */}
+
+      {gameState === 'setup' && (
         <SetupPage
           teams={teams}
+          onTeamNameChange={handleTeamNameChange}
           selectedCategories={selectedCategories}
+          onCategorySelection={handleCategorySelection}
+          removeCategorySelection={removeCategorySelection}
           basicCategories={basicCategories}
-          handleTeamNameChange={handleTeamNameChange}
-          handleCategorySelection={handleCategorySelection}
-          startGame={startGame}
+          onStartGame={startGame}
           error={error}
-          setShowLogin={setShowLogin}
           user={user}
+          setShowLogin={() => setShowLogin(true)}
         />
-        {/* <Footer /> */}
-      </>
-    );
-  }
+      )}
 
-  // صفحة الأسئلة
-  if (gameState === 'game') {
-    return (
-      <div style={{
-        width: '100vw',
-        height: '100vh',
-        margin: 0,
-        padding: 0,
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        background: 'linear-gradient(135deg, #1a1e5b, #862d2d)'
-      }}>
+      {gameState === 'game' && (
         <QuestionsListPage
           teams={teams}
           scores={scores}
@@ -229,102 +287,61 @@ const FridayChallenge = () => {
           categoryPickerTeam={categoryPickerTeam}
           setCategoryPickerTeam={setCategoryPickerTeam}
         />
-      </div>
-    );
-  }
+      )}
 
-  // صفحة عرض السؤال
-  if (gameState === 'question' && currentQuestion && !showAnswer) {
-    return (
-      <QuestionPage
-        currentQuestion={currentQuestion}
-        timer={timer}
-        isTimerPaused={isTimerPaused}
-        togglePauseTimer={togglePauseTimer}
-        resetTimer={resetTimer}
-        skipTime={skipTime}
-        setGameState={setGameState}
-        activeTeam={activeTeam}
-        teams={teams}
-        showAnswer={showAnswer}
-        setShowAnswer={setShowAnswer}
-        
-      />
-    );
-  }
+      {gameState === 'question' && currentQuestion && (
+        <QuestionPage
+          currentQuestion={currentQuestion}
+          teams={teams}
+          timer={timer}
+          isTimerPaused={isTimerPaused}
+          activeTeam={activeTeam}
+          skipTime={skipTime}
+          togglePauseTimer={togglePauseTimer}
+          resetTimer={resetTimer}
+          setGameState={setGameState}
+          setShowAnswer={setShowAnswer}
+        />
+      )}
 
-  // صفحة عرض الإجابة
-  if (showAnswer) {
-    return (
-      <AnswerPage
-        currentQuestion={currentQuestion}
-        teams={teams}
-        activeTeam={activeTeam}
-        answerQuestion={answerQuestion}
-        setShowAnswer={setShowAnswer}  // تأكد من تمرير هذا
-        setGameState={setGameState}    // وهذا أيضاً
-      />
-    );
-  }
+      {gameState === 'answer' && currentQuestion && (
+        <AnswerPage
+          currentQuestion={currentQuestion}
+          teams={teams}
+          scores={scores}
+          answerQuestion={answerQuestion}
+          setShowAnswer={setShowAnswer}
+          setGameState={setGameState}
+          resetTimer={resetTimer}
+        />
+      )}
 
-  // صفحة النتائج
-  if (gameState === 'results') {
-    return (
-      <ResultsPage
-        teams={teams}
-        scores={scores}
-        resetGame={resetGame}
-      />
-    );
-  }
-};
-
-// كومبوننت القائمة العلوية للمستخدم
-const UserMenu = ({ user, setUser, setShowLogin, showLogout, setShowLogout }) => {
-  if (!user) return null;
-  
-  return (
-    <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 10000 }}>
-      <div style={{ position: 'relative', display: 'inline-block' }}>
-        <span
-          onClick={() => setShowLogout(!showLogout)}
-          style={{
-            color: 'white',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            padding: '8px 16px',
-            userSelect: 'none',
-          }}
-        >
-          {user.name || user.email}
-        </span>
-        {showLogout && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '100%',
-              right: 0,
-              backgroundColor: '#333',
-              padding: '10px',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              zIndex: 1000,
-            }}
-            onClick={() => {
-              setUser(null);
-              setShowLogout(false);
-              setShowLogin(false);
-            }}
-          >
-            تسجيل الخروج
+      {gameState === 'results' && (
+        <div className="results-page">
+          <h1>النتائج النهائية</h1>
+          <div className="final-scores">
+            <div className="team-result">
+              <h2>{teams.team1}</h2>
+              <p>{scores.team1} نقطة</p>
+            </div>
+            <div className="team-result">
+              <h2>{teams.team2}</h2>
+              <p>{scores.team2} نقطة</p>
+            </div>
           </div>
-        )}
-      </div>
+          <div className="winner">
+            <h3>
+              الفائز: {scores.team1 > scores.team2 ? teams.team1 : 
+                      scores.team2 > scores.team1 ? teams.team2 : 'تعادل!'}
+            </h3>
+          </div>
+          <button onClick={resetGame} className="reset-button">
+            لعبة جديدة
+          </button>
+        </div>
+      )}
     </div>
   );
 };
-
-// كومبوننت الفوتر
-
 
 export default FridayChallenge;

@@ -1,11 +1,136 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const AnswerPage = ({
   currentQuestion,
   teams,
+  scores,
   answerQuestion,
   setShowAnswer,
+  setGameState,
+  resetTimer,
 }) => {
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  // دالة لإضافة انميشن عند تغيير النقاط
+  const animateScoreChange = (element) => {
+    if (!element) return;
+    element.style.transition = 'none';
+    element.style.transform = 'scale(1)';
+    
+    // Force reflow لإعادة تشغيل الانميشن
+    void element.offsetWidth;
+    
+    element.style.transition = 'transform 0.3s ease-out';
+    element.style.transform = 'scale(1.2)';
+    
+    setTimeout(() => {
+      element.style.transform = 'scale(1)';
+    }, 150);
+  };
+
+  // دالة لإضافة ripple effect عند الضغط
+  const createRipple = (e) => {
+    const button = e.currentTarget;
+    const ripple = document.createElement('span');
+    
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+    
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    ripple.style.position = 'absolute';
+    ripple.style.borderRadius = '50%';
+    ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+    ripple.style.pointerEvents = 'none';
+    ripple.style.transform = 'scale(0)';
+    ripple.style.zIndex = '1';
+    
+    button.style.position = 'relative';
+    button.style.overflow = 'hidden';
+    button.appendChild(ripple);
+    
+    // Animate ripple
+    setTimeout(() => {
+      ripple.style.animation = 'ripple 0.6s ease-out forwards';
+    }, 0);
+    
+    setTimeout(() => ripple.remove(), 600);
+  };
+
+  // دالة لمعالجة اختيار الفريق
+  const handleTeamSelect = (team) => {
+    setSelectedTeam(team);
+    setShowConfirm(true);
+    
+    // تأخير 800ms ثم الانتقال
+    setTimeout(() => {
+      answerQuestion(true, team);
+      setSelectedTeam(null);
+      setShowConfirm(false);
+    }, 800);
+  };
+
+  // دالة للحصول على عنصر النقاط
+  const updatePointsDisplay = (newValue) => {
+    const pointsElement = document.querySelector('[data-points-display="true"]');
+    if (pointsElement) {
+      pointsElement.textContent = newValue + ' نقطة';
+    }
+  };
+
+  const handleTeam1Hover = () => {
+    const team1ScoreSpan = document.querySelector('[data-team1-score="true"]');
+    if (team1ScoreSpan) {
+      team1ScoreSpan.textContent = scores.team1 + currentQuestion.points;
+      animateScoreChange(team1ScoreSpan);
+    }
+  };
+
+  const handleTeam1Leave = () => {
+    const team1ScoreSpan = document.querySelector('[data-team1-score="true"]');
+    if (team1ScoreSpan) {
+      team1ScoreSpan.textContent = scores.team1;
+      animateScoreChange(team1ScoreSpan);
+    }
+  };
+
+  const handleTeam2Hover = () => {
+    const team2ScoreSpan = document.querySelector('[data-team2-score="true"]');
+    if (team2ScoreSpan) {
+      team2ScoreSpan.textContent = scores.team2 + currentQuestion.points;
+      animateScoreChange(team2ScoreSpan);
+    }
+  };
+
+  const handleTeam2Leave = () => {
+    const team2ScoreSpan = document.querySelector('[data-team2-score="true"]');
+    if (team2ScoreSpan) {
+      team2ScoreSpan.textContent = scores.team2;
+      animateScoreChange(team2ScoreSpan);
+    }
+  };
+  
+  // معالجة حالة عدم وجود سؤال
+  if (!currentQuestion) {
+    return (
+      <div style={{
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: 'linear-gradient(135deg, #1a237e, #0d47a1)',
+        color: 'white',
+        fontSize: '2rem'
+      }}>
+        جاري تحميل الإجابة...
+      </div>
+    );
+  }
 
   return (
     <div style={{
@@ -27,164 +152,238 @@ const AnswerPage = ({
       {/* Main Answer Card */}
       <div style={{
         background: 'rgba(0, 0, 0, 0.3)',
-        borderRadius: '30px',
-        padding: '260px 10px',
-        width: '1500px',
+        borderRadius: '0px',
+        padding: '20px',
+        width: '100vw',
+        height: '100vh',
         textAlign: 'center',
         backdropFilter: 'blur(20px)',
-        border: '2px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
-        position: 'relative',
-        overflow: 'hidden'
+        border: 'none',
+        boxShadow: 'none',
+        position: 'fixed',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        top: 0,
+        left: 0
       }}>
         
-         {/* Header with checkmark icon */}
-      <div style={{
-        position: 'absolute',
-        top: '90px',
-        left: '-100px',
-        right: '20px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        zIndex: 10
-      }}>
+        {/* Back Button - Left Corner */}
         <button 
-          onClick={() => setShowAnswer(false)}
-          style={{
-          position: 'relative',
-          zIndex: 1,
-          top: '-80px',
-          left: '120px', 
-          background: 'rgba(255, 255, 255, 0.2)',
-          border: 'none',
-          // left: '400px',
-          borderRadius: '50px',
-          color: 'white',
-          padding: '12px 24px',
-          fontSize: '1.2rem',
-          cursor: 'pointer',
-          transition: 'all 0.3s ease',
-          backdropFilter: 'blur(10px)'
+          onClick={() => {
+            resetTimer();
+            setShowAnswer(false);
+            setGameState('question');
           }}
-          onMouseOver={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
-          onMouseOut={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
+          style={{
+            position: 'fixed',
+            top: '15px',
+            left: '15px',
+            zIndex: 100,
+            background: 'rgba(255, 255, 255, 0.2)',
+            border: 'none',
+            borderRadius: '50px',
+            color: 'white',
+            padding: '12px 24px',
+            fontSize: '1.2rem',
+            cursor: 'pointer',
+            transition: 'background 0.3s ease',
+            backdropFilter: 'blur(10px)',
+            whiteSpace: 'nowrap'
+          }}
+          onMouseOver={(e) => e.target.style.opacity = '0.8'}
+          onMouseOut={(e) => e.target.style.opacity = '1'}
         >
           ← العودة للسؤال
         </button>
 
-        {/* Answer indicator circle */}
-        {/* <div style={{
-          position: 'relative',
-          width: '150px',
-          height: '150px',
-          top: '-80px',
-          right: '0px',
-          borderRadius: '50%',
-          background: 'rgba(76, 175, 80, 0.2)',
-          border: '4px solid #4CAF50',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backdropFilter: 'blur(10px)',
-          animation: 'pulse 2s infinite'
-        }}>
-          <span style={{
-            fontSize: '3rem',
-            color: '#4CAF50',
-            zIndex: 1
-          }}>
-            ✓
-          </span>
-        </div> */}
-      </div>
+        {/* Team 1 Button - 30% */}
+        <button
+          onClick={(e) => {
+            createRipple(e);
+            handleTeamSelect('team1');
+          }}
+          disabled={selectedTeam !== null}
+          style={{
+            position: 'fixed',
+            top: '15px',
+            left: '30%',
+            transform: 'translateX(-50%)',
+            background: selectedTeam === 'team1' ? 'rgba(76, 175, 80, 0.5)' : 'rgba(76, 175, 80, 0.25)',
+            border: '2px solid rgba(76, 175, 80, 0.5)',
+            color: 'rgba(255, 255, 255, 0.95)',
+            padding: '15px 30px',
+            borderRadius: '25px',
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            backdropFilter: 'blur(8px)',
+            cursor: selectedTeam !== null ? 'not-allowed' : 'pointer',
+            transition: 'opacity 0.2s ease',
+            boxShadow: '0 4px 15px rgba(76, 175, 80, 0.3)',
+            zIndex: 40,
+            whiteSpace: 'nowrap',
+            opacity: selectedTeam !== null && selectedTeam !== 'team1' ? '0.5' : '1'
+          }}
+          onMouseOver={(e) => {
+            if (selectedTeam === null) {
+              e.target.style.opacity = '0.8';
+              handleTeam1Hover();
+            }
+          }}
+          onMouseOut={(e) => {
+            if (selectedTeam === null) {
+              e.target.style.opacity = '1';
+              handleTeam1Leave();
+            }
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', position: 'relative' }}>
+            <span style={{ textShadow: 'none' }}>{teams.team1}</span>
+            <span style={{ fontSize: '1.1rem', display: 'inline-block' }} data-team1-score="true">{scores.team1}</span>
+            {showConfirm && selectedTeam === 'team1' && (
+              <span style={{
+                position: 'absolute',
+                bottom: '-25px',
+                fontSize: '2rem',
+                animation: 'checkmark 0.6s ease-out'
+              }}>✓</span>
+            )}
+          </div>
+        </button>
 
-
-        {/* Decorative elements */}
+        {/* Points indicator - CENTER */}
         <div style={{
-          position: 'absolute',
-          top: '-50px',
-          right: '-50px',
-          width: '100px',
-          height: '100px',
-          borderRadius: '50%',
-          background: 'linear-gradient(45deg, rgba(76, 175, 80, 0.3), rgba(255, 255, 255, 0.1))',
-          filter: 'blur(20px)'
-        }} />
-        <div style={{
-          position: 'absolute',
-          bottom: '-30px',
-          left: '-30px',
-          width: '80px',
-          height: '80px',
-          borderRadius: '50%',
-          background: 'linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(255, 255, 255, 0.1))',
-          filter: 'blur(15px)'
-        }} />
-
-        {/* Points indicator */}
-        <div style={{
-          position: 'absolute',
-          top: '20px',
-          right: '700px',
-          background: 'linear-gradient(45deg, #4CAF50, #45a049)',
+          position: 'fixed',
+          top: '15px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'rgba(76, 175, 80, 0.3)',
+          border: '2px solid rgba(76, 175, 80, 0.6)',
           color: 'white',
-          padding: '8px 20px',
-          borderRadius: '25px',
-          fontSize: '1.2rem',
+          padding: '15px 40px',
+          borderRadius: '30px',
+          fontSize: '1.6rem',
           fontWeight: 'bold',
-          boxShadow: '0 4px 15px rgba(76, 175, 80, 0.3)'
+          boxShadow: '0 4px 15px rgba(76, 175, 80, 0.2)',
+          zIndex: 50,
+          whiteSpace: 'nowrap',
+          backdropFilter: 'blur(8px)'
         }}>
           {currentQuestion.points} نقطة
         </div>
 
-        {/* Answer header
-        <div style={{
-          position: 'absolute',
-          top: '80px',
-          right: '640px',
-          marginBottom: '40px',
-          padding: '15px 30px',
-          background: 'rgba(76, 175, 80, 0.2)',
-          borderRadius: '50px',
-          display: 'inline-block',
-          backdropFilter: 'blur(10px)',
-          border: '2px solid rgba(76, 175, 80, 0.3)'
-        }}>
-          <h2 style={{
-            margin: 0,
-            fontSize: '2.2rem',
-            color: '#4CAF50',
-            fontWeight: 'bold'
-          }}>
-            الإجابة الصحيحة
-          </h2>
-        </div> */}
+        {/* Team 2 Button - 70% */}
+        <button
+          onClick={(e) => {
+            createRipple(e);
+            handleTeamSelect('team2');
+          }}
+          disabled={selectedTeam !== null}
+          style={{
+            position: 'fixed',
+            top: '15px',
+            right: '30%',
+            transform: 'translateX(50%)',
+            background: selectedTeam === 'team2' ? 'rgba(156, 39, 176, 0.5)' : 'rgba(156, 39, 176, 0.25)',
+            border: '2px solid rgba(156, 39, 176, 0.5)',
+            color: 'rgba(255, 255, 255, 0.95)',
+            padding: '15px 30px',
+            borderRadius: '25px',
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            backdropFilter: 'blur(8px)',
+            cursor: selectedTeam !== null ? 'not-allowed' : 'pointer',
+            transition: 'opacity 0.2s ease',
+            boxShadow: '0 4px 15px rgba(156, 39, 176, 0.3)',
+            zIndex: 40,
+            whiteSpace: 'nowrap',
+            opacity: selectedTeam !== null && selectedTeam !== 'team2' ? '0.5' : '1'
+          }}
+          onMouseOver={(e) => {
+            if (selectedTeam === null) {
+              e.target.style.opacity = '0.8';
+              handleTeam2Hover();
+            }
+          }}
+          onMouseOut={(e) => {
+            if (selectedTeam === null) {
+              e.target.style.opacity = '1';
+              handleTeam2Leave();
+            }
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', position: 'relative' }}>
+            <span style={{ textShadow: 'none' }}>{teams.team2}</span>
+            <span style={{ fontSize: '1.1rem', display: 'inline-block' }} data-team2-score="true">{scores.team2}</span>
+            {showConfirm && selectedTeam === 'team2' && (
+              <span style={{
+                position: 'absolute',
+                bottom: '-25px',
+                fontSize: '2rem',
+                animation: 'checkmark 0.6s ease-out'
+              }}>✓</span>
+            )}
+          </div>
+        </button>
+
+        {/* Nobody Button - Right Corner */}
+        <button
+          onClick={() => answerQuestion(false)}
+          style={{
+            position: 'fixed',
+            top: '15px',
+            right: '15px',
+            background: 'rgba(96, 125, 139, 0.25)',
+            border: '2px solid rgba(96, 125, 139, 0.5)',
+            color: 'rgba(255, 255, 255, 0.95)',
+            padding: '15px 30px',
+            borderRadius: '25px',
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            backdropFilter: 'blur(8px)',
+            cursor: 'pointer',
+            transition: 'opacity 0.2s ease',
+            boxShadow: '0 4px 15px rgba(96, 125, 139, 0.3)',
+            zIndex: 40,
+            whiteSpace: 'nowrap',
+            opacity: '1'
+          }}
+          onMouseOver={(e) => e.target.style.opacity = '0.8'}
+          onMouseOut={(e) => e.target.style.opacity = '1'}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+            <span style={{ textShadow: 'none' }}>لا أحد</span>
+            <span style={{ fontSize: '1.1rem' }}>✗</span>
+          </div>
+        </button>
 
         {/* Answer text with media */}
         <div style={{
-          position: 'relative',
-          top: '-150px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '10px'
+          gap: '15px',
+          width: '95%',
+          maxHeight: 'calc(100vh - 180px)',
+          overflow: 'hidden'
         }}>
           <div style={{
-            fontSize: '3rem',
+            fontSize: '1.3rem',
             fontWeight: 'bold',
             color: 'white',
-            lineHeight: '1.3',
+            lineHeight: '1.4',
             textShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
             wordBreak: 'break-word',
-            padding: '10px',
-            background: 'rgba(76, 175, 80, 0.1)',
+            padding: '35px',
+            background: 'rgba(76, 175, 80, 0.15)',
             borderRadius: '20px',
-            border: '2px solid rgba(76, 175, 80, 0.2)',
-            width: '100%',
-            textAlign: 'center'
+            border: '3px solid rgba(76, 175, 80, 0.3)',
+            textAlign: 'center',
+            marginTop: '50px'
           }}>
-             الإجابة الصحيحة :  {currentQuestion.answer}
+            {currentQuestion.answer}
           </div>
 
           {/* Answer Image if exists */}
@@ -193,12 +392,13 @@ const AnswerPage = ({
               src={currentQuestion.answerImage} 
               alt="صورة الإجابة" 
               style={{ 
-                maxWidth: '800px',
-                maxHeight: '400px',
+                width: '75vw',
+                height: 'auto',
                 objectFit: 'contain',
                 borderRadius: '20px',
                 boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-                border: '3px solid rgba(76, 175, 80, 0.3)'
+                border: '3px solid rgba(76, 175, 80, 0.3)',
+                maxWidth: '60vw'
               }} 
             />
           )}
@@ -209,136 +409,21 @@ const AnswerPage = ({
               controls
               autoPlay
               style={{ 
-                maxWidth: '800px',
-                maxHeight: '400px',
+                width: '75vw',
+                height: 'auto',
                 borderRadius: '20px',
                 boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-                border: '3px solid rgba(76, 175, 80, 0.3)'
+                border: '3px solid rgba(76, 175, 80, 0.3)',
+                maxWidth: '55vw'
               }} 
             >
               <source src={currentQuestion.answerVideo} type="video/mp4" />
               المتصفح لا يدعم تشغيل الفيديو
             </video>
           )}
+
+          <div style={{ height: '30px' }}></div>
         </div>
-
-        {/* Original question reminder (smaller) */}
-        <div style={{
-          position: 'relative',
-          top: '-140px',
-          marginTop: '5px',
-          padding: '5px',
-          background: 'rgba(255, 255, 255, 0.05)',
-          borderRadius: '15px',
-          border: '1px solid rgba(255, 255, 255, 0.1)'
-        }}>
-          <p style={{
-            margin: 0,
-            fontSize: '1.5rem',
-            color: 'rgba(255, 255, 255, 0.7)',
-            fontStyle: 'italic'
-          }}>
-            السؤال: {currentQuestion.question}
-          </p>
-        </div>
-      </div>
-
-      {/* Answer evaluation buttons */}
-      <div style={{
-        position: 'absolute',
-        bottom: '30px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        display: 'flex',
-        gap: '25px',
-        flexWrap: 'wrap',
-        justifyContent: 'center'
-      }}>
-        <button
-          onClick={() => answerQuestion(true, 'team1')}
-          style={{
-            background: 'linear-gradient(45deg, #4CAF50, #45a049)',
-            border: 'none',
-            borderRadius: '50px',
-            color: 'white',
-            padding: '18px 35px',
-            fontSize: '1.3rem',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: '0 8px 25px rgba(76, 175, 80, 0.4)',
-            backdropFilter: 'blur(10px)',
-            minWidth: '200px'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.transform = 'translateY(-3px)';
-            e.target.style.boxShadow = '0 12px 35px rgba(76, 175, 80, 0.5)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = '0 8px 25px rgba(76, 175, 80, 0.4)';
-          }}
-        >
-            ✓ أجاب فريق {teams.team1}        
-          </button>
-
-          <button
-          onClick={() => answerQuestion(false)}
-          style={{
-            background: 'linear-gradient(45deg, #607D8B, #455A64)',
-            border: 'none',
-            borderRadius: '50px',
-            color: 'white',
-            padding: '18px 35px',
-            fontSize: '1.3rem',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: '0 8px 25px rgba(96, 125, 139, 0.4)',
-            backdropFilter: 'blur(10px)',
-            minWidth: '200px'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.transform = 'translateY(-3px)';
-            e.target.style.boxShadow = '0 12px 35px rgba(96, 125, 139, 0.5)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = '0 8px 25px rgba(96, 125, 139, 0.4)';
-          }}
-        >
-          ✗ لا أحد أجاب
-        </button>
-
-        <button
-          onClick={() => answerQuestion(true, 'team2')}
-          style={{
-            background: 'linear-gradient(45deg, #9C27B0, #7B1FA2)',
-            border: 'none',
-            borderRadius: '50px',
-            color: 'white',
-            padding: '18px 35px',
-            fontSize: '1.3rem',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: '0 8px 25px rgba(156, 39, 176, 0.4)',
-            backdropFilter: 'blur(10px)',
-            minWidth: '200px'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.transform = 'translateY(-3px)';
-            e.target.style.boxShadow = '0 12px 35px rgba(156, 39, 176, 0.5)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = '0 8px 25px rgba(156, 39, 176, 0.4)';
-          }}
-        >
-          ✓ أجاب فريق {teams.team2} 
-        </button>
-
-        
       </div>
 
       {/* CSS Animation */}
@@ -352,6 +437,28 @@ const AnswerPage = ({
           }
           100% {
             box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+          }
+        }
+        
+        @keyframes checkmark {
+          0% {
+            opacity: 0;
+            transform: scale(0) translateY(20px);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.2) translateY(-5px);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+        
+        @keyframes ripple {
+          to {
+            transform: scale(4);
+            opacity: 0;
           }
         }
       `}</style>

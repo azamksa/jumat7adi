@@ -12,6 +12,24 @@ const QuestionPage = ({
   setGameState,
   setShowAnswer,
 }) => {
+  
+  // معالجة حالة عدم وجود سؤال
+  if (!currentQuestion) {
+    return (
+      <div style={{
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: 'linear-gradient(135deg, #1a237e, #0d47a1)',
+        color: 'white',
+        fontSize: '2rem'
+      }}>
+        جاري تحميل السؤال...
+      </div>
+    );
+  }
 
   return (
     <div style={{
@@ -44,33 +62,39 @@ const QuestionPage = ({
         
       </div>
 
-      {/* Main Question Card */}
+      {/* Main Question Card - FULL SCREEN */}
       <div style={{
         background: 'rgba(0, 0, 0, 0.3)',
-        borderRadius: '30px',
-        padding: '260px 10px',
-        width: '1500px',
+        borderRadius: '0px',
+        padding: '20px',
+        width: '100vw',
+        height: '100vh',
         textAlign: 'center',
         backdropFilter: 'blur(20px)',
-        border: '2px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
-        position: 'relative',
-        overflow: 'hidden'
+        border: 'none',
+        boxShadow: 'none',
+        position: 'fixed',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        top: 0,
+        left: 0
       }}>
         
          <button 
           onClick={() => setGameState('game')}
           style={{
-            position: 'relative',
-            zIndex: 1,
-            top: '-250px',
-            left: '-650px',
+            position: 'fixed',
+            top: '20px',
+            left: '20px',
+            zIndex: 100,
             background: 'rgba(255, 255, 255, 0.2)',
             border: 'none',
             borderRadius: '50px',
             color: 'white',
             padding: '12px 24px',
-            right: '20px',
             fontSize: '1.2rem',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
@@ -82,41 +106,180 @@ const QuestionPage = ({
           ← العودة
         </button>
 
-        {/* Timer Circle */}
+        {/* Timer Circle with Control Buttons Around It */}
         <div style={{
-          position: 'relative',
-          width: '150px',
-          height: '150px',
-          top: '-300px',
-          right: '-1325px',
-          borderRadius: '50%',
-          background: 'rgba(255, 255, 255, 0.1)',
-          border: '4px solid rgba(255, 255, 255, 0.3)',
+          position: 'fixed',
+          top: '20px',
+          right: '20px',
+          zIndex: 50,
+          width: '220px',
+          height: '220px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
-          backdropFilter: 'blur(10px)'
+          justifyContent: 'center'
         }}>
+          {/* Center Timer Circle */}
           <div style={{
             position: 'absolute',
-            top: '-4px',
-            left: '-4px',
-            width: '150px',
-            height: '150px',
+            width: '180px',
+            height: '180px',
             borderRadius: '50%',
-            border: '4px solid transparent',
-            borderTop: timer > 10 ? '4px solid #4CAF50' : '4px solid #f44336',
-            transform: `rotate(${(60 - timer) * 6}deg)`,
-            transition: 'transform 1s linear'
-          }} />
-          <span style={{
-            fontSize: timer > 10 ? '3.5rem' : '5.5rem', // حذفنا السطر المكرر
-            fontWeight: 'bold',
-            color: timer > 10 ? '#4CAF50' : '#f44336',
-            zIndex: 1
+            background: timer <= 10 ? 'rgba(255, 50, 50, 0.1)' : 'rgba(255, 255, 255, 0.08)',
+            border: timer <= 10 ? '5px solid rgba(255, 50, 50, 0.4)' : '5px solid rgba(255, 255, 255, 0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(10px)',
+            boxShadow: timer <= 10 
+              ? '0 8px 32px rgba(255, 0, 0, 0.3), inset 0 0 20px rgba(255, 50, 50, 0.2)' 
+              : '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 0 20px rgba(255, 255, 255, 0.08)',
+            zIndex: 10,
+            animation: timer <= 10 ? 'danger-pulse 0.5s ease-in-out infinite' : 'none',
+            transition: 'background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease'
           }}>
-            {timer}
-          </span>
+            <div style={{
+              position: 'absolute',
+              top: '-5px',
+              left: '-5px',
+              width: '180px',
+              height: '180px',
+              borderRadius: '50%',
+              border: '5px solid transparent',
+              borderTop: timer > 10 ? '5px solid rgba(255, 255, 255, 0.6)' : '5px solid rgba(255, 100, 100, 0.8)',
+              transform: `rotate(${(60 - timer) * 6}deg)`,
+              transition: 'transform 1s linear, border-color 0.3s ease'
+            }} />
+            <span style={{
+              fontSize: timer > 10 ? '4rem' : '5.5rem',
+              fontWeight: 'bold',
+              color: timer > 10 ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0.6)',
+              zIndex: 1,
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
+            }}>
+              {timer}
+            </span>
+          </div>
+
+          {/* Pause/Resume Button - Top Left */}
+          <button
+            onClick={togglePauseTimer}
+            title={isTimerPaused ? 'استئناف' : 'إيقاف'}
+            style={{
+              position: 'absolute',
+              top: '15px',
+              left: '15px',
+              width: '50px',
+              height: '50px',
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.12)',
+              border: '2px solid rgba(255, 255, 255, 0.25)',
+              color: 'rgba(255, 255, 255, 0.8)',
+              fontSize: '1.2rem',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 4px 15px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 20,
+              backdropFilter: 'blur(8px)'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.18)';
+              e.target.style.border = '2px solid rgba(255, 255, 255, 0.35)';
+              e.target.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.15)';
+              e.target.style.color = 'rgba(255, 255, 255, 1)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.12)';
+              e.target.style.border = '2px solid rgba(255, 255, 255, 0.25)';
+              e.target.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.1)';
+              e.target.style.color = 'rgba(255, 255, 255, 0.8)';
+            }}
+          >
+            {isTimerPaused ? '▶' : '⏸'}
+          </button>
+
+          {/* Reset Button - Bottom */}
+          <button
+            onClick={resetTimer}
+            title="إعادة الوقت"
+            style={{
+              position: 'absolute',
+              bottom: '0px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '50px',
+              height: '50px',
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.12)',
+              border: '2px solid rgba(255, 255, 255, 0.25)',
+              color: 'rgba(255, 255, 255, 0.8)',
+              fontSize: '1.2rem',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 4px 15px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 20,
+              backdropFilter: 'blur(8px)'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.18)';
+              e.target.style.border = '2px solid rgba(255, 255, 255, 0.35)';
+              e.target.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.15)';
+              e.target.style.color = 'rgba(255, 255, 255, 1)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.12)';
+              e.target.style.border = '2px solid rgba(255, 255, 255, 0.25)';
+              e.target.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.1)';
+              e.target.style.color = 'rgba(255, 255, 255, 0.8)';
+            }}
+          >
+            ↻
+          </button>
+
+          {/* Skip Button - Top Right */}
+          <button
+            onClick={skipTime}
+            title="تخطي الوقت"
+            style={{
+              position: 'absolute',
+              top: '15px',
+              right: '15px',
+              width: '50px',
+              height: '50px',
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.12)',
+              border: '2px solid rgba(255, 255, 255, 0.25)',
+              color: 'rgba(255, 255, 255, 0.8)',
+              fontSize: '1.2rem',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 4px 15px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 20,
+              backdropFilter: 'blur(8px)'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.18)';
+              e.target.style.border = '2px solid rgba(255, 255, 255, 0.35)';
+              e.target.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.15)';
+              e.target.style.color = 'rgba(255, 255, 255, 1)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.12)';
+              e.target.style.border = '2px solid rgba(255, 255, 255, 0.25)';
+              e.target.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.1)';
+              e.target.style.color = 'rgba(255, 255, 255, 0.8)';
+            }}
+          >
+            ⏭
+          </button>
         </div>
 
         {/* Decorative elements */}
@@ -141,59 +304,47 @@ const QuestionPage = ({
           filter: 'blur(15px)'
         }} />
 
-        {/* Points indicator */}
+        {/* Points indicator - TOP CENTER */}
         <div style={{
-          position: 'absolute',
-          top: '20px',
-          right: '700px',
-          background: 'linear-gradient(45deg, #FFD700, #FFA500)',
-          color: '#1a237e',
-          padding: '8px 20px',
-          borderRadius: '25px',
-          fontSize: '1.2rem',
+          position: 'fixed',
+          top: '30px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'rgba(255, 255, 255, 0.15)',
+          color: 'white',
+          padding: '18px 45px',
+          borderRadius: '30px',
+          fontSize: '1.8rem',
           fontWeight: 'bold',
-          boxShadow: '0 4px 15px rgba(255, 215, 0, 0.3)'
+          backdropFilter: 'blur(12px)',
+          border: '2px solid rgba(255, 255, 255, 0.25)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.1)',
+          zIndex: 50,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '15px'
         }}>
-          {currentQuestion.points} نقطة
+          <span>دور {activeTeam === 'team1' ? teams.team1 : teams.team2}</span>
+          <span>•</span>
+          <span>{currentQuestion.points} نقطة</span>
         </div>
 
-        {/* Team indicator */}
-        <div style={{
-          position: 'absolute',
-          top: '80px',
-          right: '700px',
-          marginBottom: '10px',
-          padding: '15px 30px',
-          background: 'rgba(255, 255, 255, 0.1)',
-          borderRadius: '50px',
-          display: 'inline-block',
-          backdropFilter: 'blur(10px)'
-        }}>
-          <h2 style={{
-            margin: 0,
-            fontSize: '1.8rem',
-            color: '#FFD700',
-            fontWeight: 'bold'
-          }}>
-            دور {activeTeam === 'team1' ? teams.team1 : teams.team2}
-          </h2>
-        </div>
+        {/* Team indicator - REMOVED */}
 
         {/* Question text with image/video */}
         <div style={{
-          position: 'relative',
-          top: '-300px',
-          // right: '700px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '20px'
+          gap: '25px',
+          maxHeight: 'calc(100vh - 180px)',
+          overflow: 'hidden'
         }}>
           <div style={{
-            fontSize: '3rem',
+            fontSize: '3.8rem',
             fontWeight: 'bold',
             color: 'white',
-            lineHeight: '1.3',
+            lineHeight: '1.4',
             textShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
             wordBreak: 'break-word'
           }}>
@@ -206,8 +357,8 @@ const QuestionPage = ({
               src={currentQuestion.image} 
               alt="صورة السؤال"
               style={{
-                maxWidth: '800px',
-                maxHeight: '400px',
+                maxWidth: '90%',
+                maxHeight: '520px',
                 objectFit: 'contain',
                 borderRadius: '15px',
                 boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)'
@@ -223,16 +374,14 @@ const QuestionPage = ({
               playsInline
               controlsList="nodownload"
               style={{
-                width: '50%', // تعديل العرض
-                maxWidth: '1000px', // تقليل العرض الأقصى
-                height: 'auto',
+                maxWidth: '90%',
+                maxHeight: '520px',
                 aspectRatio: '16/9',
                 objectFit: 'contain',
                 borderRadius: '15px',
                 boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)',
                 backgroundColor: '#000',
-                margin: '20px auto', // إضافة هوامش
-                display: 'block' // تحسين المحاذاة
+                display: 'block'
               }}
             >
               <source 
@@ -244,127 +393,85 @@ const QuestionPage = ({
         </div>
       </div>
 
-      {/* Control buttons */}
-      <div style={{
-        position: 'absolute',
-        bottom: '30px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        display: 'flex',
-        gap: '20px',
-        flexWrap: 'wrap',
-        justifyContent: 'center'
-      }}>
-        <button
-          onClick={() => setShowAnswer(true)}
-          style={{
-            background: 'linear-gradient(45deg, #4CAF50, #45a049)',
-            border: 'none',
-            borderRadius: '50px',
-            color: 'white',
-            padding: '15px 30px',
-            fontSize: '1.1rem',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: '0 6px 20px rgba(76, 175, 80, 0.3)',
-            backdropFilter: 'blur(10px)'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.transform = 'translateY(-2px)';
-            e.target.style.boxShadow = '0 8px 25px rgba(76, 175, 80, 0.4)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = '0 6px 20px rgba(76, 175, 80, 0.3)';
-          }}
-        >
-          عرض الإجابة
-        </button>
+      {/* Control buttons - REMOVED, now in timer circle */}
 
-        <button
-          onClick={togglePauseTimer}
-          style={{
-            background: isTimerPaused 
-              ? 'linear-gradient(45deg, #2196F3, #1976D2)' 
-              : 'linear-gradient(45deg, #FF9800, #F57C00)',
-            border: 'none',
-            borderRadius: '50px',
-            color: 'white',
-            padding: '15px 30px',
-            fontSize: '1.1rem',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: isTimerPaused 
-              ? '0 6px 20px rgba(33, 150, 243, 0.3)'
-              : '0 6px 20px rgba(255, 152, 0, 0.3)',
-            backdropFilter: 'blur(10px)'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.transform = 'translateY(-2px)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.transform = 'translateY(0)';
-          }}
-        >
-          {isTimerPaused ? 'استئناف' : 'إيقاف'}
-        </button>
+      {/* Show Answer Button - HIDDEN */}
+      {false && (
+      <button
+        onClick={() => {
+          setShowAnswer(true);
+          setGameState('answer');
+        }}
+        style={{
+          position: 'fixed',
+          bottom: '100px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'linear-gradient(45deg, #4CAF50, #45a049)',
+          border: 'none',
+          borderRadius: '50px',
+          color: 'white',
+          padding: '16px 50px',
+          fontSize: '1.3rem',
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          transition: 'all 0.3s ease',
+          boxShadow: '0 6px 20px rgba(76, 175, 80, 0.3)',
+          backdropFilter: 'blur(10px)',
+          whiteSpace: 'nowrap',
+          zIndex: 100
+        }}
+        onMouseOver={(e) => {
+          e.target.style.transform = 'translateX(-50%) translateY(-2px)';
+          e.target.style.boxShadow = '0 8px 25px rgba(76, 175, 80, 0.4)';
+        }}
+        onMouseOut={(e) => {
+          e.target.style.transform = 'translateX(-50%) translateY(0)';
+          e.target.style.boxShadow = '0 6px 20px rgba(76, 175, 80, 0.3)';
+        }}
+      >
+        عرض الإجابة
+      </button>
+      )}
 
-        <button
-          onClick={resetTimer}
-          style={{
-            background: 'linear-gradient(45deg, #9C27B0, #7B1FA2)',
-            border: 'none',
-            borderRadius: '50px',
-            color: 'white',
-            padding: '15px 30px',
-            fontSize: '1.1rem',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: '0 6px 20px rgba(156, 39, 176, 0.3)',
-            backdropFilter: 'blur(10px)'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.transform = 'translateY(-2px)';
-            e.target.style.boxShadow = '0 8px 25px rgba(156, 39, 176, 0.4)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = '0 6px 20px rgba(156, 39, 176, 0.3)';
-          }}
-        >
-          إعادة الوقت
-        </button>
+    {/* CSS Animations */}
+    <style jsx>{`
+      @keyframes danger-pulse {
+        0% {
+          box-shadow: 0 8px 32px rgba(255, 0, 0, 0.3), inset 0 0 20px rgba(255, 50, 50, 0.2);
+        }
+        50% {
+          box-shadow: 0 8px 32px rgba(255, 50, 50, 0.6), inset 0 0 30px rgba(255, 100, 100, 0.4);
+        }
+        100% {
+          box-shadow: 0 8px 32px rgba(255, 0, 0, 0.3), inset 0 0 20px rgba(255, 50, 50, 0.2);
+        }
+      }
 
-        <button
-          onClick={skipTime}
-          style={{
-            background: 'linear-gradient(45deg, #f44336, #d32f2f)',
-            border: 'none',
-            borderRadius: '50px',
-            color: 'white',
-            padding: '15px 30px',
-            fontSize: '1.1rem',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: '0 6px 20px rgba(244, 67, 54, 0.3)',
-            backdropFilter: 'blur(10px)'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.transform = 'translateY(-2px)';
-            e.target.style.boxShadow = '0 8px 25px rgba(244, 67, 54, 0.4)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = '0 6px 20px rgba(244, 67, 54, 0.3)';
-          }}
-        >
-          تخطي الوقت
-        </button>
-      </div>
+      @keyframes points-glow {
+        0% {
+          box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        50% {
+          box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+        100% {
+          box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+      }
+
+      @keyframes points-pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    `}</style>
     </div>
   );
 };

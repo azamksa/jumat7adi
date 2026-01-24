@@ -1,2 +1,0 @@
-# jumat7adi
-

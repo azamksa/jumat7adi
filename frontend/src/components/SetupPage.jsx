@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Container,
   Box,
@@ -12,6 +12,9 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
+import UserMenu from './UserMenu';
+import UserProfileModal from './UserProfileModal';
+import { PackageTracker } from '../utils/PackageTracker';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   background: 'rgba(255, 255, 255, 0.1)',
@@ -51,48 +54,112 @@ const SetupPage = ({
   teams,
   selectedCategories,
   basicCategories,
-  handleTeamNameChange,
-  handleCategorySelection,
-  startGame,
+  onTeamNameChange,
+  onCategorySelection,
+  onStartGame,
   error,
   setShowLogin,
   user
 }) => {
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState(user);
+  const [userPackageLevel, setUserPackageLevel] = useState(1);
+
+  useEffect(() => {
+    if (user?.id) {
+      // جلب مستوى الحزمة للمستخدم
+      PackageTracker.getUserPackageLevel(user.id)
+        .then(level => setUserPackageLevel(level));
+    }
+  }, [user]);
+
+  const handleStartGame = async () => {
+    if (!currentUser) {
+      alert('يجب أن تقوم بتسجيل الدخول قبل بدء اللعب!');
+      setShowLogin(true);
+      return;
+    }
+
+    if (!teams.team1 || !teams.team2) {
+      alert('يرجى إدخال أسماء الفريقين');
+      return;
+    }
+
+    if (selectedCategories.length !== 6) {
+      alert('يجب اختيار 6 فئات فقط');
+      return;
+    }
+
+    // زيادة مستوى الحزمة بعد بدء اللعب
+    await PackageTracker.incrementUserPackageLevel(currentUser.id);
+    
+    onStartGame();
+  };
+
+  const handleEditProfile = () => {
+    setShowProfileModal(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
+
+  const handleSaveProfile = (updatedUser) => {
+    setCurrentUser(updatedUser);
+  };
+
+  const packageInfo = PackageTracker.getPackageInfo(userPackageLevel);
+
   return (
     <Container
       maxWidth="xxl"
       sx={{
-        // minHeight: '100vh',
-        // width: '100vw',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        // background: 'linear-gradient(135deg, #1a237e, #0d47a1)',
         padding: 0,
-        margin: 0
+        margin: 0,
+        position: 'relative'
       }}
     >
-      {!user && (
-        <Box sx={{ position: 'absolute', right: 20, top: 20 }}>
+      {/* قائمة المستخدم */}
+      {!currentUser ? (
+        <Box sx={{ 
+          position: 'fixed', 
+          right: 20, 
+          top: 20, 
+          zIndex: 1000 
+        }}>
           <Button 
             variant="outlined" 
             onClick={() => setShowLogin(true)}
             sx={{
-              padding: '16px 32px',
-              fontSize: '2.0rem',
+              padding: '12px 24px',
+              fontSize: '1.2rem',
               fontWeight: 'bold',
               color: 'white',
               borderColor: 'white',
+              background: 'rgba(0,0,0,0.7)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '25px',
               '&:hover': {
                 borderColor: 'gold',
-                color: 'gold'
+                color: 'gold',
+                backgroundColor: 'rgba(255, 215, 0, 0.1)'
               }
             }}
           >
             تسجيل الدخول
           </Button>
         </Box>
+      ) : (
+        <UserMenu
+          user={currentUser}
+          onEditProfile={handleEditProfile}
+          onLogout={handleLogout}
+        />
       )}
 
       <Box textAlign="center" mb={6} pt={4}>
@@ -105,6 +172,25 @@ const SetupPage = ({
           }}>
           تحدي الجمعة
         </Typography>
+
+        {/* عرض معلومات الحزمة */}
+        {currentUser && (
+          <Box sx={{
+            background: packageInfo.color + '20',
+            border: `2px solid ${packageInfo.color}`,
+            borderRadius: '15px',
+            padding: '15px 25px',
+            margin: '20px auto',
+            maxWidth: '400px'
+          }}>
+            <Typography variant="h6" sx={{ color: packageInfo.color, fontWeight: 'bold' }}>
+              {packageInfo.name}
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#e0e0e0' }}>
+              مستوى الصعوبة: {packageInfo.difficulty}
+            </Typography>
+          </Box>
+        )}
 
         <Box sx={{ 
           maxWidth: 600, 
@@ -128,6 +214,7 @@ const SetupPage = ({
         </Box>
       </Box>
 
+      {/* باقي المحتوى كما هو... */}
       <StyledCard>
         <Typography variant="h4" gutterBottom sx={{ color: 'gold', textAlign: 'center' }}>
           أسماء الفرق
@@ -138,7 +225,7 @@ const SetupPage = ({
               fullWidth
               label="الفريق الأول"
               value={teams.team1}
-              onChange={(e) => handleTeamNameChange('team1', e.target.value)}
+              onChange={(e) => onTeamNameChange('team1', e.target.value)}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   color: 'white',
@@ -153,7 +240,7 @@ const SetupPage = ({
               fullWidth
               label="الفريق الثاني"
               value={teams.team2}
-              onChange={(e) => handleTeamNameChange('team2', e.target.value)}
+              onChange={(e) => onTeamNameChange('team2', e.target.value)}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   color: 'white',
@@ -166,6 +253,7 @@ const SetupPage = ({
         </Grid>
       </StyledCard>
 
+      {/* اختيار الفئات */}
       <StyledCard>
         <Typography variant="h4" gutterBottom sx={{ color: 'gold', textAlign: 'center' }}>
           اختيار الفئات
@@ -181,17 +269,17 @@ const SetupPage = ({
                 p: 2, 
                 background: data.color, 
                 borderRadius: '15px',
-                textAlign: 'center'  // إضافة محاذاة النص للمركز
+                textAlign: 'center'
               }}>
                 <Typography variant="h6" gutterBottom>
                   {category}
                 </Typography>
-                <Grid container spacing={1} sx={{ justifyContent: 'center' }}>  {/* إضافة justifyContent */}
+                <Grid container spacing={1} sx={{ justifyContent: 'center' }}>
                   {data.subcategories.map((subcat) => (
-                    <Grid item xs={12} key={subcat.id} sx={{ display: 'flex', justifyContent: 'center' }}>  {/* إضافة محاذاة للمركز */}
+                    <Grid item xs={12} key={subcat.id} sx={{ display: 'flex', justifyContent: 'center' }}>
                       <CategoryButton
                         selected={selectedCategories.includes(subcat.id)}
-                        onClick={() => handleCategorySelection(subcat.id)}
+                        onClick={() => onCategorySelection(subcat.id)}
                       >
                         <CategoryImage src={subcat.image} alt={subcat.name} />
                         <Typography
@@ -231,7 +319,7 @@ const SetupPage = ({
                 <Chip
                   key={id}
                   label={category?.name}
-                  onDelete={() => handleCategorySelection(id)}
+                  onDelete={() => onCategorySelection(id)}
                   deleteIcon={<DeleteIcon />}
                   sx={{
                     background: 'rgba(255,255,255,0.2)',
@@ -251,10 +339,7 @@ const SetupPage = ({
         <Button
           variant="contained"
           size="large"
-          onClick={() => {
-            console.log('Start button clicked'); // للتأكد من عمل الزر
-            startGame();
-          }}
+          onClick={handleStartGame}
           disabled={selectedCategories.length !== 6 || !teams.team1 || !teams.team2}
           sx={{
             background: 'linear-gradient(90deg, #FFD700, #ffb300)',
@@ -287,49 +372,33 @@ const SetupPage = ({
             zIndex: 9999
           }}
         >
-          {error}
+          ⚠️ {error}
         </Box>
-        
-     
       )}
-      
-      
-      
-        <footer style={{
-          width: '100%',
-          padding: '20px 0',
-          textAlign: 'center', // تغيير من center إلى right
-          color: '#888',
-          fontSize: '0.9rem',
-          borderTop: '1px solid #444',
-          backdropFilter: 'blur(10px)',
-          marginTop: 'auto',
-          paddingRight: '100px' // إضافة مسافة من اليمين
-          }}>
-          .هذا الموقع مصمم من مطور سعودي لهدف إنشاء لعبة تجمع الأهل والأصدقاء للاستمتاع. جميع الحقوق محفوظة
-        </footer>
-          
 
+      {/* نافذة تعديل البيانات */}
+      <UserProfileModal
+        open={showProfileModal}
+        onClose={() => setShowProfileModal(false)}
+        user={currentUser}
+        onSave={handleSaveProfile}
+      />
 
+      <footer style={{
+        width: '100%',
+        padding: '20px 0',
+        textAlign: 'center',
+        color: '#888',
+        fontSize: '0.9rem',
+        borderTop: '1px solid #444',
+        backdropFilter: 'blur(10px)',
+        marginTop: 'auto',
+        paddingRight: '100px'
+        }}>
+        .هذا الموقع مصمم من مطور سعودي لهدف إنشاء لعبة تجمع الأهل والأصدقاء للاستمتاع. جميع الحقوق محفوظة
+      </footer>
     </Container>  
-    
-        
-          
   );
 };
 
 export default SetupPage;
-
-// مثال لأنماط الصفحة الرئيسية
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center', // وسط عمودي
-    alignItems: 'center',     // وسط أفقي
-    minHeight: '100vh',
-    width: '100vw',
-    background: 'linear-gradient(135deg, #1a237e, #0d47a1)'
-  },
-  // باقي الأنماط حسب الحاجة
-};

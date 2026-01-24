@@ -15,8 +15,8 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
     return re.test(email);
   };
 
-  // رابط Backend الصحيح
-  const API_URL = 'https://jumat7adi-rdyo.vercel.app';
+  // 🔧 رابط Backend الصحيح
+  const API_URL = 'http://localhost:5000'; // ← هذا هو المهم!
 
   const handleLogin = async () => {
     if (!nameOrEmail || !password) {
@@ -29,25 +29,32 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
     }
 
     try {
+      console.log('🔄 Sending login request to:', `${API_URL}/api/login`);
+      console.log('📦 Data:', { nameOrEmail, password });
+      
       const response = await fetch(`${API_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nameOrEmail, password })
       });
 
-      const data = await response.json();
+      console.log('📡 Response status:', response.status);
       
-      // التحقق من حالة الاستجابة بدلاً من response.ok فقط
+      const data = await response.json();
+      console.log('📦 Response data:', data);
+
       if (response.status === 200 && data.token) {
         localStorage.setItem('token', data.token);
         setError('');
+        console.log('✅ Login successful - calling onLogin');
         onLogin(data.user);
       } else {
+        console.log('❌ Login failed:', data.error);
         setError(data.error || 'بيانات الدخول غير صحيحة');
       }
     } catch (error) {
-      setError('فشل في الاتصال بالخادم');
-      console.error('Login error:', error);
+      console.error('🚨 Network Error:', error);
+      setError('فشل في الاتصال بالخادم - تأكد من تشغيل Backend');
     }
   };
 
@@ -66,6 +73,8 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
     }
 
     try {
+      console.log('🔄 Sending register request to:', `${API_URL}/api/register`);
+      
       const response = await fetch(`${API_URL}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -73,17 +82,18 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
       });
 
       const data = await response.json();
-      
-      // التحقق من حالة الاستجابة
+      console.log('📦 Register response:', data);
+
       if (response.status === 201 && data.user) {
         setError('');
+        console.log('✅ Registration successful - calling onRegister');
         onRegister(data.user);
       } else {
         setError(data.error || 'فشل في إنشاء الحساب');
       }
     } catch (error) {
-      setError('فشل في الاتصال بالخادم');
-      console.error('Register error:', error);
+      console.error('🚨 Network Error:', error);
+      setError('فشل في الاتصال بالخادم - تأكد من تشغيل Backend');
     }
   };
 
