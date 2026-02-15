@@ -8,6 +8,8 @@ import Login from './components/Login';
 import { basicCategories } from './data/categories';
 import { questions } from './data/questions';
 
+const API_URL = 'http://localhost:5000';
+
 const FridayChallenge = () => {
   const [gameState, setGameState] = useState('setup');
   const [fadeOut, setFadeOut] = useState(false);
@@ -18,23 +20,30 @@ const FridayChallenge = () => {
   const [timer, setTimer] = useState(0);
   const [isTimerPaused, setIsTimerPaused] = useState(false);
   const [answeredQuestions, setAnsweredQuestions] = useState(new Set());
+  const [solvedQuestionIds, setSolvedQuestionIds] = useState(new Set());
   const [activeTeam, setActiveTeam] = useState('team1');
   const [showAnswer, setShowAnswer] = useState(false);
   const [error, setError] = useState('');
   const [categoryPickerTeam, setCategoryPickerTeam] = useState(Math.random() < 0.5 ? 'team1' : 'team2');
   const [user, setUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
+  const [userBundles, setUserBundles] = useState({});
 
   const timerRef = useRef(null);
 
-  // فحص localStorage عند تشغيل التطبيق
+  // ==================== Authentication & User Recovery ====================
   useEffect(() => {
-    const savedToken = localStorage.getItem('token');
+    const savedAccessToken = localStorage.getItem('accessToken');
     const savedUser = localStorage.getItem('user');
     
-    if (savedToken && savedUser) {
+    if (savedAccessToken && savedUser) {
       try {
-        setUser(JSON.parse(savedUser));
+        const userData = JSON.parse(savedUser);
+        setUser(userData);
+        // جلب الأسئلة المحلولة سابقاً
+        fetchSolvedQuestions(userData.id, savedAccessToken);
+        // جلب أرقام الحزم الحالية
+        fetchUserBundles(userData.id, savedAccessToken);
         console.log('✅ User restored from localStorage');
       } catch (error) {
         console.error('❌ Error parsing saved user:', error);
@@ -43,6 +52,54 @@ const FridayChallenge = () => {
     }
   }, []);
 
+  // ==================== Fetch Solved Questions ====================
+  const fetchSolvedQuestions = async (userId, accessToken) => {
+    try {
+      const response = await fetch(`${API_URL}/api/solved-questions`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        // تأكد أن البيانات array قبل إنشاء Set
+        const solvedIds = Array.isArray(data.solvedQuestionIds) ? data.solvedQuestionIds : [];
+        setSolvedQuestionIds(new Set(solvedIds));
+        console.log('✅ Solved questions loaded:', solvedIds.length);
+      }
+    } catch (error) {
+      console.error('❌ Error fetching solved questions:', error);
+      // لا تتوقف إذا فشل تحميل الأسئلة المحلولة
+    }
+  };
+
+  // ==================== Fetch User Bundles ====================
+  const fetchUserBundles = async (userId, accessToken) => {
+    try {
+      const response = await fetch(`${API_URL}/api/bundle-progress/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        setUserBundles(data.bundles || {});
+        console.log('✅ User bundles loaded:', data.bundles);
+      }
+    } catch (error) {
+      console.error('❌ Error fetching bundles:', error);
+    }
+  };
+
+  // ==================== Timer Effect ====================
+
+  // ==================== Timer Effect ====================
   useEffect(() => {
     if (timer > 0 && !isTimerPaused && gameState === 'question') {
       timerRef.current = setTimeout(() => {
@@ -55,12 +112,13 @@ const FridayChallenge = () => {
     return () => clearTimeout(timerRef.current);
   }, [timer, gameState, isTimerPaused]);
 
+  // ==================== Game Logic ====================
+
   const handleTimerEnd = () => {
     if (activeTeam === categoryPickerTeam) {
       setActiveTeam(categoryPickerTeam === 'team1' ? 'team2' : 'team1');
       setTimer(30);
     } else {
-      // انتقل لصفحة الإجابة تلقائياً
       setGameState('answer');
       setShowAnswer(true);
     }
@@ -114,7 +172,8 @@ const FridayChallenge = () => {
     setTimeout(() => {
       const questionId = `${category}-${points}`;
       if (!answeredQuestions.has(questionId)) {
-        const question = questions[category]?.packages[0]?.find(q => q.points === points);
+        const bundleNumber = userBundles[category] || 0;
+        const question = questions[category]?.packages[bundleNumber]?.find(q => q.points === points);
         if (question) {
           setCurrentQuestion({
             ...question,
@@ -132,7 +191,7 @@ const FridayChallenge = () => {
     }, 300);
   };
 
-  const answerQuestion = (correct, team = null) => {
+  const answerQuestion = async (correct, team = null) => {
     if (correct && team) {
       setScores(prev => ({
         ...prev,
@@ -140,7 +199,10 @@ const FridayChallenge = () => {
       }));
     }
 
+    // حفظ الأسئلة المحلولة
+    setSolvedQuestionIds(prev => new Set([...prev, currentQuestion.id]));
     setAnsweredQuestions(prev => new Set([...prev, currentQuestion.id]));
+
     setFadeOut(true);
     setTimeout(() => {
       setCurrentQuestion(null);
@@ -148,12 +210,84 @@ const FridayChallenge = () => {
       setCategoryPickerTeam(prev => prev === 'team1' ? 'team2' : 'team1');
       
       if (answeredQuestions.size + 1 >= selectedCategories.length * 6) {
+        // زيادة أرقام الحزم قبل حفظ جلسة اللعب
+        if (user && selectedCategories.length > 0) {
+          incrementUserBundles();
+        }
+        // حفظ جلسة اللعب قبل الذهاب لصفحة النتائج
+        if (user) {
+          saveGameSession();
+        }
         setGameState('results');
       } else {
         setGameState('game');
       }
       setFadeOut(false);
     }, 400);
+  };
+
+  // ==================== Increment User Bundles ====================
+  const incrementUserBundles = async () => {
+    const accessToken = localStorage.getItem('accessToken');
+    
+    try {
+      for (let categoryId of selectedCategories) {
+        await fetch(`${API_URL}/api/bundle-progress/increment`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ categoryId })
+        });
+      }
+      
+      // إعادة جلب الأرقام
+      if (user) {
+        await fetchUserBundles(user.id, accessToken);
+      }
+      console.log('✅ Bundle numbers incremented');
+    } catch (error) {
+      console.error('❌ Error incrementing bundles:', error);
+    }
+  };
+
+  // ==================== Save Game Session ====================
+  const saveGameSession = async () => {
+    if (!user) return;
+
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) return;
+
+    try {
+      const response = await fetch(`${API_URL}/api/save-game-session`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          team1Name: teams.team1,
+          team2Name: teams.team2,
+          selectedCategories,
+          solvedQuestions: Array.from(answeredQuestions).map(id => ({
+            questionId: id,
+            category: id.split('-')[0],
+            solvedAt: new Date()
+          })),
+          team1Score: scores.team1,
+          team2Score: scores.team2,
+          winner: scores.team1 > scores.team2 ? teams.team1 : 
+                  scores.team2 > scores.team1 ? teams.team2 : 'تعادل'
+        })
+      });
+
+      if (response.status === 201) {
+        console.log('✅ Game session saved');
+      }
+    } catch (error) {
+      console.error('❌ Error saving game session:', error);
+    }
   };
 
   const resetGame = () => {
@@ -180,30 +314,31 @@ const FridayChallenge = () => {
     setTimer(activeTeam === categoryPickerTeam ? 60 : 30);
   };
 
-  // دالة تسجيل الدخول
+  // ==================== User Authentication ====================
   const handleLogin = (userData) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('token', userData.token || 'dummy-token');
     setShowLogin(false);
     setError('');
     console.log('✅ User logged in:', userData);
+    
+    // جلب الأسئلة المحلولة سابقاً
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken && userData.id) {
+      fetchSolvedQuestions(userData.id, accessToken);
+    }
   };
 
-  // دالة التسجيل
   const handleRegister = (userData) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('token', userData.token || 'dummy-token');
     setShowLogin(false);
     setError('');
     console.log('✅ User registered:', userData);
   };
 
-  // دالة تسجيل الخروج
   const handleLogout = () => {
     localStorage.clear();
     setUser(null);
+    setSolvedQuestionIds(new Set());
     setError('');
     setShowLogin(false);
     resetGame();

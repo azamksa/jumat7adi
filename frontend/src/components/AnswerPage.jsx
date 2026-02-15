@@ -12,54 +12,7 @@ const AnswerPage = ({
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // دالة لإضافة انميشن عند تغيير النقاط
-  const animateScoreChange = (element) => {
-    if (!element) return;
-    element.style.transition = 'none';
-    element.style.transform = 'scale(1)';
-    
-    // Force reflow لإعادة تشغيل الانميشن
-    void element.offsetWidth;
-    
-    element.style.transition = 'transform 0.3s ease-out';
-    element.style.transform = 'scale(1.2)';
-    
-    setTimeout(() => {
-      element.style.transform = 'scale(1)';
-    }, 150);
-  };
 
-  // دالة لإضافة ripple effect عند الضغط
-  const createRipple = (e) => {
-    const button = e.currentTarget;
-    const ripple = document.createElement('span');
-    
-    const rect = button.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    const x = e.clientX - rect.left - size / 2;
-    const y = e.clientY - rect.top - size / 2;
-    
-    ripple.style.width = ripple.style.height = size + 'px';
-    ripple.style.left = x + 'px';
-    ripple.style.top = y + 'px';
-    ripple.style.position = 'absolute';
-    ripple.style.borderRadius = '50%';
-    ripple.style.background = 'rgba(255, 255, 255, 0.6)';
-    ripple.style.pointerEvents = 'none';
-    ripple.style.transform = 'scale(0)';
-    ripple.style.zIndex = '1';
-    
-    button.style.position = 'relative';
-    button.style.overflow = 'hidden';
-    button.appendChild(ripple);
-    
-    // Animate ripple
-    setTimeout(() => {
-      ripple.style.animation = 'ripple 0.6s ease-out forwards';
-    }, 0);
-    
-    setTimeout(() => ripple.remove(), 600);
-  };
 
   // دالة لمعالجة اختيار الفريق
   const handleTeamSelect = (team) => {
@@ -74,19 +27,10 @@ const AnswerPage = ({
     }, 800);
   };
 
-  // دالة للحصول على عنصر النقاط
-  const updatePointsDisplay = (newValue) => {
-    const pointsElement = document.querySelector('[data-points-display="true"]');
-    if (pointsElement) {
-      pointsElement.textContent = newValue + ' نقطة';
-    }
-  };
-
   const handleTeam1Hover = () => {
     const team1ScoreSpan = document.querySelector('[data-team1-score="true"]');
     if (team1ScoreSpan) {
       team1ScoreSpan.textContent = scores.team1 + currentQuestion.points;
-      animateScoreChange(team1ScoreSpan);
     }
   };
 
@@ -94,7 +38,6 @@ const AnswerPage = ({
     const team1ScoreSpan = document.querySelector('[data-team1-score="true"]');
     if (team1ScoreSpan) {
       team1ScoreSpan.textContent = scores.team1;
-      animateScoreChange(team1ScoreSpan);
     }
   };
 
@@ -102,7 +45,6 @@ const AnswerPage = ({
     const team2ScoreSpan = document.querySelector('[data-team2-score="true"]');
     if (team2ScoreSpan) {
       team2ScoreSpan.textContent = scores.team2 + currentQuestion.points;
-      animateScoreChange(team2ScoreSpan);
     }
   };
 
@@ -110,7 +52,6 @@ const AnswerPage = ({
     const team2ScoreSpan = document.querySelector('[data-team2-score="true"]');
     if (team2ScoreSpan) {
       team2ScoreSpan.textContent = scores.team2;
-      animateScoreChange(team2ScoreSpan);
     }
   };
   
@@ -202,7 +143,6 @@ const AnswerPage = ({
         {/* Team 1 Button - 30% */}
         <button
           onClick={(e) => {
-            createRipple(e);
             handleTeamSelect('team1');
           }}
           disabled={selectedTeam !== null}
@@ -246,8 +186,7 @@ const AnswerPage = ({
               <span style={{
                 position: 'absolute',
                 bottom: '-25px',
-                fontSize: '2rem',
-                animation: 'checkmark 0.6s ease-out'
+                fontSize: '2rem'
               }}>✓</span>
             )}
           </div>
@@ -277,7 +216,6 @@ const AnswerPage = ({
         {/* Team 2 Button - 70% */}
         <button
           onClick={(e) => {
-            createRipple(e);
             handleTeamSelect('team2');
           }}
           disabled={selectedTeam !== null}
@@ -321,8 +259,7 @@ const AnswerPage = ({
               <span style={{
                 position: 'absolute',
                 bottom: '-25px',
-                fontSize: '2rem',
-                animation: 'checkmark 0.6s ease-out'
+                fontSize: '2rem'
               }}>✓</span>
             )}
           </div>
@@ -426,42 +363,6 @@ const AnswerPage = ({
         </div>
       </div>
 
-      {/* CSS Animation */}
-      <style jsx>{`
-        @keyframes pulse {
-          0% {
-            box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
-          }
-          70% {
-            box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
-          }
-          100% {
-            box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
-          }
-        }
-        
-        @keyframes checkmark {
-          0% {
-            opacity: 0;
-            transform: scale(0) translateY(20px);
-          }
-          50% {
-            opacity: 1;
-            transform: scale(1.2) translateY(-5px);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-          }
-        }
-        
-        @keyframes ripple {
-          to {
-            transform: scale(4);
-            opacity: 0;
-          }
-        }
-      `}</style>
     </div>
   );
 };
