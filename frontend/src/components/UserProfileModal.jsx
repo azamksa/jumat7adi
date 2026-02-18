@@ -14,11 +14,11 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const StyledDialog = styled(Dialog)(({ theme }) => ({
+const StyledDialog = styled(Dialog)(() => ({
   '& .MuiDialog-paper': {
-    background: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c)',
+    background: 'linear-gradient(135deg, #003262, #E25822, #003262)',
     backdropFilter: 'blur(20px)',
-    border: '1px solid rgba(255,215,0,0.3)',
+    border: '1px solid rgba(255, 138, 76, 0.3)',
     borderRadius: '20px',
     color: 'white',
     minWidth: '500px'
@@ -98,7 +98,7 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
       } else {
         setError(data.error || 'فشل في تحديث البيانات');
       }
-    } catch (error) {
+    } catch {
       setError('خطأ في الاتصال بالخادم');
     } finally {
       setLoading(false);
@@ -124,7 +124,7 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
         textAlign: 'center', 
         fontSize: '24px', 
         fontWeight: 'bold',
-        color: '#FFD700'
+        color: '#FF8A4C'
       }}>
         تعديل البيانات الشخصية
       </DialogTitle>
@@ -140,8 +140,8 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
           <Avatar sx={{ 
             width: 80, 
             height: 80, 
-            bgcolor: '#FFD700',
-            color: '#000',
+            bgcolor: '#FF8A4C',
+            color: '#fff',
             fontSize: '32px',
             fontWeight: 'bold'
           }}>
@@ -176,17 +176,17 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
                   borderColor: 'rgba(255, 255, 255, 0.3)' 
                 },
                 '&:hover fieldset': { 
-                  borderColor: '#FFD700' 
+                  borderColor: '#FF8A4C' 
                 },
                 '&.Mui-focused fieldset': { 
-                  borderColor: '#FFD700' 
+                  borderColor: '#FF8A4C' 
                 }
               },
               '& .MuiInputLabel-root': { 
                 color: 'rgba(255, 255, 255, 0.7)' 
               },
               '& .MuiInputLabel-root.Mui-focused': { 
-                color: '#FFD700' 
+                color: '#FF8A4C' 
               }
             }}
           />
@@ -204,17 +204,17 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
                   borderColor: 'rgba(255, 255, 255, 0.3)' 
                 },
                 '&:hover fieldset': { 
-                  borderColor: '#FFD700' 
+                  borderColor: '#FF8A4C' 
                 },
                 '&.Mui-focused fieldset': { 
-                  borderColor: '#FFD700' 
+                  borderColor: '#FF8A4C' 
                 }
               },
               '& .MuiInputLabel-root': { 
                 color: 'rgba(255, 255, 255, 0.7)' 
               },
               '& .MuiInputLabel-root.Mui-focused': { 
-                color: '#FFD700' 
+                color: '#FF8A4C' 
               }
             }}
           />
@@ -229,8 +229,8 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
             borderColor: '#fff',
             color: '#fff',
             '&:hover': {
-              borderColor: '#FFD700',
-              color: '#FFD700'
+              borderColor: '#FF8A4C',
+              color: '#FF8A4C'
             }
           }}
         >
@@ -242,11 +242,12 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
           variant="contained"
           disabled={loading}
           sx={{
-            background: 'linear-gradient(90deg, #FFD700, #ffb300)',
-            color: '#000',
+            background: 'linear-gradient(90deg, #FF8A4C, #E25822)',
+            color: '#fff',
             fontWeight: 'bold',
             '&:hover': {
-              background: 'linear-gradient(90deg, #fff, #FFD700)'
+              background: 'linear-gradient(90deg, #fff, #FF8A4C)',
+              color: '#003262'
             },
             '&:disabled': {
               background: '#888',

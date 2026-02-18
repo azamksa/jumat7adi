@@ -59,10 +59,10 @@ const UserMenu = ({ user, onEditProfile, onLogout }) => {
         sx={{
           background: 'rgba(0,0,0,0.7)',
           backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255,215,0,0.3)',
+          border: '1px solid rgba(255, 138, 76, 0.3)',
           borderRadius: '25px',
           padding: '10px 20px',
-          color: '#FFD700',
+          color: '#FF8A4C',
           fontWeight: 'bold',
           fontSize: '16px',
           display: 'flex',
@@ -70,15 +70,15 @@ const UserMenu = ({ user, onEditProfile, onLogout }) => {
           gap: 2,
           '&:hover': {
             background: 'rgba(0,0,0,0.8)',
-            borderColor: '#FFD700'
+            borderColor: '#FF8A4C'
           }
         }}
         startIcon={
           <Avatar sx={{ 
             width: 32, 
             height: 32, 
-            bgcolor: '#FFD700',
-            color: '#000',
+            bgcolor: '#FF8A4C',
+            color: '#fff',
             fontSize: '14px',
             fontWeight: 'bold'
           }}>
@@ -97,7 +97,7 @@ const UserMenu = ({ user, onEditProfile, onLogout }) => {
           sx: {
             background: 'rgba(0,0,0,0.8)',
             backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,215,0,0.3)',
+            border: '1px solid rgba(255, 138, 76, 0.3)',
             borderRadius: '15px',
             mt: 1,
             '& .MuiMenuItem-root': {
@@ -105,7 +105,7 @@ const UserMenu = ({ user, onEditProfile, onLogout }) => {
               fontSize: '16px',
               padding: '12px 20px',
               '&:hover': {
-                background: 'rgba(255,215,0,0.1)'
+                background: 'rgba(255, 138, 76, 0.1)'
               }
             }
           }
@@ -120,13 +120,13 @@ const UserMenu = ({ user, onEditProfile, onLogout }) => {
         }}
       >
         <MenuItem onClick={handleEditProfile}>
-          <ListItemIcon sx={{ color: '#FFD700' }}>
+          <ListItemIcon sx={{ color: '#FF8A4C' }}>
             <Edit fontSize="small" />
           </ListItemIcon>
           تعديل البيانات الشخصية
         </MenuItem>
         
-        <Divider sx={{ borderColor: 'rgba(255,215,0,0.2)' }} />
+        <Divider sx={{ borderColor: 'rgba(255, 138, 76, 0.2)' }} />
         
         <MenuItem onClick={handleLogout}>
           <ListItemIcon sx={{ color: '#ff5252' }}>

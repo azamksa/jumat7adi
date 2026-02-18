@@ -1,5 +1,7 @@
 {
     "chat.tools.terminal.autoApprove": {
-        "type": true
+        "type": true,
+        "npm start": true,
+        "npm run dev": true
     }
 }

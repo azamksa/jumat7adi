@@ -93,7 +93,7 @@ const QuestionsListPage = ({
     },
     scoreValue: {
       fontSize: '32px',
-      color: '#FFD700',
+      color: '#FF8A4C',
       minWidth: '80px',
       textAlign: 'center',
       fontWeight: 'bold'
@@ -224,7 +224,7 @@ const QuestionsListPage = ({
       fontSize: '35px',
       background: 'transparent',
       border: 'none',
-      color: '#FFD700',
+      color: '#FF8A4C',
       cursor: 'pointer',
       padding: '5px 10px',
       borderRadius: '5px',
@@ -254,7 +254,7 @@ const QuestionsListPage = ({
       fontSize: '35px',
       background: 'transparent',
       border: 'none',
-      color: '#FFD700',
+      color: '#FF8A4C',
       cursor: 'pointer',
       padding: '5px 10px',
       borderRadius: '5px',
