@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, User, LogIn, UserPlus } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 
 const Login = ({ onLogin, onRegister, error, setError }) => {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -27,12 +27,12 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
 
   const getPasswordStrengthMessage = () => {
     if (!password) return '';
-    if (password.length < 8) return '❌ الحد الأدنى 8 أحرف';
-    if (!/[A-Z]/.test(password)) return '❌ يجب أن تحتوي على أحرف كبيرة';
-    if (!/[a-z]/.test(password)) return '❌ يجب أن تحتوي على أحرف صغيرة';
-    if (!/\d/.test(password)) return '❌ يجب أن تحتوي على أرقام';
-    if (!/[@$!%*?&]/.test(password)) return '❌ يجب أن تحتوي على رموز خاصة (@$!%*?&)';
-    return '✅ كلمة مرور قوية';
+    if (password.length < 8) return 'الحد الأدنى 8 أحرف';
+    if (!/[A-Z]/.test(password)) return 'يجب أحرف كبيرة';
+    if (!/[a-z]/.test(password)) return 'يجب أحرف صغيرة';
+    if (!/\d/.test(password)) return 'يجب أرقام';
+    if (!/[@$!%*?&]/.test(password)) return 'يجب رموز (@$!%*?&)';
+    return 'كلمة مرور قوية';
   };
 
   const handleLogin = async () => {
@@ -135,243 +135,481 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex overflow-hidden" style={{ fontFamily: "'Tajawal', 'Poppins', sans-serif" }}>
-      {/* Left Side - Branding & Features */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-b from-slate-900 via-blue-900 to-black relative overflow-hidden items-center justify-center p-12">
-        {/* Animated background elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 right-20 w-64 h-64 bg-blue-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob"></div>
-          <div className="absolute bottom-20 left-20 w-64 h-64 bg-indigo-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 text-center space-y-8">
-          <div className="space-y-4">
-            <h1 className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900 }}>
-              تحدي الجمعة
-            </h1>
-            <p className="text-xl text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 500 }}>منافسة ثقافية ممتعة وتحديات مثيرة</p>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px',
+      fontFamily: "'Tajawal', 'Poppins', sans-serif"
+    }}>
+      {/* Main Container */}
+      <div style={{
+        display: 'flex',
+        maxWidth: '1200px',
+        width: '100%',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
+        background: '#ffffff',
+        minHeight: '600px'
+      }}>
+        {/* Left Side - Branding */}
+        <div style={{
+          flex: '1',
+          background: 'linear-gradient(135deg, #003262 0%, #1F6AA5 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '60px 40px',
+          color: 'white',
+          textAlign: 'center',
+          minHeight: '600px'
+        }} className="hidden md:flex">
+          {/* Logo/Title */}
+          <div style={{
+            fontSize: '48px',
+            fontWeight: 900,
+            marginBottom: '30px',
+            letterSpacing: '-1px'
+          }}>
+            تحدي الجمعة
           </div>
 
-          {/* Features */}
-          <div className="space-y-4 pt-8">
-            <div className="flex items-center gap-3 text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-              <span className="text-2xl">💡</span>
-              <span>أسئلة متنوعة من مختلف الفئات</span>
-            </div>
-            <div className="flex items-center gap-3 text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-              <span className="text-2xl">🏅</span>
-              <span>تنافس مع الأصدقاء والعائلة</span>
-            </div>
-            <div className="flex items-center gap-3 text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-              <span className="text-2xl">📊</span>
-              <span>تتبع تقدمك وإحصائياتك</span>
-            </div>
-            <div className="flex items-center gap-3 text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-              <span className="text-2xl">🛡️</span>
-              <span>حساب آمن وموثوق تماماً</span>
-            </div>
-          </div>
+          {/* Description */}
+          <p style={{
+            fontSize: '18px',
+            fontWeight: 400,
+            marginBottom: '50px',
+            opacity: 0.9,
+            lineHeight: '1.6'
+          }}>
+            منافسة ثقافية ممتعة مع أصدقائك وعائلتك
+          </p>
 
-          {/* Large emoji */}
-          <div className="text-7xl">🎯</div>
-        </div>
-      </div>
-
-      {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 bg-gradient-to-br from-slate-950 via-slate-900 to-black flex items-center justify-center p-6">
-        <div className="w-full max-w-md">
-          {/* Mobile Header */}
-          <div className="lg:hidden text-center mb-8">
-            <h1 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900 }}>
-              تحدي الجمعة
-            </h1>
-            <p className="text-gray-400 text-sm mt-2" style={{ fontFamily: "'Tajawal', sans-serif" }}>منافسة ثقافية ممتعة</p>
-          </div>
-
-          {/* Form Card */}
-          <div className="space-y-6">
-            {/* Tab Switcher */}
-            <div className="flex gap-2 bg-slate-800 p-1 rounded-lg" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 600 }}>
-              <button
-                onClick={() => {
-                  if (isRegistering) {
-                    setIsRegistering(false);
-                    setError('');
-                  }
-                }}
-                className={`flex-1 py-2.5 px-4 rounded-md font-semibold transition-all ${
-                  !isRegistering
-                    ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white'
-                    : 'text-gray-400 hover:text-gray-200'
-                }`}
-              >
-                دخول
-              </button>
-              <button
-                onClick={() => {
-                  if (!isRegistering) {
-                    setIsRegistering(true);
-                    setError('');
-                  }
-                }}
-                className={`flex-1 py-2.5 px-4 rounded-md font-semibold transition-all ${
-                  isRegistering
-                    ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white'
-                    : 'text-gray-400 hover:text-gray-200'
-                }`}
-              >
-                تسجيل جديد
-              </button>
-            </div>
-
-            {/* Error Alert */}
-            {error && (
-              <div className="bg-red-900/30 border border-red-700/50 rounded-lg p-3.5 flex gap-3" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-                <span className="text-lg flex-shrink-0">❌</span>
-                <p className="text-red-300 text-sm">{error}</p>
-              </div>
-            )}
-
-            {/* Info Alert */}
-            {isRegistering && !error && (
-              <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg p-3.5 flex gap-3" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-                <span className="text-lg flex-shrink-0">✅</span>
-                <div className="text-blue-300 text-sm">
-                  <p>كلمة مرور قوية تحتوي على:</p>
-                  <p className="text-xs mt-1 opacity-80">أحرف كبيرة وصغيرة + أرقام + رموز (@$!%*?&)</p>
+          {/* Features Grid */}
+          <div style={{
+            display: 'grid',
+            gap: '20px',
+            width: '100%',
+            marginBottom: '30px'
+          }}>
+            {[
+              { title: 'أسئلة متنوعة', desc: 'من مختلف الفئات' },
+              { title: 'منافسة عادلة', desc: 'مع الأصدقاء' },
+              { title: 'محفوظ وآمن', desc: 'بيانات مشفرة' }
+            ].map((feature, idx) => (
+              <div key={idx} style={{
+                padding: '16px 20px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: '8px',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                backdropFilter: 'blur(10px)'
+              }}>
+                <div style={{
+                  fontSize: '14px',
+                  fontWeight: 700,
+                  marginBottom: '4px'
+                }}>
+                  {feature.title}
+                </div>
+                <div style={{
+                  fontSize: '12px',
+                  opacity: 0.8
+                }}>
+                  {feature.desc}
                 </div>
               </div>
-            )}
+            ))}
+          </div>
 
-            {/* Form */}
-            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); isRegistering ? handleRegister() : handleLogin(); }} style={{ fontFamily: "'Tajawal', sans-serif" }}>
-              {/* Name Input - Register Only */}
-              {isRegistering && (
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 600 }}>
-                    الاسم الكامل
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="أحمد محمد"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
-                    style={{ fontFamily: "'Tajawal', sans-serif" }}
-                    disabled={isLoading}
-                  />
-                  {name && (name.length < 2 || name.length > 50) && (
-                    <p className="text-red-400 text-xs" style={{ fontFamily: "'Tajawal', sans-serif" }}>الاسم يجب أن يكون بين 2 و 50 حرف</p>
-                  )}
-                </div>
-              )}
+          {/* Decorative Circle */}
+          <div style={{
+            width: '120px',
+            height: '120px',
+            borderRadius: '50%',
+            border: '2px solid rgba(255, 255, 255, 0.3)',
+            marginTop: 'auto',
+            position: 'relative'
+          }}>
+            <div style={{
+              position: 'absolute',
+              width: '80px',
+              height: '80px',
+              borderRadius: '50%',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)'
+            }} />
+            <div style={{
+              position: 'absolute',
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.2)',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)'
+            }} />
+          </div>
+        </div>
 
-              {/* Email Input */}
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 600 }}>
-                  البريد الإلكتروني
+        {/* Right Side - Form */}
+        <div style={{
+          flex: '1',
+          padding: '60px 50px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          background: '#ffffff'
+        }}>
+          {/* Tab Switcher */}
+          <div style={{
+            display: 'flex',
+            gap: '12px',
+            marginBottom: '40px',
+            background: '#f3f4f6',
+            padding: '6px',
+            borderRadius: '8px',
+            fontSize: '14px',
+            fontWeight: 600
+          }}>
+            <button
+              onClick={() => {
+                if (isRegistering) {
+                  setIsRegistering(false);
+                  setError('');
+                }
+              }}
+              style={{
+                flex: 1,
+                padding: '10px 20px',
+                border: 'none',
+                borderRadius: '6px',
+                background: !isRegistering ? '#003262' : 'transparent',
+                color: !isRegistering ? 'white' : '#666',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                fontFamily: "'Tajawal', sans-serif",
+                fontWeight: 600
+              }}
+            >
+              دخول
+            </button>
+            <button
+              onClick={() => {
+                if (!isRegistering) {
+                  setIsRegistering(true);
+                  setError('');
+                }
+              }}
+              style={{
+                flex: 1,
+                padding: '10px 20px',
+                border: 'none',
+                borderRadius: '6px',
+                background: isRegistering ? '#003262' : 'transparent',
+                color: isRegistering ? 'white' : '#666',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                fontFamily: "'Tajawal', sans-serif",
+                fontWeight: 600
+              }}
+            >
+              تسجيل جديد
+            </button>
+          </div>
+
+          {/* Error Alert */}
+          {error && (
+            <div style={{
+              padding: '14px 16px',
+              background: '#fee2e2',
+              border: '1px solid #fecaca',
+              borderRadius: '8px',
+              marginBottom: '24px',
+              color: '#991b1b',
+              fontSize: '13px',
+              fontWeight: 500
+            }}>
+              {error}
+            </div>
+          )}
+
+          {/* Password Strength Indicator */}
+          {isRegistering && password && (
+            <div style={{
+              padding: '12px 16px',
+              background: getPasswordStrengthMessage() === 'كلمة مرور قوية' ? '#dcfce7' : '#fef3c7',
+              border: '1px solid ' + (getPasswordStrengthMessage() === 'كلمة مرور قوية' ? '#86efac' : '#fde68a'),
+              borderRadius: '8px',
+              marginBottom: '24px',
+              color: getPasswordStrengthMessage() === 'كلمة مرور قوية' ? '#166534' : '#92400e',
+              fontSize: '13px',
+              fontWeight: 500
+            }}>
+              {getPasswordStrengthMessage()}
+            </div>
+          )}
+
+          {/* Form Fields */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+            {/* Name Field - Register Only */}
+            {isRegistering && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label style={{
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  color: '#1f2937',
+                  fontFamily: "'Tajawal', sans-serif"
+                }}>
+                  الاسم الكامل
                 </label>
                 <input
-                  type="email"
-                  placeholder={isRegistering ? 'example@email.com' : 'أدخل بريدك الإلكتروني'}
-                  value={emailOrName}
-                  onChange={(e) => setEmailOrName(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
-                  style={{ fontFamily: "'Tajawal', 'Poppins', sans-serif" }}
+                  type="text"
+                  placeholder="أحمد محمد"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   disabled={isLoading}
+                  style={{
+                    padding: '12px 16px',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    letterSpacing: '0.3px',
+                    fontFamily: "'Tajawal', sans-serif",
+                    transition: 'all 0.3s ease',
+                    outline: 'none',
+                    background: '#ffffff',
+                    color: '#1f2937'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#003262';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(0, 50, 98, 0.1)';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = 'none';
+                  }}
                 />
               </div>
+            )}
 
-              {/* Password Input */}
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 600 }}>
-                  كلمة المرور
+            {/* Email Field */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{
+                fontSize: '14px',
+                fontWeight: 600,
+                color: '#1f2937',
+                fontFamily: "'Tajawal', sans-serif"
+              }}>
+                البريد الإلكتروني
+              </label>
+              <input
+                type="email"
+                placeholder="your@email.com"
+                value={emailOrName}
+                onChange={(e) => setEmailOrName(e.target.value)}
+                disabled={isLoading}
+                style={{
+                  padding: '12px 16px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  letterSpacing: '0.3px',
+                  fontFamily: "'Poppins', 'Tajawal', sans-serif",
+                  transition: 'all 0.3s ease',
+                  outline: 'none',
+                  background: '#ffffff',
+                  color: '#1f2937'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#003262';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(0, 50, 98, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db';
+                  e.target.style.boxShadow = 'none';
+                }}
+              />
+            </div>
+
+            {/* Password Field */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{
+                fontSize: '14px',
+                fontWeight: 600,
+                color: '#1f2937',
+                fontFamily: "'Tajawal', sans-serif"
+              }}>
+                كلمة المرور
+              </label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={isLoading}
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px 12px 16px',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    letterSpacing: '2px',
+                    fontFamily: "'Poppins', sans-serif",
+                    transition: 'all 0.3s ease',
+                    outline: 'none',
+                    background: '#ffffff',
+                    color: '#1f2937'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#003262';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(0, 50, 98, 0.1)';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = 'none';
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    color: '#9ca3af',
+                    padding: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Confirm Password - Register Only */}
+            {isRegistering && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label style={{
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  color: '#1f2937',
+                  fontFamily: "'Tajawal', sans-serif"
+                }}>
+                  تأكيد كلمة المرور
                 </label>
-                <div className="relative">
+                <div style={{ position: 'relative' }}>
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showConfirmPassword ? 'text' : 'password'}
                     placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition pr-11"
-                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     disabled={isLoading}
+                    style={{
+                      width: '100%',
+                      padding: '12px 16px 12px 16px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      letterSpacing: '2px',
+                      fontFamily: "'Poppins', sans-serif",
+                      transition: 'all 0.3s ease',
+                      outline: 'none',
+                      background: '#ffffff',
+                      color: '#1f2937'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#003262';
+                      e.target.style.boxShadow = '0 0 0 3px rgba(0, 50, 98, 0.1)';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.boxShadow = 'none';
+                    }}
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute left-3 top-3.5 text-gray-400 hover:text-blue-400 transition"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    style={{
+                      position: 'absolute',
+                      right: '12px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: '#9ca3af',
+                      padding: '4px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-                {isRegistering && password && (
-                  <p className={`text-xs ${getPasswordStrengthMessage().includes('✅') ? 'text-green-400' : 'text-amber-400'}`} style={{ fontFamily: "'Tajawal', sans-serif" }}>
-                    {getPasswordStrengthMessage()}
-                  </p>
-                )}
               </div>
-
-              {/* Confirm Password - Register Only */}
-              {isRegistering && (
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 600 }}>
-                    تأكيد كلمة المرور
-                  </label>
-                  <div className="relative">
-                    <input
-                      type={showConfirmPassword ? 'text' : 'password'}
-                      placeholder="••••••••"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition pr-11"
-                      style={{ fontFamily: "'Poppins', sans-serif" }}
-                      disabled={isLoading}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute left-3 top-3.5 text-gray-400 hover:text-blue-400 transition"
-                    >
-                      {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                    </button>
-                  </div>
-                  {confirmPassword && password === confirmPassword && (
-                    <p className="text-green-400 text-xs" style={{ fontFamily: "'Tajawal', sans-serif" }}>✅ كلمات المرور متطابقة</p>
-                  )}
-                  {confirmPassword && password !== confirmPassword && (
-                    <p className="text-red-400 text-xs" style={{ fontFamily: "'Tajawal', sans-serif" }}>❌ كلمات المرور غير متطابقة</p>
-                  )}
-                </div>
-              )}
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold rounded-lg transition-all transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 700 }}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <span className="animate-spin">⏳</span>
-                    جاري المعالجة...
-                  </>
-                ) : (
-                  <>
-                    {isRegistering ? <UserPlus size={18} /> : <LogIn size={18} />}
-                    {isRegistering ? 'إنشاء الحساب' : 'دخول'}
-                  </>
-                )}
-              </button>
-            </form>
-
-            {/* Footer */}
-            <p className="text-center text-gray-500 text-xs pt-4" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-              بالاستخدام أنت توافق على سياسة الخصوصية وشروط الاستخدام
-            </p>
+            )}
           </div>
+
+          {/* Submit Button */}
+          <button
+            onClick={isRegistering ? handleRegister : handleLogin}
+            disabled={isLoading}
+            style={{
+              marginTop: '40px',
+              padding: '14px 32px',
+              background: isLoading ? '#ccc' : 'linear-gradient(135deg, #E25822 0%, #FF8A4C 100%)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '16px',
+              fontWeight: 700,
+              cursor: isLoading ? 'not-allowed' : 'pointer',
+              transition: 'all 0.3s ease',
+              fontFamily: "'Tajawal', sans-serif",
+              boxShadow: '0 4px 12px rgba(226, 88, 34, 0.2)',
+              transform: 'translateY(0)',
+              opacity: isLoading ? 0.7 : 1
+            }}
+            onMouseOver={(e) => {
+              if (!isLoading) {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 8px 20px rgba(226, 88, 34, 0.35)';
+              }
+            }}
+            onMouseOut={(e) => {
+              if (!isLoading) {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 12px rgba(226, 88, 34, 0.2)';
+              }
+            }}
+          >
+            {isLoading ? 'جاري المعالجة...' : (isRegistering ? 'إنشاء الحساب' : 'دخول')}
+          </button>
+
+          {/* Footer */}
+          <p style={{
+            marginTop: '24px',
+            textAlign: 'center',
+            fontSize: '12px',
+            color: '#9ca3af',
+            fontFamily: "'Tajawal', sans-serif"
+          }}>
+            بالاستخدام أنت توافق على سياسة الخصوصية وشروط الاستخدام
+          </p>
         </div>
       </div>
     </div>

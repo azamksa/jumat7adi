@@ -10,7 +10,6 @@ const QuestionPage = ({
   togglePauseTimer,
   resetTimer,
   setGameState,
-  setShowAnswer,
 }) => {
   
   // معالجة حالة عدم وجود سؤال
@@ -114,22 +113,6 @@ const QuestionPage = ({
           }}
         >
           العودة
-        </button>
-          }}
-          onMouseOver={(e) => {
-            e.target.style.background = 'linear-gradient(135deg, rgba(255, 138, 76, 0.3), rgba(226, 88, 34, 0.25))';
-            e.target.style.border = '2px solid rgba(255, 138, 76, 0.5)';
-            e.target.style.boxShadow = '0 12px 30px rgba(226, 88, 34, 0.35)';
-            e.target.style.transform = 'translateY(-2px)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.background = 'linear-gradient(135deg, rgba(255, 138, 76, 0.2), rgba(226, 88, 34, 0.15))';
-            e.target.style.border = '2px solid rgba(255, 138, 76, 0.3)';
-            e.target.style.boxShadow = '0 8px 20px rgba(226, 88, 34, 0.2)';
-            e.target.style.transform = 'translateY(0)';
-          }}
-        >
-          ← العودة
         </button>
 
         {/* Timer Circle with Control Buttons Around It */}
@@ -429,46 +412,7 @@ const QuestionPage = ({
         </div>
       </div>
 
-      {/* Control buttons - REMOVED, now in timer circle */}
 
-      {/* Show Answer Button - HIDDEN */}
-      {false && (
-      <button
-        onClick={() => {
-          setShowAnswer(true);
-          setGameState('answer');
-        }}
-        style={{
-          position: 'fixed',
-          bottom: '100px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: 'linear-gradient(45deg, #4CAF50, #45a049)',
-          border: 'none',
-          borderRadius: '50px',
-          color: 'white',
-          padding: '16px 50px',
-          fontSize: '1.3rem',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          transition: 'all 0.3s ease',
-          boxShadow: '0 6px 20px rgba(76, 175, 80, 0.3)',
-          backdropFilter: 'blur(10px)',
-          whiteSpace: 'nowrap',
-          zIndex: 100
-        }}
-        onMouseOver={(e) => {
-          e.target.style.transform = 'translateX(-50%) translateY(-2px)';
-          e.target.style.boxShadow = '0 8px 25px rgba(76, 175, 80, 0.4)';
-        }}
-        onMouseOut={(e) => {
-          e.target.style.transform = 'translateX(-50%) translateY(0)';
-          e.target.style.boxShadow = '0 6px 20px rgba(76, 175, 80, 0.3)';
-        }}
-      >
-        عرض الإجابة
-      </button>
-      )}
 
     {/* CSS Animations */}
     <style jsx>{`
