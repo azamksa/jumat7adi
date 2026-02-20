@@ -45,9 +45,30 @@ export class PackageTracker {
 
   static getPackageInfo(packageLevel) {
     const packages = {
-      1: { name: 'الحزمة الأساسية', difficulty: 'سهل', color: '#4CAF50' },
-      2: { name: 'الحزمة المتوسطة', difficulty: 'متوسط', color: '#FF9800' },
-      3: { name: 'الحزمة المتقدمة', difficulty: 'صعب', color: '#F44336' }
+      1: { 
+        name: 'الحزمة الأساسية', 
+        difficulty: 'سهل', 
+        color: '#4CAF50',
+        description: 'ابدأ رحلتك مع مجموعة من الأسئلة السهلة والممتعة',
+        totalQuestions: 50,
+        remainingQuestions: 50
+      },
+      2: { 
+        name: 'الحزمة المتوسطة', 
+        difficulty: 'متوسط', 
+        color: '#FF9800',
+        description: 'تحدي نفسك مع أسئلة متوسطة الصعوبة',
+        totalQuestions: 100,
+        remainingQuestions: 100
+      },
+      3: { 
+        name: 'الحزمة المتقدمة', 
+        difficulty: 'صعب', 
+        color: '#F44336',
+        description: 'للخبراء فقط - أسئلة صعبة وتحديات حقيقية',
+        totalQuestions: 150,
+        remainingQuestions: 150
+      }
     };
     
     return packages[Math.min(packageLevel, 3)] || packages[1];

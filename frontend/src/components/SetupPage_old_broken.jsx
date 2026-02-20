@@ -7,7 +7,8 @@ import {
   Grid,
   TextField,
   Button,
-  Chip
+  Chip,
+  Paper
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -30,7 +31,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   }
 }));
 
-const CategoryButton = styled(Button)(({ selected }) => ({
+const CategoryButton = styled(Button)(({ theme, selected }) => ({
   width: '220px',
   height: '280px',
   borderRadius: '20px',
@@ -87,6 +88,7 @@ const SetupPage = ({
 
   useEffect(() => {
     if (user?.id) {
+      // جلب مستوى الحزمة للمستخدم
       PackageTracker.getUserPackageLevel(user.id)
         .then(level => setUserPackageLevel(level));
     }
@@ -109,7 +111,9 @@ const SetupPage = ({
       return;
     }
 
+    // زيادة مستوى الحزمة بعد بدء اللعب
     await PackageTracker.incrementUserPackageLevel(currentUser.id);
+    
     onStartGame();
   };
 
@@ -179,8 +183,8 @@ const SetupPage = ({
         />
       )}
 
-      {/* العنوان الرئيسي */}
       <Box textAlign="center" mb={8} pt={6}>
+        {/* العنوان الرئيسي - تصميم احترافي */}
         <Box sx={{ 
           position: 'relative',
           mb: 6,
@@ -202,6 +206,7 @@ const SetupPage = ({
             تحدي الجمعة
           </Typography>
           
+          {/* خط ناعم تحت العنوان */}
           <Box sx={{
             width: '80px',
             height: '3px',
@@ -211,17 +216,17 @@ const SetupPage = ({
           }} />
         </Box>
 
-        {/* معلومات الحزمة */}
+        {/* معلومات الحزمة - تصميم فخم */}
         {currentUser && (
           <Box sx={{
-            background: 'linear-gradient(135deg, rgba(0, 50, 98, 0.15), rgba(226, 88, 34, 0.1))',
-            border: '2px solid rgba(255, 138, 76, 0.3)',
-            borderRadius: '16px',
-            padding: '32px 40px',
+            background: 'linear-gradient(135deg, rgba(0, 50, 98, 0.04), rgba(226, 88, 34, 0.04))',
+            border: '1px solid rgba(0, 50, 98, 0.15)',
+            borderRadius: '12px',
+            padding: '28px 40px',
             margin: '50px auto',
-            maxWidth: '520px',
-            backdropFilter: 'blur(15px)',
-            boxShadow: '0 15px 40px rgba(0, 0, 0, 0.2)',
+            maxWidth: '480px',
+            backdropFilter: 'blur(8px)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
             transition: 'all 0.4s ease'
           }}>
             <Typography 
@@ -252,160 +257,161 @@ const SetupPage = ({
             <Typography 
               variant="body2" 
               sx={{
-                color: '#D0D0D0',
+                color: '#666',
                 fontSize: '0.95rem',
-                lineHeight: 1.6,
-                mb: 3
+                lineHeight: 1.6
               }}
             >
               {packageInfo.description}
             </Typography>
-            <Box sx={{ display: 'flex', gap: 3 }}>
+            <Box sx={{ mt: 3, display: 'flex', gap: 3 }}>
               <Box>
-                <Typography sx={{ color: '#A8A8A8', fontSize: '0.85rem', mb: 0.5 }}>
+                <Typography sx={{ color: '#999', fontSize: '0.85rem', mb: 0.5 }}>
                   النقاط المتبقية
                 </Typography>
-                <Typography sx={{ color: '#FF8A4C', fontWeight: 700, fontSize: '1.4rem' }}>
+                <Typography sx={{ color: '#003262', fontWeight: 700, fontSize: '1.4rem' }}>
                   {packageInfo.remainingQuestions}
                 </Typography>
               </Box>
-              <Box sx={{ borderLeft: '1px solid rgba(255, 138, 76, 0.3)', pl: 3 }}>
-                <Typography sx={{ color: '#A8A8A8', fontSize: '0.85rem', mb: 0.5 }}>
+              <Box sx={{ borderLeft: '1px solid rgba(0, 50, 98, 0.2)', pl: 3 }}>
+                <Typography sx={{ color: '#999', fontSize: '0.85rem', mb: 0.5 }}>
                   الإجمالي المتاح
                 </Typography>
-                <Typography sx={{ color: '#4CAF50', fontWeight: 700, fontSize: '1.4rem' }}>
+                <Typography sx={{ color: '#1F6AA5', fontWeight: 700, fontSize: '1.4rem' }}>
                   {packageInfo.totalQuestions}
                 </Typography>
               </Box>
             </Box>
           </Box>
         )}
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                color: '#e0e0e0',
+                fontSize: '1rem',
+                display: 'flex',
+                justifyContent: 'center',
+                gap: 2
+              }}
+            >
+              <span>📊 مستوى الصعوبة:</span>
+              <strong>{packageInfo.difficulty}</strong>
+            </Typography>
+          </Box>
+        )}
 
-        {/* قسم قواعد اللعبة */}
+        {/* قسم المعلومات مع تصميم بطاقات */}
         <Box sx={{ 
-          maxWidth: 1000, 
-          margin: '60px auto 0', 
-          padding: '0 20px',
-          width: '100%'
+          maxWidth: 800, 
+          margin: '40px auto 0', 
+          padding: 0
         }}>
           <Typography 
             variant="h5" 
             sx={{
               color: '#FF8A4C',
               fontWeight: 700,
-              fontSize: '1.6rem',
-              mb: 5,
+              fontSize: '1.4rem',
+              mb: 4,
               textAlign: 'center'
             }}
           >
-            قواعد اللعبة
+            📋 قواعد اللعبة
           </Typography>
           
-          <Grid container spacing={4} justifyContent="center">
-            <Grid item xs={12} sm={6} md={5.5}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
               <Box sx={{
-                background: 'linear-gradient(135deg, rgba(31, 106, 165, 0.25), rgba(0, 50, 98, 0.15))',
-                border: '2px solid rgba(31, 106, 165, 0.4)',
-                borderRadius: '18px',
-                padding: '28px 24px',
-                minHeight: '200px',
-                backdropFilter: 'blur(15px)',
+                background: 'linear-gradient(135deg, rgba(31, 106, 165, 0.15), rgba(0, 50, 98, 0.1))',
+                border: '2px solid rgba(31, 106, 165, 0.3)',
+                borderRadius: '15px',
+                padding: '20px',
+                height: '100%',
+                backdropFilter: 'blur(10px)',
                 transition: 'all 0.3s ease',
-                display: 'flex',
-                flexDirection: 'column',
                 '&:hover': {
-                  transform: 'translateY(-8px)',
-                  boxShadow: '0 20px 45px rgba(31, 106, 165, 0.3)',
-                  border: '2px solid rgba(31, 106, 165, 0.6)',
-                  background: 'linear-gradient(135deg, rgba(31, 106, 165, 0.35), rgba(0, 50, 98, 0.25))'
+                  transform: 'translateY(-5px)',
+                  boxShadow: '0 15px 35px rgba(31, 106, 165, 0.25)',
+                  border: '2px solid rgba(31, 106, 165, 0.5)'
                 }
               }}>
-                <Typography variant="h6" sx={{color: '#FF8A4C', fontWeight: 700, mb: 1.5, fontSize: '1.1rem'}}>
-                  آلية اللعب
+                <Typography variant="h6" sx={{color: '#FF8A4C', fontWeight: 700, mb: 1.5, display: 'flex', alignItems: 'center', gap: 1}}>
+                  🎯 آلية اللعب
                 </Typography>
-                <Typography variant="body2" sx={{color: '#E8E8E8', lineHeight: 1.8, fontSize: '0.95rem'}}>
-                  منافسة ثقافية شيقة بين فريقين، حيث يختار كل فريق الفئات ويجيب على الأسئلة
+                <Typography variant="body2" sx={{color: '#e0e0e0', lineHeight: 1.8}}>
+                  منافسة ثقافية شيّقة بين فريقين، حيث يختار كل فريق الفئات ويجيب على الأسئلة لكسب النقاط
                 </Typography>
               </Box>
             </Grid>
             
-            <Grid item xs={12} sm={6} md={5.5}>
+            <Grid item xs={12} sm={6}>
               <Box sx={{
-                background: 'linear-gradient(135deg, rgba(226, 88, 34, 0.25), rgba(255, 138, 76, 0.15))',
-                border: '2px solid rgba(255, 138, 76, 0.4)',
-                borderRadius: '18px',
-                padding: '28px 24px',
-                minHeight: '200px',
-                backdropFilter: 'blur(15px)',
+                background: 'linear-gradient(135deg, rgba(226, 88, 34, 0.15), rgba(255, 138, 76, 0.1))',
+                border: '2px solid rgba(255, 138, 76, 0.3)',
+                borderRadius: '15px',
+                padding: '20px',
+                height: '100%',
+                backdropFilter: 'blur(10px)',
                 transition: 'all 0.3s ease',
-                display: 'flex',
-                flexDirection: 'column',
                 '&:hover': {
-                  transform: 'translateY(-8px)',
-                  boxShadow: '0 20px 45px rgba(226, 88, 34, 0.3)',
-                  border: '2px solid rgba(255, 138, 76, 0.6)',
-                  background: 'linear-gradient(135deg, rgba(226, 88, 34, 0.35), rgba(255, 138, 76, 0.25))'
+                  transform: 'translateY(-5px)',
+                  boxShadow: '0 15px 35px rgba(226, 88, 34, 0.25)',
+                  border: '2px solid rgba(255, 138, 76, 0.5)'
                 }
               }}>
-                <Typography variant="h6" sx={{color: '#FF8A4C', fontWeight: 700, mb: 1.5, fontSize: '1.1rem'}}>
-                  الوقت
+                <Typography variant="h6" sx={{color: '#FF8A4C', fontWeight: 700, mb: 1.5, display: 'flex', alignItems: 'center', gap: 1}}>
+                  ⏱️ الوقت
                 </Typography>
-                <Typography variant="body2" sx={{color: '#E8E8E8', lineHeight: 1.8, fontSize: '0.95rem'}}>
-                  60 ثانية للفريق، و30 ثانية للفريق المنافس
+                <Typography variant="body2" sx={{color: '#e0e0e0', lineHeight: 1.8}}>
+                  60 ثانية للفريق الذي يختار الفئة، و30 ثانية للفريق المنافس للإجابة
                 </Typography>
               </Box>
             </Grid>
 
-            <Grid item xs={12} sm={6} md={5.5}>
+            <Grid item xs={12} sm={6}>
               <Box sx={{
-                background: 'linear-gradient(135deg, rgba(31, 106, 165, 0.25), rgba(0, 50, 98, 0.15))',
-                border: '2px solid rgba(31, 106, 165, 0.4)',
-                borderRadius: '18px',
-                padding: '28px 24px',
-                minHeight: '200px',
-                backdropFilter: 'blur(15px)',
+                background: 'linear-gradient(135deg, rgba(31, 106, 165, 0.15), rgba(0, 50, 98, 0.1))',
+                border: '2px solid rgba(31, 106, 165, 0.3)',
+                borderRadius: '15px',
+                padding: '20px',
+                height: '100%',
+                backdropFilter: 'blur(10px)',
                 transition: 'all 0.3s ease',
-                display: 'flex',
-                flexDirection: 'column',
                 '&:hover': {
-                  transform: 'translateY(-8px)',
-                  boxShadow: '0 20px 45px rgba(31, 106, 165, 0.3)',
-                  border: '2px solid rgba(31, 106, 165, 0.6)',
-                  background: 'linear-gradient(135deg, rgba(31, 106, 165, 0.35), rgba(0, 50, 98, 0.25))'
+                  transform: 'translateY(-5px)',
+                  boxShadow: '0 15px 35px rgba(31, 106, 165, 0.25)',
+                  border: '2px solid rgba(31, 106, 165, 0.5)'
                 }
               }}>
-                <Typography variant="h6" sx={{color: '#FF8A4C', fontWeight: 700, mb: 1.5, fontSize: '1.1rem'}}>
-                  الفئات
+                <Typography variant="h6" sx={{color: '#FF8A4C', fontWeight: 700, mb: 1.5, display: 'flex', alignItems: 'center', gap: 1}}>
+                  🎲 الفئات
                 </Typography>
-                <Typography variant="body2" sx={{color: '#E8E8E8', lineHeight: 1.8, fontSize: '0.95rem'}}>
-                  اختر 6 فئات مختلفة من الخيارات المتنوعة
+                <Typography variant="body2" sx={{color: '#e0e0e0', lineHeight: 1.8}}>
+                  اختر 6 فئات مختلفة من بين خيارات متنوعة لإثراء التجربة
                 </Typography>
               </Box>
             </Grid>
             
-            <Grid item xs={12} sm={6} md={5.5}>
+            <Grid item xs={12} sm={6}>
               <Box sx={{
-                background: 'linear-gradient(135deg, rgba(226, 88, 34, 0.25), rgba(255, 138, 76, 0.15))',
-                border: '2px solid rgba(255, 138, 76, 0.4)',
-                borderRadius: '18px',
-                padding: '28px 24px',
-                minHeight: '200px',
-                backdropFilter: 'blur(15px)',
+                background: 'linear-gradient(135deg, rgba(226, 88, 34, 0.15), rgba(255, 138, 76, 0.1))',
+                border: '2px solid rgba(255, 138, 76, 0.3)',
+                borderRadius: '15px',
+                padding: '20px',
+                height: '100%',
+                backdropFilter: 'blur(10px)',
                 transition: 'all 0.3s ease',
-                display: 'flex',
-                flexDirection: 'column',
                 '&:hover': {
-                  transform: 'translateY(-8px)',
-                  boxShadow: '0 20px 45px rgba(226, 88, 34, 0.3)',
-                  border: '2px solid rgba(255, 138, 76, 0.6)',
-                  background: 'linear-gradient(135deg, rgba(226, 88, 34, 0.35), rgba(255, 138, 76, 0.25))'
+                  transform: 'translateY(-5px)',
+                  boxShadow: '0 15px 35px rgba(226, 88, 34, 0.25)',
+                  border: '2px solid rgba(255, 138, 76, 0.5)'
                 }
               }}>
-                <Typography variant="h6" sx={{color: '#FF8A4C', fontWeight: 700, mb: 1.5, fontSize: '1.1rem'}}>
-                  الفائز
+                <Typography variant="h6" sx={{color: '#FF8A4C', fontWeight: 700, mb: 1.5, display: 'flex', alignItems: 'center', gap: 1}}>
+                  🏆 الفائز
                 </Typography>
-                <Typography variant="body2" sx={{color: '#E8E8E8', lineHeight: 1.8, fontSize: '0.95rem'}}>
-                  الفريق الذي يجمع أكبر عدد من النقاط يفوز
+                <Typography variant="body2" sx={{color: '#e0e0e0', lineHeight: 1.8}}>
+                  الفريق الذي يجمع أكبر عدد من النقاط هو الفائز بالمسابقة
                 </Typography>
               </Box>
             </Grid>
@@ -413,7 +419,7 @@ const SetupPage = ({
         </Box>
       </Box>
 
-      {/* أسماء الفرق */}
+      {/* باقي المحتوى كما هو... */}
       <StyledCard>
         <Typography 
           variant="h6" 
@@ -432,9 +438,87 @@ const SetupPage = ({
           أسماء الفرق
         </Typography>
         
-        <Grid container spacing={3}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 3 }}>
+          <TextField
+            label="الفريق الأول"
+            value={teams.team1}
+            onChange={(e) => setTeams({ ...teams, team1: e.target.value })}
+            fullWidth
+            variant="outlined"
+            size="medium"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderColor: '#E8E8E8',
+                backgroundColor: '#FAFAFA',
+                '& fieldset': {
+                  borderColor: '#E0E0E0',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#1F6AA5',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#1F6AA5',
+                  borderWidth: '2px',
+                }
+              },
+              '& .MuiInputBase-input': {
+                fontSize: '1rem',
+                fontWeight: 500,
+                color: '#333',
+              },
+              '& .MuiInputLabel-root': {
+                color: '#999',
+                fontSize: '0.95rem',
+              }
+            }}
+          />
+          
+          <TextField
+            label="الفريق الثاني"
+            value={teams.team2}
+            onChange={(e) => setTeams({ ...teams, team2: e.target.value })}
+            fullWidth
+            variant="outlined"
+            size="medium"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderColor: '#E8E8E8',
+                backgroundColor: '#FAFAFA',
+                '& fieldset': {
+                  borderColor: '#E0E0E0',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#E25822',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#E25822',
+                  borderWidth: '2px',
+                }
+              },
+              '& .MuiInputBase-input': {
+                fontSize: '1rem',
+                fontWeight: 500,
+                color: '#333',
+              },
+              '& .MuiInputLabel-root': {
+                color: '#999',
+                fontSize: '0.95rem',
+              }
+            }}
+          />
+        </Box>
+      </StyledCard>
+        <Grid container spacing={4}>
           <Grid item xs={12} md={6}>
-            <Box>
+            <Box sx={{
+              position: 'relative',
+              '&:hover': {
+                '& .team-input': {
+                  borderColor: '#1F6AA5',
+                  boxShadow: '0 0 20px rgba(31, 106, 165, 0.3), inset 0 0 10px rgba(31, 106, 165, 0.1)'
+                }
+              }
+            }}>
               <Typography 
                 variant="subtitle1" 
                 sx={{
@@ -451,12 +535,15 @@ const SetupPage = ({
                 placeholder="أدخل اسم فريقك..."
                 value={teams.team1}
                 onChange={(e) => onTeamNameChange('team1', e.target.value)}
+                className="team-input"
                 sx={{
                   '& .MuiOutlinedInput-root': {
-                    color: '#333',
+                    color: 'white',
                     fontSize: '1.1rem',
                     borderRadius: '15px',
-                    backgroundColor: '#FAFAFA',
+                    '@media (max-width: 600px)': {
+                      fontSize: '1rem'
+                    },
                     '& fieldset': { 
                       borderColor: 'rgba(31, 106, 165, 0.3)',
                       borderWidth: '2px',
@@ -471,15 +558,27 @@ const SetupPage = ({
                     }
                   },
                   '& .MuiInputBase-input::placeholder': {
-                    color: 'rgba(51, 51, 51, 0.4)',
+                    color: 'rgba(255, 255, 255, 0.4)',
                     opacity: 1
+                  },
+                  '& .MuiInputLabel-root': { 
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    fontSize: '1rem'
                   }
                 }}
               />
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Box>
+            <Box sx={{
+              position: 'relative',
+              '&:hover': {
+                '& .team-input': {
+                  borderColor: '#E25822',
+                  boxShadow: '0 0 20px rgba(226, 88, 34, 0.3), inset 0 0 10px rgba(226, 88, 34, 0.1)'
+                }
+              }
+            }}>
               <Typography 
                 variant="subtitle1" 
                 sx={{
@@ -496,12 +595,15 @@ const SetupPage = ({
                 placeholder="أدخل اسم فريقك..."
                 value={teams.team2}
                 onChange={(e) => onTeamNameChange('team2', e.target.value)}
+                className="team-input"
                 sx={{
                   '& .MuiOutlinedInput-root': {
-                    color: '#333',
+                    color: 'white',
                     fontSize: '1.1rem',
                     borderRadius: '15px',
-                    backgroundColor: '#FAFAFA',
+                    '@media (max-width: 600px)': {
+                      fontSize: '1rem'
+                    },
                     '& fieldset': { 
                       borderColor: 'rgba(226, 88, 34, 0.3)',
                       borderWidth: '2px',
@@ -516,8 +618,12 @@ const SetupPage = ({
                     }
                   },
                   '& .MuiInputBase-input::placeholder': {
-                    color: 'rgba(51, 51, 51, 0.4)',
+                    color: 'rgba(255, 255, 255, 0.4)',
                     opacity: 1
+                  },
+                  '& .MuiInputLabel-root': { 
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    fontSize: '1rem'
                   }
                 }}
               />
@@ -556,7 +662,7 @@ const SetupPage = ({
             border: '2px solid rgba(255, 138, 76, 0.3)'
           }}
         >
-          📊 اختر 6 فئات ({selectedCategories.length} / 6)
+          📊 اختر 6 فئات من القائمة أدناه ({selectedCategories.length} / 6)
         </Typography>
         
         <Grid container spacing={3} sx={{ justifyContent: 'center' }}>
@@ -651,7 +757,6 @@ const SetupPage = ({
         </Grid>
       </StyledCard>
 
-      {/* الفئات المختارة */}
       {selectedCategories.length > 0 && (
         <StyledCard>
           <Typography 
@@ -673,9 +778,50 @@ const SetupPage = ({
             display="flex" 
             flexWrap="wrap" 
             gap={2}
+            justifyContent="flex-start"
+          >
+            {selectedCategories.map((id, index) => {
+              const category = Object.values(basicCategories)
+                .flatMap(cat => cat.subcategories)
+                .find(sub => sub.id === id);
+              return (
+                <Chip
+                  key={id}
+                  label={category?.name}
+                  onDelete={() => onCategorySelection(id)}
+                  deleteIcon={<DeleteIcon />}
+                  sx={{
+                    background: 'linear-gradient(135deg, rgba(31, 106, 165, 0.08), rgba(226, 88, 34, 0.06))',
+                    color: '#333',
+                    fontSize: '0.95rem',
+                    padding: '6px 4px',
+                    fontWeight: 500,
+                    border: '1px solid rgba(0, 50, 98, 0.15)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, rgba(31, 106, 165, 0.12), rgba(226, 88, 34, 0.1))',
+                      border: '1px solid rgba(226, 88, 34, 0.3)',
+                    },
+                    '& .MuiChip-deleteIcon': {
+                      color: '#999',
+                      '&:hover': {
+                        color: '#E25822'
+                      }
+                    }
+                  }}
+                />
+              );
+            })}
+          </Box>
+        </StyledCard>
+      )}
+          <Box 
+            display="flex" 
+            flexWrap="wrap" 
+            gap={2}
             justifyContent="center"
           >
-            {selectedCategories.map((id) => {
+            {selectedCategories.map((id, index) => {
               const category = Object.values(basicCategories)
                 .flatMap(cat => cat.subcategories)
                 .find(sub => sub.id === id);
@@ -713,7 +859,7 @@ const SetupPage = ({
         </StyledCard>
       )}
 
-      {/* زر البدء */}
+      {/* زر البدء - تصميم فخم */}
       <Box 
         textAlign="center" 
         mt={8} 
@@ -768,7 +914,7 @@ const SetupPage = ({
           >
             {!teams.team1 || !teams.team2 
               ? 'يرجى إدخال أسماء الفريقين' 
-              : `اختر ${6 - selectedCategories.length} فئة أخرى`}
+              : `اختر ${6 - selectedCategories.length} فئة أخرى لمتابعة`}
           </Typography>
         )}
       </Box>
@@ -797,6 +943,7 @@ const SetupPage = ({
         </Box>
       )}
 
+      {/* نافذة تعديل البيانات */}
       <UserProfileModal
         open={showProfileModal}
         onClose={() => setShowProfileModal(false)}
@@ -812,9 +959,9 @@ const SetupPage = ({
         borderTop: '1px solid rgba(0, 50, 98, 0.1)',
         backdropFilter: 'blur(8px)',
         marginTop: '80px'
-      }}>
+        }}>
         <Typography variant="body2" sx={{color: 'rgba(0, 0, 0, 0.6)', fontSize: '0.9rem', mb: 1, fontWeight: 500}}>
-          تحدي الجمعة - اختبر معلומات الدوري السعودي
+          تحدي الجمعة - اختبر معلومات الدوري السعودي
         </Typography>
         <Typography variant="caption" sx={{color: 'rgba(0, 0, 0, 0.4)', fontSize: '0.8rem', fontWeight: 400}}>
           جميع الحقوق محفوظة © 2024

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, User, LogIn, UserPlus } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from 'lucide-react';
 
 const Login = ({ onLogin, onRegister, error, setError }) => {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -27,12 +27,12 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
 
   const getPasswordStrengthMessage = () => {
     if (!password) return '';
-    if (password.length < 8) return '❌ الحد الأدنى 8 أحرف';
-    if (!/[A-Z]/.test(password)) return '❌ يجب أن تحتوي على أحرف كبيرة';
-    if (!/[a-z]/.test(password)) return '❌ يجب أن تحتوي على أحرف صغيرة';
-    if (!/\d/.test(password)) return '❌ يجب أن تحتوي على أرقام';
-    if (!/[@$!%*?&]/.test(password)) return '❌ يجب أن تحتوي على رموز خاصة (@$!%*?&)';
-    return '✅ كلمة مرور قوية';
+    if (password.length < 8) return 'الحد الأدنى 8 أحرف';
+    if (!/[A-Z]/.test(password)) return 'يجب أن تحتوي على أحرف كبيرة';
+    if (!/[a-z]/.test(password)) return 'يجب أن تحتوي على أحرف صغيرة';
+    if (!/\d/.test(password)) return 'يجب أن تحتوي على أرقام';
+    if (!/[@$!%*?&]/.test(password)) return 'يجب أن تحتوي على رموز خاصة';
+    return 'كلمة مرور قوية';
   };
 
   const handleLogin = async () => {
@@ -69,7 +69,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
       }
     } catch (error) {
       console.error('Network Error:', error);
-      setError('فشل في الاتصال بالخادم');
+      setError('فشل في الاتصال بالخادم. تأكد من تشغيل الخادم على http://localhost:5000');
     } finally {
       setIsLoading(false);
     }
@@ -128,250 +128,203 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
       }
     } catch (error) {
       console.error('Network Error:', error);
-      setError('فشل في الاتصال بالخادم');
+      setError('فشل في الاتصال بالخادم. تأكد من تشغيل الخادم على http://localhost:5000');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-black flex overflow-hidden" style={{ fontFamily: "'Tajawal', 'Poppins', sans-serif" }}>
-      {/* Left Side - Branding & Features */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-b from-slate-900 via-blue-900 to-black relative overflow-hidden items-center justify-center p-12">
-        {/* Animated background elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 right-20 w-64 h-64 bg-blue-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob"></div>
-          <div className="absolute bottom-20 left-20 w-64 h-64 bg-indigo-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-slate-900 to-slate-950 flex items-center justify-center p-4" style={{ fontFamily: "'Tajawal', 'Poppins', sans-serif" }}>
+      <div className="w-full max-w-md">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-white mb-2">تحدي الجمعة</h1>
+          <p className="text-gray-400 text-sm">منافسة ثقافية ممتعة وتحديات مثيرة</p>
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 text-center space-y-8">
-          <div className="space-y-4">
-            <h1 className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900 }}>
-              تحدي الجمعة
-            </h1>
-            <p className="text-xl text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 500 }}>منافسة ثقافية ممتعة وتحديات مثيرة</p>
+        {/* Main Card */}
+        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+          {/* Tab Navigation */}
+          <div className="flex border-b border-gray-200">
+            <button
+              onClick={() => {
+                setIsRegistering(false);
+                setError('');
+              }}
+              className={`flex-1 py-4 px-6 font-semibold text-sm transition-all ${
+                !isRegistering
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              تسجيل الدخول
+            </button>
+            <button
+              onClick={() => {
+                setIsRegistering(true);
+                setError('');
+              }}
+              className={`flex-1 py-4 px-6 font-semibold text-sm transition-all ${
+                isRegistering
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              إنشاء حساب
+            </button>
           </div>
 
-          {/* Features */}
-          <div className="space-y-4 pt-8">
-            <div className="flex items-center gap-3 text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-              <span className="text-2xl">💡</span>
-              <span>أسئلة متنوعة من مختلف الفئات</span>
-            </div>
-            <div className="flex items-center gap-3 text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-              <span className="text-2xl">🏅</span>
-              <span>تنافس مع الأصدقاء والعائلة</span>
-            </div>
-            <div className="flex items-center gap-3 text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-              <span className="text-2xl">📊</span>
-              <span>تتبع تقدمك وإحصائياتك</span>
-            </div>
-            <div className="flex items-center gap-3 text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-              <span className="text-2xl">🛡️</span>
-              <span>حساب آمن وموثوق تماماً</span>
-            </div>
-          </div>
-
-          {/* Large emoji */}
-          <div className="text-7xl">🎯</div>
-        </div>
-      </div>
-
-      {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 bg-gradient-to-br from-slate-950 via-slate-900 to-black flex items-center justify-center p-6">
-        <div className="w-full max-w-md">
-          {/* Mobile Header */}
-          <div className="lg:hidden text-center mb-8">
-            <h1 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900 }}>
-              تحدي الجمعة
-            </h1>
-            <p className="text-gray-400 text-sm mt-2" style={{ fontFamily: "'Tajawal', sans-serif" }}>منافسة ثقافية ممتعة</p>
-          </div>
-
-          {/* Form Card */}
-          <div className="space-y-6">
-            {/* Tab Switcher */}
-            <div className="flex gap-2 bg-slate-800 p-1 rounded-lg" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 600 }}>
-              <button
-                onClick={() => {
-                  if (isRegistering) {
-                    setIsRegistering(false);
-                    setError('');
-                  }
-                }}
-                className={`flex-1 py-2.5 px-4 rounded-md font-semibold transition-all ${
-                  !isRegistering
-                    ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white'
-                    : 'text-gray-400 hover:text-gray-200'
-                }`}
-              >
-                دخول
-              </button>
-              <button
-                onClick={() => {
-                  if (!isRegistering) {
-                    setIsRegistering(true);
-                    setError('');
-                  }
-                }}
-                className={`flex-1 py-2.5 px-4 rounded-md font-semibold transition-all ${
-                  isRegistering
-                    ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white'
-                    : 'text-gray-400 hover:text-gray-200'
-                }`}
-              >
-                تسجيل جديد
-              </button>
-            </div>
-
-            {/* Error Alert */}
+          {/* Form Content */}
+          <div className="p-8">
+            {/* Error Message */}
             {error && (
-              <div className="bg-red-900/30 border border-red-700/50 rounded-lg p-3.5 flex gap-3" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-                <span className="text-lg flex-shrink-0">❌</span>
-                <p className="text-red-300 text-sm">{error}</p>
+              <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded">
+                <p className="text-red-700 text-sm font-medium">{error}</p>
               </div>
             )}
 
-            {/* Info Alert */}
-            {isRegistering && !error && (
-              <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg p-3.5 flex gap-3" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-                <span className="text-lg flex-shrink-0">✅</span>
-                <div className="text-blue-300 text-sm">
-                  <p>كلمة مرور قوية تحتوي على:</p>
-                  <p className="text-xs mt-1 opacity-80">أحرف كبيرة وصغيرة + أرقام + رموز (@$!%*?&)</p>
-                </div>
-              </div>
-            )}
-
-            {/* Form */}
-            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); isRegistering ? handleRegister() : handleLogin(); }} style={{ fontFamily: "'Tajawal', sans-serif" }}>
-              {/* Name Input - Register Only */}
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              if (isRegistering) {
+                handleRegister();
+              } else {
+                handleLogin();
+              }
+            }}>
+              {/* Name Field (Register Only) */}
               {isRegistering && (
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 600 }}>
-                    الاسم الكامل
+                <div className="mb-5">
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    الاسم
                   </label>
-                  <input
-                    type="text"
-                    placeholder="أحمد محمد"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
-                    style={{ fontFamily: "'Tajawal', sans-serif" }}
-                    disabled={isLoading}
-                  />
-                  {name && (name.length < 2 || name.length > 50) && (
-                    <p className="text-red-400 text-xs" style={{ fontFamily: "'Tajawal', sans-serif" }}>الاسم يجب أن يكون بين 2 و 50 حرف</p>
-                  )}
+                  <div className="relative">
+                    <User className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="أدخل اسمك الكامل"
+                      className="w-full pr-12 pl-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                    />
+                  </div>
                 </div>
               )}
 
-              {/* Email Input */}
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 600 }}>
-                  البريد الإلكتروني
+              {/* Email/Username Field */}
+              <div className="mb-5">
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                  {isRegistering ? 'البريد الإلكتروني' : 'البريد الإلكتروني أو اسم المستخدم'}
                 </label>
-                <input
-                  type="email"
-                  placeholder={isRegistering ? 'example@email.com' : 'أدخل بريدك الإلكتروني'}
-                  value={emailOrName}
-                  onChange={(e) => setEmailOrName(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
-                  style={{ fontFamily: "'Tajawal', 'Poppins', sans-serif" }}
-                  disabled={isLoading}
-                />
+                <div className="relative">
+                  <Mail className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  <input
+                    type="text"
+                    value={emailOrName}
+                    onChange={(e) => setEmailOrName(e.target.value)}
+                    placeholder={isRegistering ? 'example@email.com' : 'البريد أو الاسم'}
+                    className="w-full pr-12 pl-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                  />
+                </div>
               </div>
 
-              {/* Password Input */}
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 600 }}>
+              {/* Password Field */}
+              <div className="mb-5">
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
                   كلمة المرور
                 </label>
                 <div className="relative">
+                  <Lock className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition pr-11"
-                    style={{ fontFamily: "'Poppins', sans-serif" }}
-                    disabled={isLoading}
+                    placeholder="أدخل كلمة المرور"
+                    className="w-full pr-12 pl-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute left-3 top-3.5 text-gray-400 hover:text-blue-400 transition"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
+
+                {/* Password Strength (Register Only) */}
                 {isRegistering && password && (
-                  <p className={`text-xs ${getPasswordStrengthMessage().includes('✅') ? 'text-green-400' : 'text-amber-400'}`} style={{ fontFamily: "'Tajawal', sans-serif" }}>
-                    {getPasswordStrengthMessage()}
-                  </p>
+                  <div className="mt-2">
+                    <p className={`text-sm font-semibold ${
+                      validatePasswordStrength(password)
+                        ? 'text-green-600'
+                        : 'text-orange-600'
+                    }`}>
+                      {getPasswordStrengthMessage()}
+                    </p>
+                  </div>
                 )}
               </div>
 
-              {/* Confirm Password - Register Only */}
+              {/* Confirm Password Field (Register Only) */}
               {isRegistering && (
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-300" style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 600 }}>
+                <div className="mb-6">
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
                     تأكيد كلمة المرور
                   </label>
                   <div className="relative">
+                    <Lock className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                     <input
                       type={showConfirmPassword ? 'text' : 'password'}
-                      placeholder="••••••••"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition pr-11"
-                      style={{ fontFamily: "'Poppins', sans-serif" }}
-                      disabled={isLoading}
+                      placeholder="أعد إدخال كلمة المرور"
+                      className="w-full pr-12 pl-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute left-3 top-3.5 text-gray-400 hover:text-blue-400 transition"
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
-                      {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
                   </div>
-                  {confirmPassword && password === confirmPassword && (
-                    <p className="text-green-400 text-xs" style={{ fontFamily: "'Tajawal', sans-serif" }}>✅ كلمات المرور متطابقة</p>
-                  )}
-                  {confirmPassword && password !== confirmPassword && (
-                    <p className="text-red-400 text-xs" style={{ fontFamily: "'Tajawal', sans-serif" }}>❌ كلمات المرور غير متطابقة</p>
-                  )}
                 </div>
               )}
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold rounded-lg transition-all transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 700 }}
                 disabled={isLoading}
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-3 px-4 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>
-                    <span className="animate-spin">⏳</span>
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
                     جاري المعالجة...
                   </>
                 ) : (
                   <>
-                    {isRegistering ? <UserPlus size={18} /> : <LogIn size={18} />}
-                    {isRegistering ? 'إنشاء الحساب' : 'دخول'}
+                    {isRegistering ? 'إنشاء حساب' : 'تسجيل الدخول'}
+                    <ArrowRight size={20} />
                   </>
                 )}
               </button>
             </form>
 
-            {/* Footer */}
-            <p className="text-center text-gray-500 text-xs pt-4" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-              بالاستخدام أنت توافق على سياسة الخصوصية وشروط الاستخدام
+            {/* Help Text */}
+            <p className="text-center text-gray-600 text-xs mt-4" style={{ fontFamily: "'Tajawal', sans-serif" }}>
+              {isRegistering
+                ? 'بإنشاء حساب، فإنك توافق على شروط الاستخدام'
+                : 'هل نسيت كلمة المرور؟ تواصل مع الدعم'}
             </p>
           </div>
+        </div>
+
+        {/* Server Status Warning */}
+        <div className="mt-6 p-4 bg-yellow-900 bg-opacity-50 border border-yellow-600 rounded-lg">
+          <p className="text-yellow-100 text-sm text-center" style={{ fontFamily: "'Tajawal', sans-serif" }}>
+            تأكد من تشغيل الخادم على http://localhost:5000
+          </p>
         </div>
       </div>
     </div>

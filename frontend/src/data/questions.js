@@ -15,8 +15,10 @@ export const questions = {
                 },
                 {
                     points: 400,
-                    question: 'ما هو اسم ملعب نادي الهلال الرئيسي؟',
-                    answer: 'الأمير فيصل بن فهد'
+                    question: 'كم مباراة يلعب كل فريق بالموسم في الدوري السعودي (ذهاب وإياب)؟ ',
+                    answer: '34 مباراة',
+                    image: '/images/saudi_league/questions/hilal.png',
+                    answerImage: '/images/saudi_league/answers/hilal-fans.png'
                 },
                 {
                     points: 500,
@@ -27,18 +29,24 @@ export const questions = {
                 },  
                 {
                     points: 600,
-                    question: 'كم مرة فاز الهلال بالدوري السعودي حتى عام 2023؟',
-                    answer: '18 مرة'
+                    question: 'مين صاحب المركز الثاني تهديفيًا تاريخيًا بالدوري حسب القائمة؟',
+                    answer: 'ناصر الشمراني',
+                    image: '/images/saudi_league/questions/hilal.png',
+                    answerImage: '/images/saudi_league/answers/hilal-fans.png' 
                 },
                 {
                     points: 700,
-                    question: 'في أي عام تأسس نادي الهلال؟',
-                    answer: '1957'
+                    question: 'وش السنة اللي انطلق فيها دوري المحترفين (كدرجة أعلى) حسب المصادر اللي تذكر تأسيسه؟',
+                    answer: '1976',
+                    image: '/images/saudi_league/questions/hilal.png',
+                    answerImage: '/images/saudi_league/answers/hilal-fans.png'
                 },
                 {
                     points: 800,
-                    question: 'من هو أول مدرب أجنبي لنادي الهلال؟',
-                    answer: 'ماريو زاجالو'
+                    question: 'من النتائج التاريخية بعد، الاتحاد فاز 7–0 على أي فريق في الدوري؟',
+                    answer: 'الاتحاد على هجر',
+                    image: '/images/saudi_league/questions/hilal.png',
+                    answerImage: '/images/saudi_league/answers/hilal-fans.png'
                 }
             ],
             [  // الحزمة الثانية
@@ -50,14 +58,15 @@ export const questions = {
                 },
                 {
                     points: 400,
-                    question: 'من هو النادي الأكثر تتويجاً بكأس خادم الحرمين الشريفين؟',
-                    answer: 'الأهلي',
+                    question: 'كم فريق يهبطون من دوري روشن للدرجة الأولى كل موسم؟ ',
+                    answer: '3 فرق',
                     video: '/videos/ahli.mp4'
                 },
                 {
                     points: 500,
-                    question: 'ما هو أكبر فوز في تاريخ الدوري السعودي؟',
-                    answer: 'الهلال على القادسية 8-0'
+                    question: 'وش النادي اللي يمثل مدينة سيهات في دوري المحترفين؟',
+                    answer: 'الخليج',
+                    image: '/images/khaleej.png'
                 },
                 {
                     points: 600,
@@ -66,25 +75,25 @@ export const questions = {
                 },
                 {
                     points: 700,
-                    question: 'كم عدد الأندية التي هبطت من الدوري السعودي موسم 2022-2023؟',
-                    answer: '3 أندية'
+                    question: 'آخر وسيلة حسم مذكورة في لائحة ترتيب الدوري قبل اللجوء للقرعة هي ؟',
+                    answer: 'نقاط اللعب النظيف (البطاقات)'
                 },
                 {
                     points: 800,
-                    question: 'من هو أول لاعب أجنبي يفوز بجائزة هداف الدوري السعودي؟',
-                    answer: 'عمر السومة'
+                    question: 'مباراة الأهلي والقادسية 2–1 موسم 2010/2011 تُصنّف من المباريات كثيرة البطاقات، كم بطاقة ظهرت فيها؟ ',
+                    answer: '14 بطاقة'
                 }
             ],
             [  // الحزمة الثالثة (جديدة)
                 {
                     points: 300,
-                    question: "من هو لاعب الوسط الذي انتقل من الاتحاد إلى الأهلي عام 2020؟",
-                    answer: "تيسير الجاسم"
+                    question: "من هو مدرب نادي الهلال موسم 2025/2026؟",
+                    answer: "انزاجي"
                 },
                 {
                     points: 400,
-                    question: "كم مرة فاز نادي الاتحاد بكأس خادم الحرمين الشريفين؟",
-                    answer: "3 مرات"
+                    question: "مين أكثر لاعب مسجّل هاتريك في تاريخ الدوري السعودي للمحترفين؟",
+                    answer: "عبدالرزاق حمدالله"
                 },
                 {
                     points: 500,
@@ -98,8 +107,8 @@ export const questions = {
                 },
                 {
                     points: 700,
-                    question: "من هو أول لاعب سعودي يفوز بجائزة أفضل لاعب في آسيا؟",
-                    answer: "سارة الزراع"
+                    question: "أسرع هدف بالدوري سجله جوليان كوينونيس بعد كم ثانية من بداية المباراة؟",
+                    answer: "بعد 16 ثانية "
                 },
                 {
                     points: 800,
