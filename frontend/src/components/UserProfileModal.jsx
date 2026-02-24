@@ -16,12 +16,12 @@ import { styled } from '@mui/material/styles';
 
 const StyledDialog = styled(Dialog)(() => ({
   '& .MuiDialog-paper': {
-    background: 'linear-gradient(135deg, #003262, #E25822, #003262)',
-    backdropFilter: 'blur(20px)',
-    border: '1px solid rgba(255, 138, 76, 0.3)',
-    borderRadius: '20px',
-    color: 'white',
-    minWidth: '500px'
+    background: 'var(--bg-secondary)',
+    border: 'none',
+    borderRadius: 'var(--radius-lg)',
+    color: 'var(--text-primary)',
+    minWidth: '500px',
+    boxShadow: 'var(--neu-shadow-raised)'
   }
 }));
 
@@ -66,7 +66,6 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
     setError('');
 
     try {
-      // استدعاء API لتحديث البيانات
       const response = await fetch('http://localhost:5000/api/update-profile', {
         method: 'PUT',
         headers: {
@@ -85,7 +84,6 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
       if (response.ok) {
         setSuccess('تم تحديث البيانات بنجاح');
         
-        // تحديث البيانات المحلية
         const updatedUser = { ...user, ...formData };
         localStorage.setItem('user', JSON.stringify(updatedUser));
         
@@ -124,7 +122,7 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
         textAlign: 'center', 
         fontSize: '24px', 
         fontWeight: 'bold',
-        color: '#FF8A4C'
+        color: 'var(--color-primary)'
       }}>
         تعديل البيانات الشخصية
       </DialogTitle>
@@ -140,26 +138,41 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
           <Avatar sx={{ 
             width: 80, 
             height: 80, 
-            bgcolor: '#FF8A4C',
-            color: '#fff',
+            bgcolor: 'var(--color-primary)',
+            color: 'var(--bg-secondary)',
             fontSize: '32px',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            boxShadow: 'var(--neu-shadow-raised)'
           }}>
             {formData.name ? getInitials(formData.name) : '?'}
           </Avatar>
 
-          <Typography variant="body2" sx={{ color: '#e0e0e0', textAlign: 'center' }}>
+          <Typography variant="body2" sx={{ color: 'var(--text-muted)', textAlign: 'center' }}>
             معرف المستخدم: #{user?.id || 'غير محدد'}
           </Typography>
 
           {error && (
-            <Alert severity="error" sx={{ width: '100%' }}>
+            <Alert severity="error" sx={{ 
+              width: '100%',
+              background: 'var(--bg-secondary)',
+              color: 'var(--color-error)',
+              border: '1px solid var(--color-error)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--neu-shadow-pressed)'
+            }}>
               {error}
             </Alert>
           )}
 
           {success && (
-            <Alert severity="success" sx={{ width: '100%' }}>
+            <Alert severity="success" sx={{ 
+              width: '100%',
+              background: 'var(--bg-secondary)',
+              color: 'var(--color-secondary)',
+              border: '1px solid var(--color-secondary)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--neu-shadow-pressed)'
+            }}>
               {success}
             </Alert>
           )}
@@ -171,22 +184,25 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
             onChange={handleChange('name')}
             sx={{
               '& .MuiOutlinedInput-root': {
-                color: 'white',
+                color: 'var(--text-primary)',
+                background: 'var(--bg-primary)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: 'var(--neu-shadow-pressed)',
                 '& fieldset': { 
-                  borderColor: 'rgba(255, 255, 255, 0.3)' 
+                  borderColor: 'transparent' 
                 },
                 '&:hover fieldset': { 
-                  borderColor: '#FF8A4C' 
+                  borderColor: 'var(--color-secondary)' 
                 },
                 '&.Mui-focused fieldset': { 
-                  borderColor: '#FF8A4C' 
+                  borderColor: 'var(--color-primary)' 
                 }
               },
               '& .MuiInputLabel-root': { 
-                color: 'rgba(255, 255, 255, 0.7)' 
+                color: 'var(--text-muted)' 
               },
               '& .MuiInputLabel-root.Mui-focused': { 
-                color: '#FF8A4C' 
+                color: 'var(--color-primary)' 
               }
             }}
           />
@@ -199,22 +215,25 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
             onChange={handleChange('email')}
             sx={{
               '& .MuiOutlinedInput-root': {
-                color: 'white',
+                color: 'var(--text-primary)',
+                background: 'var(--bg-primary)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: 'var(--neu-shadow-pressed)',
                 '& fieldset': { 
-                  borderColor: 'rgba(255, 255, 255, 0.3)' 
+                  borderColor: 'transparent' 
                 },
                 '&:hover fieldset': { 
-                  borderColor: '#FF8A4C' 
+                  borderColor: 'var(--color-secondary)' 
                 },
                 '&.Mui-focused fieldset': { 
-                  borderColor: '#FF8A4C' 
+                  borderColor: 'var(--color-primary)' 
                 }
               },
               '& .MuiInputLabel-root': { 
-                color: 'rgba(255, 255, 255, 0.7)' 
+                color: 'var(--text-muted)' 
               },
               '& .MuiInputLabel-root.Mui-focused': { 
-                color: '#FF8A4C' 
+                color: 'var(--color-primary)' 
               }
             }}
           />
@@ -226,11 +245,14 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
           onClick={onClose} 
           variant="outlined"
           sx={{
-            borderColor: '#fff',
-            color: '#fff',
+            borderColor: 'var(--text-muted)',
+            color: 'var(--text-muted)',
+            borderRadius: 'var(--radius-full)',
+            padding: '10px 24px',
             '&:hover': {
-              borderColor: '#FF8A4C',
-              color: '#FF8A4C'
+              borderColor: 'var(--color-error)',
+              color: 'var(--color-error)',
+              background: 'transparent'
             }
           }}
         >
@@ -242,19 +264,22 @@ const UserProfileModal = ({ open, onClose, user, onSave }) => {
           variant="contained"
           disabled={loading}
           sx={{
-            background: 'linear-gradient(90deg, #FF8A4C, #E25822)',
-            color: '#fff',
+            background: 'var(--color-secondary)',
+            color: 'var(--text-primary)',
             fontWeight: 'bold',
+            borderRadius: 'var(--radius-full)',
+            padding: '10px 24px',
+            boxShadow: 'var(--neu-shadow-raised)',
             '&:hover': {
-              background: 'linear-gradient(90deg, #fff, #FF8A4C)',
-              color: '#003262'
+              background: 'var(--color-primary)',
+              boxShadow: 'var(--neu-shadow-hover)'
             },
             '&:disabled': {
-              background: '#888',
-              color: '#fff'
+              background: 'var(--text-muted)',
+              color: 'var(--bg-secondary)'
             }
           }}
-          startIcon={loading && <CircularProgress size={20} />}
+          startIcon={loading && <CircularProgress size={20} sx={{ color: 'var(--text-primary)' }} />}
         >
           {loading ? 'جاري الحفظ...' : 'حفظ التغييرات'}
         </Button>

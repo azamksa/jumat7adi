@@ -1,0 +1,22 @@
+name: Default Config
+version: 1.0.4
+schema: v1
+models:
+  - uses: anthropic/claude-sonnet-4-5
+    with:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    override:
+      roles:
+        - chat
+        - edit
+  - uses: inception/mercury-coder
+    with:
+      INCEPTION_API_KEY: ${{ secrets.INCEPTION_API_KEY }}
+    override:
+      roles:
+        - autocomplete
+        - apply
+context:
+  - uses: continuedev/diff-context
+  - uses: continuedev/terminal-context
+  - uses: continuedev/file-context

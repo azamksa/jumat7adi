@@ -16,16 +16,15 @@ import UserProfileModal from './UserProfileModal';
 import { PackageTracker } from '../utils/PackageTracker';
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  background: 'linear-gradient(135deg, rgba(0, 50, 98, 0.2), rgba(226, 88, 34, 0.1))',
-  backdropFilter: 'blur(20px)',
-  borderRadius: '25px',
+  background: 'var(--bg-secondary)',
+  borderRadius: 'var(--radius-lg)',
   padding: theme.spacing(6),
   marginBottom: theme.spacing(6),
-  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 138, 76, 0.1)',
-  border: '2px solid rgba(255, 138, 76, 0.2)',
+  boxShadow: 'var(--neu-shadow-raised)',
+  border: 'none',
   transition: 'all 0.4s ease',
   '&:hover': {
-    boxShadow: '0 25px 70px rgba(226, 88, 34, 0.3), inset 0 0 25px rgba(255, 138, 76, 0.15)',
+    boxShadow: 'var(--neu-shadow-hover)',
     transform: 'translateY(-5px)'
   }
 }));
@@ -33,11 +32,11 @@ const StyledCard = styled(Card)(({ theme }) => ({
 const CategoryButton = styled(Button)(({ selected }) => ({
   width: '220px',
   height: '280px',
-  borderRadius: '20px',
+  borderRadius: 'var(--radius-lg)',
   background: selected 
-    ? 'linear-gradient(135deg, rgba(226, 88, 34, 0.4), rgba(255, 138, 76, 0.3))' 
-    : 'linear-gradient(135deg, rgba(0, 50, 98, 0.2), rgba(31, 106, 165, 0.15))',
-  border: selected ? '3px solid #FF8A4C' : '2px solid rgba(255, 138, 76, 0.3)',
+    ? 'var(--color-secondary)' 
+    : 'var(--bg-secondary)',
+  border: selected ? '2px solid var(--color-primary)' : 'none',
   position: 'relative',
   overflow: 'hidden',
   padding: 0,
@@ -46,19 +45,18 @@ const CategoryButton = styled(Button)(({ selected }) => ({
   justifyContent: 'center',
   transition: 'all 0.3s ease',
   boxShadow: selected 
-    ? '0 15px 40px rgba(226, 88, 34, 0.3)' 
-    : '0 8px 20px rgba(0, 0, 0, 0.2)',
+    ? 'var(--neu-shadow-pressed)' 
+    : 'var(--neu-shadow-raised)',
   '&:hover': {
     background: selected 
-      ? 'linear-gradient(135deg, rgba(226, 88, 34, 0.5), rgba(255, 138, 76, 0.4))' 
-      : 'linear-gradient(135deg, rgba(0, 50, 98, 0.3), rgba(31, 106, 165, 0.25))',
+      ? 'var(--color-secondary)' 
+      : 'var(--color-secondary)',
     transform: 'scale(1.05) translateY(-8px)',
-    boxShadow: selected
-      ? '0 20px 50px rgba(226, 88, 34, 0.4)'
-      : '0 15px 35px rgba(0, 0, 0, 0.3)'
+    boxShadow: 'var(--neu-shadow-hover)'
   },
   '&:active': {
-    transform: 'scale(0.98)'
+    transform: 'scale(0.98)',
+    boxShadow: 'var(--neu-shadow-pressed)'
   }
 }));
 
@@ -66,7 +64,7 @@ const CategoryImage = styled('img')({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-  opacity: 0.7,
+  opacity: 0.6,
   transition: 'opacity 0.3s ease'
 });
 
@@ -138,40 +136,13 @@ const SetupPage = ({
         alignItems: 'center',
         padding: 0,
         margin: 0,
-        position: 'relative'
+        position: 'relative',
+        background: 'var(--bg-primary)',
+        minHeight: '100vh'
       }}
     >
-      {/* قائمة المستخدم */}
-      {!currentUser ? (
-        <Box sx={{ 
-          position: 'fixed', 
-          right: 20, 
-          top: 20, 
-          zIndex: 1000 
-        }}>
-          <Button 
-            variant="outlined" 
-            onClick={() => setShowLogin(true)}
-            sx={{
-              padding: '12px 24px',
-              fontSize: '1.2rem',
-              fontWeight: 'bold',
-              color: 'white',
-              borderColor: 'white',
-              background: 'rgba(0,0,0,0.7)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: '25px',
-              '&:hover': {
-                borderColor: '#FF8A4C',
-                color: '#FF8A4C',
-                backgroundColor: 'rgba(255, 138, 76, 0.1)'
-              }
-            }}
-          >
-            تسجيل الدخول
-          </Button>
-        </Box>
-      ) : (
+      {/* قائمة المستخدم - تظهر فقط عند تسجيل الدخول */}
+      {currentUser && (
         <UserMenu
           user={currentUser}
           onEditProfile={handleEditProfile}
@@ -179,7 +150,41 @@ const SetupPage = ({
         />
       )}
 
+      {/* زر تسجيل الدخول - يظهر فقط إذا لم يكن المستخدم مسجل دخول */}
+      {!currentUser && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 24,
+            right: 24,
+            zIndex: 9999
+          }}
+        >
+          <Button
+            onClick={() => setShowLogin(true)}
+            variant="contained"
+            sx={{
+              background: 'var(--color-secondary)',
+              color: 'var(--text-primary)',
+              fontSize: '1rem',
+              fontWeight: 600,
+              padding: '12px 32px',
+              borderRadius: 'var(--radius-full)',
+              boxShadow: 'var(--neu-shadow-raised)',
+              '&:hover': {
+                background: 'var(--color-primary)',
+                transform: 'scale(1.05)',
+                boxShadow: 'var(--neu-shadow-hover)'
+              }
+            }}
+          >
+            تسجيل الدخول
+          </Button>
+        </Box>
+      )}
+
       {/* العنوان الرئيسي */}
+
       <Box textAlign="center" mb={8} pt={6}>
         <Box sx={{ 
           position: 'relative',
@@ -192,7 +197,7 @@ const SetupPage = ({
             sx={{ 
               fontSize: { xs: '2.8rem', md: '4.2rem', lg: '5rem' },
               fontWeight: 700,
-              color: '#003262',
+              color: 'var(--color-primary)',
               letterSpacing: '-0.5px',
               mb: 3,
               textAlign: 'center',
@@ -205,7 +210,7 @@ const SetupPage = ({
           <Box sx={{
             width: '80px',
             height: '3px',
-            background: 'linear-gradient(90deg, #E25822 0%, #FF8A4C 100%)',
+            background: 'var(--color-primary)',
             margin: '0 auto',
             borderRadius: '2px'
           }} />
@@ -214,26 +219,24 @@ const SetupPage = ({
         {/* معلومات الحزمة */}
         {currentUser && (
           <Box sx={{
-            background: 'linear-gradient(135deg, rgba(0, 50, 98, 0.15), rgba(226, 88, 34, 0.1))',
-            border: '2px solid rgba(255, 138, 76, 0.3)',
-            borderRadius: '16px',
+            background: 'var(--bg-secondary)',
+            border: 'none',
+            borderRadius: 'var(--radius-lg)',
             padding: '32px 40px',
             margin: '50px auto',
             maxWidth: '520px',
-            backdropFilter: 'blur(15px)',
-            boxShadow: '0 15px 40px rgba(0, 0, 0, 0.2)',
+            boxShadow: 'var(--neu-shadow-raised)',
             transition: 'all 0.4s ease'
           }}>
             <Typography 
               variant="h6" 
               sx={{ 
-                color: '#003262',
+                color: 'var(--text-muted)',
                 fontWeight: 600,
                 fontSize: '0.9rem',
                 mb: 2,
                 textTransform: 'uppercase',
-                letterSpacing: '0.8px',
-                opacity: 0.7
+                letterSpacing: '0.8px'
               }}
             >
               حزمتك الحالية
@@ -241,7 +244,7 @@ const SetupPage = ({
             <Typography 
               variant="h5" 
               sx={{ 
-                color: '#E25822',
+                color: 'var(--color-primary)',
                 fontWeight: 700,
                 fontSize: '1.8rem',
                 mb: 2
@@ -252,7 +255,7 @@ const SetupPage = ({
             <Typography 
               variant="body2" 
               sx={{
-                color: '#D0D0D0',
+                color: 'var(--text-muted)',
                 fontSize: '0.95rem',
                 lineHeight: 1.6,
                 mb: 3
@@ -262,18 +265,18 @@ const SetupPage = ({
             </Typography>
             <Box sx={{ display: 'flex', gap: 3 }}>
               <Box>
-                <Typography sx={{ color: '#A8A8A8', fontSize: '0.85rem', mb: 0.5 }}>
+                <Typography sx={{ color: 'var(--text-muted)', fontSize: '0.85rem', mb: 0.5 }}>
                   النقاط المتبقية
                 </Typography>
-                <Typography sx={{ color: '#FF8A4C', fontWeight: 700, fontSize: '1.4rem' }}>
+                <Typography sx={{ color: 'var(--color-primary)', fontWeight: 700, fontSize: '1.4rem' }}>
                   {packageInfo.remainingQuestions}
                 </Typography>
               </Box>
-              <Box sx={{ borderLeft: '1px solid rgba(255, 138, 76, 0.3)', pl: 3 }}>
-                <Typography sx={{ color: '#A8A8A8', fontSize: '0.85rem', mb: 0.5 }}>
+              <Box sx={{ borderLeft: '1px solid var(--color-secondary)', pl: 3 }}>
+                <Typography sx={{ color: 'var(--text-muted)', fontSize: '0.85rem', mb: 0.5 }}>
                   الإجمالي المتاح
                 </Typography>
-                <Typography sx={{ color: '#4CAF50', fontWeight: 700, fontSize: '1.4rem' }}>
+                <Typography sx={{ color: 'var(--color-secondary)', fontWeight: 700, fontSize: '1.4rem' }}>
                   {packageInfo.totalQuestions}
                 </Typography>
               </Box>
@@ -291,7 +294,7 @@ const SetupPage = ({
           <Typography 
             variant="h5" 
             sx={{
-              color: '#FF8A4C',
+              color: 'var(--color-primary)',
               fontWeight: 700,
               fontSize: '1.6rem',
               mb: 5,
@@ -304,26 +307,24 @@ const SetupPage = ({
           <Grid container spacing={4} justifyContent="center">
             <Grid item xs={12} sm={6} md={5.5}>
               <Box sx={{
-                background: 'linear-gradient(135deg, rgba(31, 106, 165, 0.25), rgba(0, 50, 98, 0.15))',
-                border: '2px solid rgba(31, 106, 165, 0.4)',
-                borderRadius: '18px',
+                background: 'var(--bg-secondary)',
+                border: 'none',
+                borderRadius: 'var(--radius-lg)',
                 padding: '28px 24px',
                 minHeight: '200px',
-                backdropFilter: 'blur(15px)',
+                boxShadow: 'var(--neu-shadow-raised)',
                 transition: 'all 0.3s ease',
                 display: 'flex',
                 flexDirection: 'column',
                 '&:hover': {
                   transform: 'translateY(-8px)',
-                  boxShadow: '0 20px 45px rgba(31, 106, 165, 0.3)',
-                  border: '2px solid rgba(31, 106, 165, 0.6)',
-                  background: 'linear-gradient(135deg, rgba(31, 106, 165, 0.35), rgba(0, 50, 98, 0.25))'
+                  boxShadow: 'var(--neu-shadow-hover)'
                 }
               }}>
-                <Typography variant="h6" sx={{color: '#FF8A4C', fontWeight: 700, mb: 1.5, fontSize: '1.1rem'}}>
+                <Typography variant="h6" sx={{color: 'var(--color-primary)', fontWeight: 700, mb: 1.5, fontSize: '1.1rem'}}>
                   آلية اللعب
                 </Typography>
-                <Typography variant="body2" sx={{color: '#E8E8E8', lineHeight: 1.8, fontSize: '0.95rem'}}>
+                <Typography variant="body2" sx={{color: 'var(--text-primary)', lineHeight: 1.8, fontSize: '0.95rem'}}>
                   منافسة ثقافية شيقة بين فريقين، حيث يختار كل فريق الفئات ويجيب على الأسئلة
                 </Typography>
               </Box>
@@ -331,26 +332,24 @@ const SetupPage = ({
             
             <Grid item xs={12} sm={6} md={5.5}>
               <Box sx={{
-                background: 'linear-gradient(135deg, rgba(226, 88, 34, 0.25), rgba(255, 138, 76, 0.15))',
-                border: '2px solid rgba(255, 138, 76, 0.4)',
-                borderRadius: '18px',
+                background: 'var(--bg-secondary)',
+                border: 'none',
+                borderRadius: 'var(--radius-lg)',
                 padding: '28px 24px',
                 minHeight: '200px',
-                backdropFilter: 'blur(15px)',
+                boxShadow: 'var(--neu-shadow-raised)',
                 transition: 'all 0.3s ease',
                 display: 'flex',
                 flexDirection: 'column',
                 '&:hover': {
                   transform: 'translateY(-8px)',
-                  boxShadow: '0 20px 45px rgba(226, 88, 34, 0.3)',
-                  border: '2px solid rgba(255, 138, 76, 0.6)',
-                  background: 'linear-gradient(135deg, rgba(226, 88, 34, 0.35), rgba(255, 138, 76, 0.25))'
+                  boxShadow: 'var(--neu-shadow-hover)'
                 }
               }}>
-                <Typography variant="h6" sx={{color: '#FF8A4C', fontWeight: 700, mb: 1.5, fontSize: '1.1rem'}}>
+                <Typography variant="h6" sx={{color: 'var(--color-primary)', fontWeight: 700, mb: 1.5, fontSize: '1.1rem'}}>
                   الوقت
                 </Typography>
-                <Typography variant="body2" sx={{color: '#E8E8E8', lineHeight: 1.8, fontSize: '0.95rem'}}>
+                <Typography variant="body2" sx={{color: 'var(--text-primary)', lineHeight: 1.8, fontSize: '0.95rem'}}>
                   60 ثانية للفريق، و30 ثانية للفريق المنافس
                 </Typography>
               </Box>
@@ -358,26 +357,24 @@ const SetupPage = ({
 
             <Grid item xs={12} sm={6} md={5.5}>
               <Box sx={{
-                background: 'linear-gradient(135deg, rgba(31, 106, 165, 0.25), rgba(0, 50, 98, 0.15))',
-                border: '2px solid rgba(31, 106, 165, 0.4)',
-                borderRadius: '18px',
+                background: 'var(--bg-secondary)',
+                border: 'none',
+                borderRadius: 'var(--radius-lg)',
                 padding: '28px 24px',
                 minHeight: '200px',
-                backdropFilter: 'blur(15px)',
+                boxShadow: 'var(--neu-shadow-raised)',
                 transition: 'all 0.3s ease',
                 display: 'flex',
                 flexDirection: 'column',
                 '&:hover': {
                   transform: 'translateY(-8px)',
-                  boxShadow: '0 20px 45px rgba(31, 106, 165, 0.3)',
-                  border: '2px solid rgba(31, 106, 165, 0.6)',
-                  background: 'linear-gradient(135deg, rgba(31, 106, 165, 0.35), rgba(0, 50, 98, 0.25))'
+                  boxShadow: 'var(--neu-shadow-hover)'
                 }
               }}>
-                <Typography variant="h6" sx={{color: '#FF8A4C', fontWeight: 700, mb: 1.5, fontSize: '1.1rem'}}>
+                <Typography variant="h6" sx={{color: 'var(--color-primary)', fontWeight: 700, mb: 1.5, fontSize: '1.1rem'}}>
                   الفئات
                 </Typography>
-                <Typography variant="body2" sx={{color: '#E8E8E8', lineHeight: 1.8, fontSize: '0.95rem'}}>
+                <Typography variant="body2" sx={{color: 'var(--text-primary)', lineHeight: 1.8, fontSize: '0.95rem'}}>
                   اختر 6 فئات مختلفة من الخيارات المتنوعة
                 </Typography>
               </Box>
@@ -385,26 +382,24 @@ const SetupPage = ({
             
             <Grid item xs={12} sm={6} md={5.5}>
               <Box sx={{
-                background: 'linear-gradient(135deg, rgba(226, 88, 34, 0.25), rgba(255, 138, 76, 0.15))',
-                border: '2px solid rgba(255, 138, 76, 0.4)',
-                borderRadius: '18px',
+                background: 'var(--bg-secondary)',
+                border: 'none',
+                borderRadius: 'var(--radius-lg)',
                 padding: '28px 24px',
                 minHeight: '200px',
-                backdropFilter: 'blur(15px)',
+                boxShadow: 'var(--neu-shadow-raised)',
                 transition: 'all 0.3s ease',
                 display: 'flex',
                 flexDirection: 'column',
                 '&:hover': {
                   transform: 'translateY(-8px)',
-                  boxShadow: '0 20px 45px rgba(226, 88, 34, 0.3)',
-                  border: '2px solid rgba(255, 138, 76, 0.6)',
-                  background: 'linear-gradient(135deg, rgba(226, 88, 34, 0.35), rgba(255, 138, 76, 0.25))'
+                  boxShadow: 'var(--neu-shadow-hover)'
                 }
               }}>
-                <Typography variant="h6" sx={{color: '#FF8A4C', fontWeight: 700, mb: 1.5, fontSize: '1.1rem'}}>
+                <Typography variant="h6" sx={{color: 'var(--color-primary)', fontWeight: 700, mb: 1.5, fontSize: '1.1rem'}}>
                   الفائز
                 </Typography>
-                <Typography variant="body2" sx={{color: '#E8E8E8', lineHeight: 1.8, fontSize: '0.95rem'}}>
+                <Typography variant="body2" sx={{color: 'var(--text-primary)', lineHeight: 1.8, fontSize: '0.95rem'}}>
                   الفريق الذي يجمع أكبر عدد من النقاط يفوز
                 </Typography>
               </Box>
@@ -419,14 +414,13 @@ const SetupPage = ({
           variant="h6" 
           gutterBottom 
           sx={{ 
-            color: '#003262',
+            color: 'var(--text-primary)',
             textAlign: 'center',
             fontSize: '1.1rem',
             fontWeight: 700,
             mb: 4,
             textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-            opacity: 0.8
+            letterSpacing: '0.5px'
           }}
         >
           أسماء الفرق
@@ -438,7 +432,7 @@ const SetupPage = ({
               <Typography 
                 variant="subtitle1" 
                 sx={{
-                  color: '#1F6AA5', 
+                  color: 'var(--color-secondary)', 
                   fontWeight: 700, 
                   mb: 1.5,
                   fontSize: '1.1rem'
@@ -453,25 +447,25 @@ const SetupPage = ({
                 onChange={(e) => onTeamNameChange('team1', e.target.value)}
                 sx={{
                   '& .MuiOutlinedInput-root': {
-                    color: '#333',
+                    color: 'var(--text-primary)',
                     fontSize: '1.1rem',
-                    borderRadius: '15px',
-                    backgroundColor: '#FAFAFA',
+                    borderRadius: 'var(--radius-md)',
+                    backgroundColor: 'var(--bg-primary)',
+                    boxShadow: 'var(--neu-shadow-pressed)',
                     '& fieldset': { 
-                      borderColor: 'rgba(31, 106, 165, 0.3)',
-                      borderWidth: '2px',
-                      transition: 'all 0.3s ease'
+                      borderColor: 'transparent',
+                      borderWidth: '0px'
                     },
                     '&:hover fieldset': {
-                      borderColor: 'rgba(31, 106, 165, 0.5)'
+                      borderColor: 'transparent'
                     },
                     '&.Mui-focused fieldset': {
-                      borderColor: '#1F6AA5',
-                      boxShadow: '0 0 20px rgba(31, 106, 165, 0.3)'
+                      borderColor: 'var(--color-secondary)',
+                      borderWidth: '2px'
                     }
                   },
                   '& .MuiInputBase-input::placeholder': {
-                    color: 'rgba(51, 51, 51, 0.4)',
+                    color: 'var(--text-muted)',
                     opacity: 1
                   }
                 }}
@@ -483,7 +477,7 @@ const SetupPage = ({
               <Typography 
                 variant="subtitle1" 
                 sx={{
-                  color: '#FF8A4C', 
+                  color: 'var(--color-error)', 
                   fontWeight: 700, 
                   mb: 1.5,
                   fontSize: '1.1rem'
@@ -498,25 +492,25 @@ const SetupPage = ({
                 onChange={(e) => onTeamNameChange('team2', e.target.value)}
                 sx={{
                   '& .MuiOutlinedInput-root': {
-                    color: '#333',
+                    color: 'var(--text-primary)',
                     fontSize: '1.1rem',
-                    borderRadius: '15px',
-                    backgroundColor: '#FAFAFA',
+                    borderRadius: 'var(--radius-md)',
+                    backgroundColor: 'var(--bg-primary)',
+                    boxShadow: 'var(--neu-shadow-pressed)',
                     '& fieldset': { 
-                      borderColor: 'rgba(226, 88, 34, 0.3)',
-                      borderWidth: '2px',
-                      transition: 'all 0.3s ease'
+                      borderColor: 'transparent',
+                      borderWidth: '0px'
                     },
                     '&:hover fieldset': {
-                      borderColor: 'rgba(226, 88, 34, 0.5)'
+                      borderColor: 'transparent'
                     },
                     '&.Mui-focused fieldset': {
-                      borderColor: '#FF8A4C',
-                      boxShadow: '0 0 20px rgba(226, 88, 34, 0.3)'
+                      borderColor: 'var(--color-error)',
+                      borderWidth: '2px'
                     }
                   },
                   '& .MuiInputBase-input::placeholder': {
-                    color: 'rgba(51, 51, 51, 0.4)',
+                    color: 'var(--text-muted)',
                     opacity: 1
                   }
                 }}
@@ -532,7 +526,7 @@ const SetupPage = ({
           variant="h4" 
           gutterBottom 
           sx={{ 
-            color: '#FF8A4C', 
+            color: 'var(--color-primary)', 
             textAlign: 'center',
             fontSize: '1.8rem',
             fontWeight: 800,
@@ -545,15 +539,15 @@ const SetupPage = ({
           variant="subtitle1" 
           gutterBottom 
           sx={{ 
-            color: '#FF8A4C', 
+            color: 'var(--color-primary)', 
             textAlign: 'center',
             fontSize: '1.2rem',
             fontWeight: 700,
             mb: 4,
-            background: 'linear-gradient(90deg, rgba(255, 138, 76, 0.2), rgba(31, 106, 165, 0.2))',
+            background: 'var(--bg-secondary)',
             padding: '15px',
-            borderRadius: '15px',
-            border: '2px solid rgba(255, 138, 76, 0.3)'
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--neu-shadow-pressed)'
           }}
         >
           📊 اختر 6 فئات ({selectedCategories.length} / 6)
@@ -563,16 +557,15 @@ const SetupPage = ({
           {Object.entries(basicCategories).map(([category, data]) => (
             <Grid item xs={12} sm={6} md={4} key={category}>
               <Box sx={{
-                background: `linear-gradient(135deg, ${data.color}30, ${data.color}15)`,
-                borderRadius: '20px',
+                background: 'var(--bg-secondary)',
+                borderRadius: 'var(--radius-lg)',
                 padding: '25px',
-                border: `2px solid ${data.color}40`,
-                backdropFilter: 'blur(10px)',
+                border: 'none',
+                boxShadow: 'var(--neu-shadow-raised)',
                 transition: 'all 0.3s ease',
                 '&:hover': {
                   transform: 'translateY(-5px)',
-                  boxShadow: `0 15px 40px ${data.color}30`,
-                  border: `2px solid ${data.color}60`
+                  boxShadow: 'var(--neu-shadow-hover)'
                 }
               }}>
                 <Typography 
@@ -581,7 +574,7 @@ const SetupPage = ({
                   sx={{
                     fontWeight: 800,
                     fontSize: '1.2rem',
-                    color: '#fff',
+                    color: 'var(--text-primary)',
                     mb: 2,
                     textAlign: 'center'
                   }}
@@ -606,11 +599,11 @@ const SetupPage = ({
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          borderRadius: '20px'
+                          borderRadius: 'var(--radius-lg)'
                         }}>
                           <Typography
                             sx={{
-                              color: 'white',
+                              color: 'var(--text-primary)',
                               fontSize: '1.1rem',
                               fontWeight: 800,
                               textShadow: '0 3px 8px rgba(0,0,0,0.6)',
@@ -626,7 +619,7 @@ const SetupPage = ({
                             position: 'absolute',
                             top: '10px',
                             right: '10px',
-                            background: '#FF8A4C',
+                            background: 'var(--color-primary)',
                             borderRadius: '50%',
                             width: '40px',
                             height: '40px',
@@ -636,7 +629,7 @@ const SetupPage = ({
                             fontWeight: 'bold',
                             fontSize: '1.5rem',
                             color: '#fff',
-                            boxShadow: '0 4px 12px rgba(255, 138, 76, 0.5)'
+                            boxShadow: 'var(--neu-shadow-soft)'
                           }}>
                             ✓
                           </Box>
@@ -658,13 +651,12 @@ const SetupPage = ({
             variant="h6" 
             gutterBottom 
             sx={{ 
-              color: '#003262',
+              color: 'var(--text-primary)',
               fontWeight: 700,
               fontSize: '1.1rem',
               mb: 3,
               textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-              opacity: 0.8
+              letterSpacing: '0.5px'
             }}
           >
             الفئات المختارة ({selectedCategories.length}/6)
@@ -686,23 +678,23 @@ const SetupPage = ({
                   onDelete={() => onCategorySelection(id)}
                   deleteIcon={<DeleteIcon />}
                   sx={{
-                    background: 'linear-gradient(135deg, rgba(255, 138, 76, 0.3), rgba(226, 88, 34, 0.2))',
-                    color: '#fff',
+                    background: 'var(--bg-secondary)',
+                    color: 'var(--text-primary)',
                     fontSize: '1rem',
                     padding: '8px 4px',
                     fontWeight: 600,
-                    border: '2px solid rgba(255, 138, 76, 0.4)',
+                    border: 'none',
+                    boxShadow: 'var(--neu-shadow-raised)',
                     transition: 'all 0.3s ease',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, rgba(255, 138, 76, 0.4), rgba(226, 88, 34, 0.3))',
-                      border: '2px solid rgba(255, 138, 76, 0.6)',
+                      background: 'var(--color-secondary)',
                       transform: 'scale(1.05)',
-                      boxShadow: '0 8px 20px rgba(226, 88, 34, 0.3)'
+                      boxShadow: 'var(--neu-shadow-hover)'
                     },
                     '& .MuiChip-deleteIcon': {
-                      color: 'rgba(255, 255, 255, 0.8)',
+                      color: 'var(--text-muted)',
                       '&:hover': {
-                        color: '#FF8A4C'
+                        color: 'var(--color-error)'
                       }
                     }
                   }}
@@ -729,27 +721,29 @@ const SetupPage = ({
           disabled={selectedCategories.length !== 6 || !teams.team1 || !teams.team2}
           sx={{
             background: (selectedCategories.length !== 6 || !teams.team1 || !teams.team2)
-              ? '#DDD' 
-              : 'linear-gradient(135deg, #E25822 0%, #FF8A4C 100%)',
-            color: (selectedCategories.length !== 6 || !teams.team1 || !teams.team2) ? '#999' : '#fff',
+              ? 'var(--bg-secondary)' 
+              : 'var(--color-secondary)',
+            color: (selectedCategories.length !== 6 || !teams.team1 || !teams.team2) ? 'var(--text-muted)' : 'var(--text-primary)',
             fontSize: '1.1rem',
             fontWeight: 600,
             padding: '16px 48px',
-            borderRadius: '8px',
+            borderRadius: 'var(--radius-full)',
             border: 'none',
             cursor: (selectedCategories.length !== 6 || !teams.team1 || !teams.team2) ? 'not-allowed' : 'pointer',
             transition: 'all 0.3s ease',
             boxShadow: (selectedCategories.length !== 6 || !teams.team1 || !teams.team2)
-              ? '0 4px 12px rgba(0, 0, 0, 0.1)'
-              : '0 8px 24px rgba(226, 88, 34, 0.25)',
+              ? 'var(--neu-shadow-pressed)'
+              : 'var(--neu-shadow-raised)',
             textTransform: 'none',
             letterSpacing: '0.3px',
             '&:hover:not(:disabled)': {
+              background: 'var(--color-primary)',
               transform: 'translateY(-2px)',
-              boxShadow: '0 12px 32px rgba(226, 88, 34, 0.35)',
+              boxShadow: 'var(--neu-shadow-hover)',
             },
             '&:active:not(:disabled)': {
               transform: 'translateY(0)',
+              boxShadow: 'var(--neu-shadow-pressed)'
             }
           }}
         >
@@ -760,7 +754,7 @@ const SetupPage = ({
           <Typography 
             variant="body2" 
             sx={{
-              color: '#E25822',
+              color: 'var(--color-error)',
               mt: 2.5,
               fontSize: '0.95rem',
               fontWeight: 500
@@ -780,13 +774,11 @@ const SetupPage = ({
             top: 24,
             left: '50%',
             transform: 'translateX(-50%)',
-            background: 'linear-gradient(135deg, rgba(220, 53, 69, 0.08), rgba(220, 53, 69, 0.05))',
-            backdropFilter: 'blur(12px)',
-            color: '#C41C3B',
+            background: 'var(--bg-secondary)',
+            color: 'var(--color-error)',
             padding: '14px 28px',
-            borderRadius: '8px',
-            border: '1px solid rgba(220, 53, 69, 0.2)',
-            boxShadow: '0 8px 24px rgba(220, 53, 69, 0.15)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--neu-shadow-raised)',
             zIndex: 9999,
             animation: 'slideInDown 0.5s ease-out',
             fontSize: '0.95rem',
@@ -808,15 +800,15 @@ const SetupPage = ({
         width: '100%',
         padding: '48px 30px 32px',
         textAlign: 'center',
-        background: 'linear-gradient(to top, rgba(0, 50, 98, 0.04), transparent)',
-        borderTop: '1px solid rgba(0, 50, 98, 0.1)',
-        backdropFilter: 'blur(8px)',
-        marginTop: '80px'
+        background: 'var(--bg-secondary)',
+        borderTop: '1px solid var(--color-secondary)',
+        marginTop: '80px',
+        color: 'var(--text-muted)'
       }}>
-        <Typography variant="body2" sx={{color: 'rgba(0, 0, 0, 0.6)', fontSize: '0.9rem', mb: 1, fontWeight: 500}}>
-          تحدي الجمعة - اختبر معلומات الدوري السعودي
+        <Typography variant="body2" sx={{color: 'var(--text-muted)', fontSize: '0.9rem', mb: 1, fontWeight: 500}}>
+          تحدي الجمعة - اختبر معلومات الدوري السعودي
         </Typography>
-        <Typography variant="caption" sx={{color: 'rgba(0, 0, 0, 0.4)', fontSize: '0.8rem', fontWeight: 400}}>
+        <Typography variant="caption" sx={{color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 400}}>
           جميع الحقوق محفوظة © 2024
         </Typography>
       </footer>

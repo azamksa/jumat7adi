@@ -18,9 +18,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
     return re.test(email);
   };
 
-  // تحقق من قوة كلمة المرور
   const validatePasswordStrength = (pwd) => {
-    // يجب أن تحتوي على: أحرف كبيرة، أحرف صغيرة، أرقام، رموز خاصة، 8 أحرف
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return regex.test(pwd);
   };
@@ -57,7 +55,6 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
       const data = await response.json();
 
       if (response.status === 200 && data.accessToken) {
-        // حفظ التوكنات بشكل آمن
         localStorage.setItem('accessToken', data.accessToken);
         localStorage.setItem('refreshToken', data.refreshToken);
         localStorage.setItem('user', JSON.stringify(data.user));
@@ -135,28 +132,42 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 flex items-center justify-center p-4" style={{ fontFamily: "'Tajawal', 'Poppins', sans-serif" }}>
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ 
+      fontFamily: "'Tajawal', 'Poppins', sans-serif",
+      background: 'var(--bg-primary)'
+    }}>
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">تحدي الجمعة</h1>
-          <p className="text-gray-400 text-sm">منافسة ثقافية ممتعة وتحديات مثيرة</p>
+          <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--color-primary)' }}>تحدي الجمعة</h1>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>منافسة ثقافية ممتعة وتحديات مثيرة</p>
         </div>
 
         {/* Main Card */}
-        <div className="bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-800">
+        <div style={{
+          background: 'var(--bg-secondary)',
+          borderRadius: 'var(--radius-lg)',
+          overflow: 'hidden',
+          boxShadow: 'var(--neu-shadow-raised)'
+        }}>
           {/* Tab Navigation */}
-          <div className="flex border-b border-gray-700">
+          <div className="flex" style={{ borderBottom: '1px solid var(--color-secondary)' }}>
             <button
               onClick={() => {
                 setIsRegistering(false);
                 setError('');
               }}
-              className={`flex-1 py-4 px-6 font-semibold text-sm transition-all ${
-                !isRegistering
-                  ? 'bg-blue-700 text-white'
-                  : 'text-gray-300 hover:bg-gray-800'
-              }`}
+              style={{
+                flex: 1,
+                padding: '16px 24px',
+                fontWeight: 600,
+                fontSize: '0.875rem',
+                transition: 'all 0.3s',
+                background: !isRegistering ? 'var(--color-secondary)' : 'transparent',
+                color: !isRegistering ? 'var(--text-primary)' : 'var(--text-muted)',
+                border: 'none',
+                cursor: 'pointer'
+              }}
             >
               تسجيل الدخول
             </button>
@@ -165,11 +176,17 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
                 setIsRegistering(true);
                 setError('');
               }}
-              className={`flex-1 py-4 px-6 font-semibold text-sm transition-all ${
-                isRegistering
-                  ? 'bg-blue-700 text-white'
-                  : 'text-gray-300 hover:bg-gray-800'
-              }`}
+              style={{
+                flex: 1,
+                padding: '16px 24px',
+                fontWeight: 600,
+                fontSize: '0.875rem',
+                transition: 'all 0.3s',
+                background: isRegistering ? 'var(--color-secondary)' : 'transparent',
+                color: isRegistering ? 'var(--text-primary)' : 'var(--text-muted)',
+                border: 'none',
+                cursor: 'pointer'
+              }}
             >
               إنشاء حساب
             </button>
@@ -179,8 +196,15 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
           <div className="p-8">
             {/* Error Message */}
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded">
-                <p className="text-red-700 text-sm font-medium">{error}</p>
+              <div style={{
+                marginBottom: '24px',
+                padding: '16px',
+                background: 'var(--bg-secondary)',
+                borderLeft: '4px solid var(--color-error)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: 'var(--neu-shadow-pressed)'
+              }}>
+                <p style={{ color: 'var(--color-error)', fontSize: '0.875rem', fontWeight: 500 }}>{error}</p>
               </div>
             )}
 
@@ -195,17 +219,27 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
               {/* Name Field (Register Only) */}
               {isRegistering && (
                 <div className="mb-5">
-                  <label className="block text-gray-200 text-sm font-semibold mb-2">
+                  <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
                     الاسم
                   </label>
                   <div className="relative">
-                    <User className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                    <User className="absolute right-4 top-1/2 transform -translate-y-1/2" size={20} style={{ color: 'var(--text-muted)' }} />
                     <input
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="أدخل اسمك الكامل"
-                      className="w-full pr-12 pl-4 py-3 border border-gray-700 bg-gray-800 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition"
+                      style={{
+                        width: '100%',
+                        padding: '12px 48px 12px 16px',
+                        border: 'none',
+                        borderRadius: 'var(--radius-md)',
+                        background: 'var(--bg-primary)',
+                        color: 'var(--text-primary)',
+                        fontSize: '1rem',
+                        boxShadow: 'var(--neu-shadow-pressed)',
+                        outline: 'none'
+                      }}
                     />
                   </div>
                 </div>
@@ -213,39 +247,68 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
 
               {/* Email/Username Field */}
               <div className="mb-5">
-                <label className="block text-gray-200 text-sm font-semibold mb-2">
+                <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
                   {isRegistering ? 'البريد الإلكتروني' : 'البريد الإلكتروني أو اسم المستخدم'}
                 </label>
                 <div className="relative">
-                  <Mail className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  <Mail className="absolute right-4 top-1/2 transform -translate-y-1/2" size={20} style={{ color: 'var(--text-muted)' }} />
                   <input
                     type="text"
                     value={emailOrName}
                     onChange={(e) => setEmailOrName(e.target.value)}
                     placeholder={isRegistering ? 'example@email.com' : 'البريد أو الاسم'}
-                    className="w-full pr-12 pl-4 py-3 border border-gray-700 bg-gray-800 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition"
+                    style={{
+                      width: '100%',
+                      padding: '12px 48px 12px 16px',
+                      border: 'none',
+                      borderRadius: 'var(--radius-md)',
+                      background: 'var(--bg-primary)',
+                      color: 'var(--text-primary)',
+                      fontSize: '1rem',
+                      boxShadow: 'var(--neu-shadow-pressed)',
+                      outline: 'none'
+                    }}
                   />
                 </div>
               </div>
 
               {/* Password Field */}
               <div className="mb-5">
-                <label className="block text-gray-200 text-sm font-semibold mb-2">
+                <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
                   كلمة المرور
                 </label>
                 <div className="relative">
-                  <Lock className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  <Lock className="absolute right-4 top-1/2 transform -translate-y-1/2" size={20} style={{ color: 'var(--text-muted)' }} />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="أدخل كلمة المرور"
-                    className="w-full pr-12 pl-12 py-3 border border-gray-700 bg-gray-800 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition"
+                    style={{
+                      width: '100%',
+                      padding: '12px 48px',
+                      border: 'none',
+                      borderRadius: 'var(--radius-md)',
+                      background: 'var(--bg-primary)',
+                      color: 'var(--text-primary)',
+                      fontSize: '1rem',
+                      boxShadow: 'var(--neu-shadow-pressed)',
+                      outline: 'none'
+                    }}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    style={{
+                      position: 'absolute',
+                      left: '16px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: 'var(--text-muted)'
+                    }}
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
@@ -254,11 +317,11 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
                 {/* Password Strength (Register Only) */}
                 {isRegistering && password && (
                   <div className="mt-2">
-                    <p className={`text-sm font-semibold ${
-                      validatePasswordStrength(password)
-                        ? 'text-green-400'
-                        : 'text-orange-400'
-                    }`}>
+                    <p style={{ 
+                      fontSize: '0.875rem', 
+                      fontWeight: 600,
+                      color: validatePasswordStrength(password) ? 'var(--color-secondary)' : 'var(--color-primary)'
+                    }}>
                       {getPasswordStrengthMessage()}
                     </p>
                   </div>
@@ -268,22 +331,41 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
               {/* Confirm Password Field (Register Only) */}
               {isRegistering && (
                 <div className="mb-6">
-                  <label className="block text-gray-200 text-sm font-semibold mb-2">
+                  <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
                     تأكيد كلمة المرور
                   </label>
                   <div className="relative">
-                    <Lock className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                    <Lock className="absolute right-4 top-1/2 transform -translate-y-1/2" size={20} style={{ color: 'var(--text-muted)' }} />
                     <input
                       type={showConfirmPassword ? 'text' : 'password'}
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="أعد إدخال كلمة المرور"
-                      className="w-full pr-12 pl-12 py-3 border border-gray-700 bg-gray-800 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition"
+                      style={{
+                        width: '100%',
+                        padding: '12px 48px',
+                        border: 'none',
+                        borderRadius: 'var(--radius-md)',
+                        background: 'var(--bg-primary)',
+                        color: 'var(--text-primary)',
+                        fontSize: '1rem',
+                        boxShadow: 'var(--neu-shadow-pressed)',
+                        outline: 'none'
+                      }}
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      style={{
+                        position: 'absolute',
+                        left: '16px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        color: 'var(--text-muted)'
+                      }}
                     >
                       {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
@@ -295,11 +377,46 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-blue-800 to-blue-900 text-white font-bold py-3 px-4 rounded-lg hover:from-blue-900 hover:to-gray-900 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                style={{
+                  width: '100%',
+                  background: 'var(--color-secondary)',
+                  color: 'var(--text-primary)',
+                  fontWeight: 'bold',
+                  padding: '12px 16px',
+                  borderRadius: 'var(--radius-full)',
+                  border: 'none',
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  opacity: isLoading ? 0.5 : 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  boxShadow: 'var(--neu-shadow-raised)',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseOver={(e) => {
+                  if (!isLoading) {
+                    e.target.style.background = 'var(--color-primary)';
+                    e.target.style.boxShadow = 'var(--neu-shadow-hover)';
+                  }
+                }}
+                onMouseOut={(e) => {
+                  if (!isLoading) {
+                    e.target.style.background = 'var(--color-secondary)';
+                    e.target.style.boxShadow = 'var(--neu-shadow-raised)';
+                  }
+                }}
               >
                 {isLoading ? (
                   <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                    <div style={{
+                      width: '20px',
+                      height: '20px',
+                      border: '2px solid var(--text-primary)',
+                      borderTop: '2px solid transparent',
+                      borderRadius: '50%',
+                      animation: 'spin 1s linear infinite'
+                    }}></div>
                     جاري المعالجة...
                   </>
                 ) : (
@@ -312,7 +429,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
             </form>
 
             {/* Help Text */}
-            <p className="text-center text-gray-400 text-xs mt-4" style={{ fontFamily: "'Tajawal', sans-serif" }}>
+            <p className="text-center text-xs mt-4" style={{ color: 'var(--text-muted)', fontFamily: "'Tajawal', sans-serif" }}>
               {isRegistering
                 ? 'بإنشاء حساب، فإنك توافق على شروط الاستخدام'
                 : 'هل نسيت كلمة المرور؟ تواصل مع الدعم'}
@@ -321,12 +438,26 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
         </div>
 
         {/* Server Status Warning */}
-        <div className="mt-6 p-4 bg-yellow-900 bg-opacity-40 border border-yellow-700 rounded-lg">
-          <p className="text-yellow-100 text-sm text-center" style={{ fontFamily: "'Tajawal', sans-serif" }}>
+        <div style={{
+          marginTop: '24px',
+          padding: '16px',
+          background: 'var(--bg-secondary)',
+          border: '1px solid var(--color-primary)',
+          borderRadius: 'var(--radius-md)',
+          boxShadow: 'var(--neu-shadow-raised)'
+        }}>
+          <p className="text-sm text-center" style={{ color: 'var(--color-primary)', fontFamily: "'Tajawal', sans-serif" }}>
             تأكد من تشغيل الخادم على http://localhost:5000
           </p>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };

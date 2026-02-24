@@ -12,14 +12,10 @@ const AnswerPage = ({
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
 
-
-
-  // دالة لمعالجة اختيار الفريق
   const handleTeamSelect = (team) => {
     setSelectedTeam(team);
     setShowConfirm(true);
     
-    // تأخير 800ms ثم الانتقال
     setTimeout(() => {
       answerQuestion(true, team);
       setSelectedTeam(null);
@@ -55,7 +51,6 @@ const AnswerPage = ({
     }
   };
   
-  // معالجة حالة عدم وجود سؤال
   if (!currentQuestion) {
     return (
       <div style={{
@@ -64,8 +59,8 @@ const AnswerPage = ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: 'linear-gradient(135deg, #003262, #1F6AA5)',
-        color: 'white',
+        background: 'var(--bg-primary)',
+        color: 'var(--text-primary)',
         fontSize: '2rem'
       }}>
         جاري تحميل الإجابة...
@@ -79,7 +74,7 @@ const AnswerPage = ({
       height: '100vh',
       margin: 0,
       padding: 0,
-      background: 'linear-gradient(135deg, #003262, #1F6AA5)',
+      background: 'var(--bg-primary)',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
@@ -88,17 +83,13 @@ const AnswerPage = ({
       overflow: 'hidden'
     }}>
       
-      
-
-      {/* Main Answer Card */}
       <div style={{
-        background: 'rgba(0, 0, 0, 0.3)',
+        background: 'var(--bg-secondary)',
         borderRadius: '0px',
         padding: '20px',
         width: '100vw',
         height: '100vh',
         textAlign: 'center',
-        backdropFilter: 'blur(20px)',
         border: 'none',
         boxShadow: 'none',
         position: 'fixed',
@@ -111,7 +102,6 @@ const AnswerPage = ({
         left: 0
       }}>
         
-        {/* Back Button - Left Corner */}
         <button 
           onClick={() => {
             resetTimer();
@@ -123,36 +113,32 @@ const AnswerPage = ({
             top: '24px',
             left: '24px',
             zIndex: 100,
-            background: 'linear-gradient(135deg, rgba(0, 50, 98, 0.06), rgba(31, 106, 165, 0.05))',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(0, 50, 98, 0.15)',
-            borderRadius: '8px',
-            color: '#003262',
+            background: 'var(--bg-secondary)',
+            border: 'none',
+            borderRadius: 'var(--radius-md)',
+            color: 'var(--text-primary)',
             padding: '10px 20px',
             fontSize: '1rem',
             fontWeight: 500,
             cursor: 'pointer',
             transition: 'all 0.3s ease',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+            boxShadow: 'var(--neu-shadow-raised)',
             whiteSpace: 'nowrap'
           }}
           onMouseOver={(e) => {
-            e.target.style.background = 'linear-gradient(135deg, rgba(0, 50, 98, 0.1), rgba(31, 106, 165, 0.08))';
-            e.target.style.border = '1px solid rgba(0, 50, 98, 0.25)';
-            e.target.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.12)';
+            e.target.style.background = 'var(--color-secondary)';
+            e.target.style.boxShadow = 'var(--neu-shadow-hover)';
           }}
           onMouseOut={(e) => {
-            e.target.style.background = 'linear-gradient(135deg, rgba(0, 50, 98, 0.06), rgba(31, 106, 165, 0.05))';
-            e.target.style.border = '1px solid rgba(0, 50, 98, 0.15)';
-            e.target.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.08)';
+            e.target.style.background = 'var(--bg-secondary)';
+            e.target.style.boxShadow = 'var(--neu-shadow-raised)';
           }}
         >
           العودة للسؤال
         </button>
 
-        {/* Team 1 Button - 30% */}
         <button
-          onClick={(e) => {
+          onClick={() => {
             handleTeamSelect('team1');
           }}
           disabled={selectedTeam !== null}
@@ -162,42 +148,41 @@ const AnswerPage = ({
             left: '30%',
             transform: 'translateX(-50%)',
             background: selectedTeam === 'team1' 
-              ? 'linear-gradient(135deg, rgba(31, 106, 165, 0.5), rgba(1, 50, 98, 0.4))' 
-              : 'linear-gradient(135deg, rgba(31, 106, 165, 0.25), rgba(1, 50, 98, 0.15))',
-            border: '2px solid rgba(31, 106, 165, 0.5)',
-            color: '#FF8A4C',
+              ? 'var(--color-secondary)' 
+              : 'var(--bg-secondary)',
+            border: 'none',
+            color: 'var(--text-primary)',
             padding: '15px 30px',
-            borderRadius: '25px',
+            borderRadius: 'var(--radius-full)',
             fontSize: '1.5rem',
             fontWeight: 'bold',
-            backdropFilter: 'blur(10px)',
             cursor: selectedTeam !== null ? 'not-allowed' : 'pointer',
             transition: 'all 0.3s ease',
-            boxShadow: '0 8px 20px rgba(31, 106, 165, 0.2), inset 0 0 10px rgba(31, 106, 165, 0.1)',
+            boxShadow: selectedTeam === 'team1'
+              ? 'var(--neu-shadow-pressed)'
+              : 'var(--neu-shadow-raised)',
             zIndex: 40,
             whiteSpace: 'nowrap',
             opacity: selectedTeam !== null && selectedTeam !== 'team1' ? '0.5' : '1'
           }}
           onMouseOver={(e) => {
             if (selectedTeam === null) {
-              e.target.style.background = 'linear-gradient(135deg, rgba(31, 106, 165, 0.35), rgba(1, 50, 98, 0.25))';
-              e.target.style.border = '2px solid rgba(31, 106, 165, 0.65)';
-              e.target.style.boxShadow = '0 12px 30px rgba(31, 106, 165, 0.35), inset 0 0 15px rgba(31, 106, 165, 0.15)';
+              e.target.style.background = 'var(--color-secondary)';
+              e.target.style.boxShadow = 'var(--neu-shadow-hover)';
               handleTeam1Hover();
             }
           }}
           onMouseOut={(e) => {
             if (selectedTeam === null) {
-              e.target.style.background = 'linear-gradient(135deg, rgba(31, 106, 165, 0.25), rgba(1, 50, 98, 0.15))';
-              e.target.style.border = '2px solid rgba(31, 106, 165, 0.5)';
-              e.target.style.boxShadow = '0 8px 20px rgba(31, 106, 165, 0.2), inset 0 0 10px rgba(31, 106, 165, 0.1)';
+              e.target.style.background = 'var(--bg-secondary)';
+              e.target.style.boxShadow = 'var(--neu-shadow-raised)';
               handleTeam1Leave();
             }
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', position: 'relative' }}>
-            <span style={{ textShadow: 'none' }}>🔵 {teams.team1}</span>
-            <span style={{ fontSize: '1.1rem', display: 'inline-block', color: '#FF8A4C', fontWeight: 'bold' }} data-team1-score="true">{scores.team1}</span>
+            <span>🔵 {teams.team1}</span>
+            <span style={{ fontSize: '1.1rem', display: 'inline-block', color: 'var(--color-primary)', fontWeight: 'bold' }} data-team1-score="true">{scores.team1}</span>
             {showConfirm && selectedTeam === 'team1' && (
               <span style={{
                 position: 'absolute',
@@ -209,21 +194,19 @@ const AnswerPage = ({
           </div>
         </button>
 
-        {/* Points indicator - CENTER */}
         <div style={{
           position: 'fixed',
           top: '15px',
           left: '50%',
           transform: 'translateX(-50%)',
-          background: 'linear-gradient(135deg, rgba(255, 138, 76, 0.2), rgba(226, 88, 34, 0.15))',
-          backdropFilter: 'blur(15px)',
-          border: '2px solid rgba(255, 138, 76, 0.4)',
-          color: '#FF8A4C',
+          background: 'var(--bg-secondary)',
+          border: 'none',
+          color: 'var(--color-primary)',
           padding: '15px 40px',
-          borderRadius: '30px',
+          borderRadius: 'var(--radius-full)',
           fontSize: '1.6rem',
           fontWeight: 'bold',
-          boxShadow: '0 12px 35px rgba(226, 88, 34, 0.3), inset 0 0 15px rgba(255, 138, 76, 0.1)',
+          boxShadow: 'var(--neu-shadow-raised)',
           zIndex: 50,
           whiteSpace: 'nowrap',
           transition: 'all 0.3s ease'
@@ -231,9 +214,8 @@ const AnswerPage = ({
           ⭐ {currentQuestion.points} نقطة 🏆
         </div>
 
-        {/* Team 2 Button - 70% */}
         <button
-          onClick={(e) => {
+          onClick={() => {
             handleTeamSelect('team2');
           }}
           disabled={selectedTeam !== null}
@@ -243,42 +225,41 @@ const AnswerPage = ({
             right: '30%',
             transform: 'translateX(50%)',
             background: selectedTeam === 'team2' 
-              ? 'linear-gradient(135deg, rgba(226, 88, 34, 0.5), rgba(255, 138, 76, 0.4))' 
-              : 'linear-gradient(135deg, rgba(226, 88, 34, 0.25), rgba(255, 138, 76, 0.15))',
-            border: '2px solid rgba(226, 88, 34, 0.5)',
-            color: '#FF8A4C',
+              ? 'var(--color-error)' 
+              : 'var(--bg-secondary)',
+            border: 'none',
+            color: 'var(--text-primary)',
             padding: '15px 30px',
-            borderRadius: '25px',
+            borderRadius: 'var(--radius-full)',
             fontSize: '1.5rem',
             fontWeight: 'bold',
-            backdropFilter: 'blur(10px)',
             cursor: selectedTeam !== null ? 'not-allowed' : 'pointer',
             transition: 'all 0.3s ease',
-            boxShadow: '0 8px 20px rgba(226, 88, 34, 0.2), inset 0 0 10px rgba(226, 88, 34, 0.1)',
+            boxShadow: selectedTeam === 'team2'
+              ? 'var(--neu-shadow-pressed)'
+              : 'var(--neu-shadow-raised)',
             zIndex: 40,
             whiteSpace: 'nowrap',
             opacity: selectedTeam !== null && selectedTeam !== 'team2' ? '0.5' : '1'
           }}
           onMouseOver={(e) => {
             if (selectedTeam === null) {
-              e.target.style.background = 'linear-gradient(135deg, rgba(226, 88, 34, 0.35), rgba(255, 138, 76, 0.25))';
-              e.target.style.border = '2px solid rgba(226, 88, 34, 0.65)';
-              e.target.style.boxShadow = '0 12px 30px rgba(226, 88, 34, 0.35), inset 0 0 15px rgba(226, 88, 34, 0.15)';
+              e.target.style.background = 'var(--color-error)';
+              e.target.style.boxShadow = 'var(--neu-shadow-hover)';
               handleTeam2Hover();
             }
           }}
           onMouseOut={(e) => {
             if (selectedTeam === null) {
-              e.target.style.background = 'linear-gradient(135deg, rgba(226, 88, 34, 0.25), rgba(255, 138, 76, 0.15))';
-              e.target.style.border = '2px solid rgba(226, 88, 34, 0.5)';
-              e.target.style.boxShadow = '0 8px 20px rgba(226, 88, 34, 0.2), inset 0 0 10px rgba(226, 88, 34, 0.1)';
+              e.target.style.background = 'var(--bg-secondary)';
+              e.target.style.boxShadow = 'var(--neu-shadow-raised)';
               handleTeam2Leave();
             }
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', position: 'relative' }}>
-            <span style={{ textShadow: 'none' }}>🟠 {teams.team2}</span>
-            <span style={{ fontSize: '1.1rem', display: 'inline-block', color: '#FF8A4C', fontWeight: 'bold' }} data-team2-score="true">{scores.team2}</span>
+            <span>🟠 {teams.team2}</span>
+            <span style={{ fontSize: '1.1rem', display: 'inline-block', color: 'var(--color-primary)', fontWeight: 'bold' }} data-team2-score="true">{scores.team2}</span>
             {showConfirm && selectedTeam === 'team2' && (
               <span style={{
                 position: 'absolute',
@@ -290,45 +271,42 @@ const AnswerPage = ({
           </div>
         </button>
 
-        {/* Nobody Button - Right Corner */}
         <button
           onClick={() => answerQuestion(false)}
           style={{
             position: 'fixed',
             top: '15px',
             right: '15px',
-            background: 'linear-gradient(135deg, rgba(100, 100, 100, 0.2), rgba(80, 80, 80, 0.15))',
-            backdropFilter: 'blur(10px)',
-            border: '2px solid rgba(150, 150, 150, 0.3)',
-            color: 'rgba(255, 255, 255, 0.8)',
+            background: 'var(--bg-secondary)',
+            border: 'none',
+            color: 'var(--text-muted)',
             padding: '15px 30px',
-            borderRadius: '25px',
+            borderRadius: 'var(--radius-full)',
             fontSize: '1.5rem',
             fontWeight: 'bold',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
-            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(150, 150, 150, 0.08)',
+            boxShadow: 'var(--neu-shadow-raised)',
             zIndex: 40,
             whiteSpace: 'nowrap'
           }}
           onMouseOver={(e) => {
-            e.target.style.background = 'linear-gradient(135deg, rgba(100, 100, 100, 0.3), rgba(80, 80, 80, 0.25))';
-            e.target.style.border = '2px solid rgba(150, 150, 150, 0.5)';
-            e.target.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(150, 150, 150, 0.12)';
+            e.target.style.background = 'var(--text-muted)';
+            e.target.style.color = 'var(--bg-secondary)';
+            e.target.style.boxShadow = 'var(--neu-shadow-hover)';
           }}
           onMouseOut={(e) => {
-            e.target.style.background = 'linear-gradient(135deg, rgba(100, 100, 100, 0.2), rgba(80, 80, 80, 0.15))';
-            e.target.style.border = '2px solid rgba(150, 150, 150, 0.3)';
-            e.target.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(150, 150, 150, 0.08)';
+            e.target.style.background = 'var(--bg-secondary)';
+            e.target.style.color = 'var(--text-muted)';
+            e.target.style.boxShadow = 'var(--neu-shadow-raised)';
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <span style={{ textShadow: 'none' }}>❌ لا أحد</span>
-            <span style={{ fontSize: '1.1rem', color: 'rgba(255, 150, 150, 0.8)' }}>✗</span>
+            <span>❌ لا أحد</span>
+            <span style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>✗</span>
           </div>
         </button>
 
-        {/* Answer text with media */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
@@ -341,21 +319,20 @@ const AnswerPage = ({
           <div style={{
             fontSize: '1.3rem',
             fontWeight: 'bold',
-            color: 'white',
+            color: 'var(--text-primary)',
             lineHeight: '1.4',
-            textShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
             wordBreak: 'break-word',
             padding: '35px',
-            background: 'rgba(226, 88, 34, 0.15)',
-            borderRadius: '20px',
-            border: '3px solid rgba(226, 88, 34, 0.3)',
+            background: 'var(--bg-secondary)',
+            borderRadius: 'var(--radius-lg)',
+            border: 'none',
             textAlign: 'center',
-            marginTop: '50px'
+            marginTop: '50px',
+            boxShadow: 'var(--neu-shadow-pressed)'
           }}>
             {currentQuestion.answer}
           </div>
 
-          {/* Answer Image if exists */}
           {currentQuestion.answerImage && (
             <img 
               src={currentQuestion.answerImage} 
@@ -364,15 +341,14 @@ const AnswerPage = ({
                 width: '75vw',
                 height: 'auto',
                 objectFit: 'contain',
-                borderRadius: '20px',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-                border: '3px solid rgba(226, 88, 34, 0.3)',
+                borderRadius: 'var(--radius-lg)',
+                boxShadow: 'var(--neu-shadow-raised)',
+                border: 'none',
                 maxWidth: '60vw'
               }} 
             />
           )}
 
-          {/* Answer Video if exists */}
           {currentQuestion.answerVideo && (
             <video 
               controls
@@ -380,9 +356,9 @@ const AnswerPage = ({
               style={{ 
                 width: '75vw',
                 height: 'auto',
-                borderRadius: '20px',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-                border: '3px solid rgba(226, 88, 34, 0.3)',
+                borderRadius: 'var(--radius-lg)',
+                boxShadow: 'var(--neu-shadow-raised)',
+                border: 'none',
                 maxWidth: '55vw'
               }} 
             >

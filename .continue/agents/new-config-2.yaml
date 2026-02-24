@@ -1,0 +1,6 @@
+name: My Config
+version: 1.0.0
+schema: v1
+
+models:
+  - uses: ollama/qwen2.5-coder-14b

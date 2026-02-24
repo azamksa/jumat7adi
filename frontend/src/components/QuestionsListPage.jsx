@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 const QuestionsListPage = ({
   teams,
   scores,
@@ -10,10 +9,9 @@ const QuestionsListPage = ({
   answeredQuestions,
   selectQuestion,
   categoryPickerTeam,
-  setCategoryPickerTeam // أضف هذا
+  setCategoryPickerTeam
 }) => {
 
-  // تعديل دالة استخراج الفئات الفرعية
   const getSubcategories = () => {
     const allSubcategories = [];
     Object.entries(basicCategories).forEach(([_, category]) => {
@@ -29,22 +27,18 @@ const QuestionsListPage = ({
   const allSubcategories = getSubcategories();
   const pointValues = [300, 400, 500, 600, 700, 800];
 
-  // الأنماط المشتركة
+  // Theme-aware styles using CSS variables
   const styles = {
     container: {
-      
       display: 'flex',
       flexDirection: 'column',
       width: '100vw',
       height: '100vh',
-      LEFT: 10,
       justifyContent: 'flex-start',
       alignItems: 'flex-start',
       padding: '0',
       margin: '0',
-      background: 'transparent',
-      // background: 'linear-gradient(135deg, #1a237e, #0d47a1)',
-      // overflow: 'hidden'
+      background: 'var(--bg-primary)',
     },
     mainContent: {
       width: '100%',
@@ -52,70 +46,76 @@ const QuestionsListPage = ({
       display: 'flex',
       flexDirection: 'column',
       gap: '4px',
-      padding: '4px' // إضافة padding صغير للمحتوى فقط
+      padding: '4px'
     },
     scoreBoard: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '10px 20px',
-      background: 'rgba(0,0,0,0.3)',
-      borderRadius: '15px',
-      width: '100%', // تأكيد على العرض الكامل
-      boxSizing: 'border-box' // لضمان عدم تجاوز العرض
+      background: 'var(--bg-secondary)',
+      borderRadius: 'var(--radius-lg)',
+      width: '100%',
+      boxSizing: 'border-box',
+      boxShadow: 'var(--neu-shadow-raised)'
     },
     scoreBox: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       gap: '10px',
-      background: 'rgba(0,0,0,0.2)',
+      background: 'var(--bg-secondary)',
       padding: '10px 20px',
-      borderRadius: '10px',
-      minWidth: '300px' // زيادة العرض لاستيعاب الاسم
+      borderRadius: 'var(--radius-lg)',
+      minWidth: '300px',
+      boxShadow: 'var(--neu-shadow-pressed)'
     },
     scoreButton: {
       fontSize: '24px',
       width: '40px',
       height: '40px',
       border: 'none',
-      borderRadius: '8px',
-      background: 'rgba(255,255,255,0.1)',
-      color: 'white',
+      borderRadius: '50%',
+      background: 'var(--bg-secondary)',
+      color: 'var(--text-primary)',
       cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       transition: 'all 0.2s',
+      boxShadow: 'var(--neu-shadow-soft)',
       '&:hover': {
-        background: 'rgba(255,255,255,0.2)'
+        background: 'var(--color-secondary)',
+        boxShadow: 'var(--neu-shadow-hover)'
       }
     },
     scoreValue: {
       fontSize: '32px',
-      color: '#FF8A4C',
+      color: 'var(--color-primary)',
       minWidth: '80px',
       textAlign: 'center',
       fontWeight: 'bold'
     },
     turnIndicator: {
       padding: '10px 30px',
-      background: 'rgba(0,0,0,0.2)',
-      borderRadius: '10px',
+      background: 'var(--bg-secondary)',
+      borderRadius: 'var(--radius-lg)',
       fontSize: '24px',
-      color: 'white',
+      color: 'var(--text-primary)',
       display: 'flex',
       alignItems: 'center',
-      gap: '15px'
+      gap: '15px',
+      boxShadow: 'var(--neu-shadow-raised)'
     },
     questionsGrid: {
       display: 'grid',
       gridTemplateRows: 'auto repeat(6, 1fr)',
       gap: '5px',
       padding: '15px',
-      background: 'rgba(0,0,0,0.2)',
-      borderRadius: '15px',
-      marginTop: '4px'
+      background: 'var(--bg-secondary)',
+      borderRadius: 'var(--radius-lg)',
+      marginTop: '4px',
+      boxShadow: 'var(--neu-shadow-raised)'
     },
     categoryHeader: {
       display: 'grid',
@@ -124,18 +124,19 @@ const QuestionsListPage = ({
       marginBottom: '5px'
     },
     categoryItem: {
-      background: 'rgba(255,255,255,0.1)',
+      background: 'var(--bg-secondary)',
       padding: '10px',
-      borderRadius: '10px',
+      borderRadius: 'var(--radius-lg)',
       textAlign: 'center',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center', // إضافة جديدة
+      justifyContent: 'center',
       gap: '8px',
       position: 'relative',
       minHeight: '100px',
-      overflow: 'hidden' // إضافة جديدة
+      overflow: 'hidden',
+      boxShadow: 'var(--neu-shadow-pressed)'
     },
     categoryImage: {
       position: 'absolute',
@@ -144,20 +145,19 @@ const QuestionsListPage = ({
       width: '100%',
       height: '100%',
       objectFit: 'cover',
-      opacity: 0.4, // slightly transparent
+      opacity: 0.4,
       filter: 'brightness(0.8)',
       transition: 'opacity 0.3s ease',
       zIndex: 1,
-      
     },
     categoryTitle: {
       margin: 0,
       fontSize: '20px',
       fontWeight: 'bold',
-      color: 'white',
+      color: 'var(--text-primary)',
       textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-      position: 'relative', // إضافة جديدة
-      zIndex: 1 // جعل النص فوق الصورة
+      position: 'relative',
+      zIndex: 1
     },
     pointsRow: {
       display: 'grid',
@@ -165,32 +165,52 @@ const QuestionsListPage = ({
       gap: '5px'
     },
     pointsCell: (isAnswered) => ({
-      background: isAnswered ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.1)',
+      background: isAnswered ? 'var(--bg-primary)' : 'var(--bg-secondary)',
       padding: '15px',
-      borderRadius: '10px',
+      borderRadius: 'var(--radius-lg)',
       textAlign: 'center',
       fontSize: '24px',
       cursor: isAnswered ? 'default' : 'pointer',
-      color: 'white',
+      color: isAnswered ? 'var(--text-muted)' : 'var(--text-primary)',
       transition: 'all 0.2s',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       userSelect: 'none',
       minHeight: '50px',
+      boxShadow: isAnswered 
+        ? 'var(--neu-shadow-pressed)'
+        : 'var(--neu-shadow-soft)',
       '&:hover': {
-        background: isAnswered ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.2)'
+        background: isAnswered ? 'var(--bg-primary)' : 'var(--color-secondary)',
+        boxShadow: isAnswered 
+          ? 'var(--neu-shadow-pressed)'
+          : 'var(--neu-shadow-hover)'
       }
     }),
     teamName: {
-      color: 'white',
+      color: 'var(--text-primary)',
       fontSize: '20px',
       fontWeight: 'bold',
       marginRight: '10px',
       minWidth: '100px',
-      textAlign: 'center' // محاذاة بالمنتصف
-     }
-
+      textAlign: 'center'
+    },
+    arrowButton: {
+      fontSize: '35px',
+      background: 'var(--bg-secondary)',
+      border: 'none',
+      color: 'var(--color-primary)',
+      cursor: 'pointer',
+      padding: '5px 15px',
+      borderRadius: '50%',
+      transition: 'all 0.2s ease',
+      boxShadow: 'var(--neu-shadow-soft)',
+      '&:hover': {
+        background: 'var(--color-secondary)',
+        boxShadow: 'var(--neu-shadow-hover)'
+      }
+    }
   };
 
   return (
@@ -218,62 +238,42 @@ const QuestionsListPage = ({
           </div>
 
           {/* مؤشر الدور */}
-<div style={styles.turnIndicator}>
-  <button 
-    style={{
-      fontSize: '35px',
-      background: 'transparent',
-      border: 'none',
-      color: '#FF8A4C',
-      cursor: 'pointer',
-      padding: '5px 10px',
-      borderRadius: '5px',
-      transition: 'all 0.2s ease',
-      opacity: categoryPickerTeam === 'team1' ? 1 : 0.3
-    }}
-    onClick={() => {
-      console.log('تم الضغط على السهم الأيسر'); // للتتبع
-      console.log('setCategoryPickerTeam موجود؟', typeof setCategoryPickerTeam); // للتأكد
-      if (setCategoryPickerTeam) {
-        setCategoryPickerTeam('team1');
-      } else {
-        console.log('setCategoryPickerTeam غير موجود!');
-      }
-    }}
-    disabled={categoryPickerTeam === 'team1'}
-  >
-    ⟵
-  </button>
-  
-  <div style={{ textAlign: 'center', flex: 1 }}>
-    <span>{teams[categoryPickerTeam]} يختار الفئة</span>
-  </div>
-  
-  <button 
-    style={{
-      fontSize: '35px',
-      background: 'transparent',
-      border: 'none',
-      color: '#FF8A4C',
-      cursor: 'pointer',
-      padding: '5px 10px',
-      borderRadius: '5px',
-      transition: 'all 0.2s ease',
-      opacity: categoryPickerTeam === 'team2' ? 1 : 0.3
-    }}
-    onClick={() => {
-      console.log('تم الضغط على السهم الأيمن'); // للتتبع
-      if (setCategoryPickerTeam) {
-        setCategoryPickerTeam('team2');
-      } else {
-        console.log('setCategoryPickerTeam غير موجود!');
-      }
-    }}
-    disabled={categoryPickerTeam === 'team2'}
-  >
-    ⟶
-  </button>
-</div>
+          <div style={styles.turnIndicator}>
+            <button 
+              style={{
+                ...styles.arrowButton,
+                opacity: categoryPickerTeam === 'team1' ? 1 : 0.3
+              }}
+              onClick={() => {
+                if (setCategoryPickerTeam) {
+                  setCategoryPickerTeam('team1');
+                }
+              }}
+              disabled={categoryPickerTeam === 'team1'}
+            >
+              ⟵
+            </button>
+            
+            <div style={{ textAlign: 'center', flex: 1 }}>
+              <span style={{ color: 'var(--color-primary)', fontWeight: 'bold' }}>{teams[categoryPickerTeam]}</span>
+              <span style={{ color: 'var(--text-muted)' }}> يختار الفئة</span>
+            </div>
+            
+            <button 
+              style={{
+                ...styles.arrowButton,
+                opacity: categoryPickerTeam === 'team2' ? 1 : 0.3
+              }}
+              onClick={() => {
+                if (setCategoryPickerTeam) {
+                  setCategoryPickerTeam('team2');
+                }
+              }}
+              disabled={categoryPickerTeam === 'team2'}
+            >
+              ⟶
+            </button>
+          </div>
 
           {/* النتيجة - الفريق 2 */}
           <div style={styles.scoreBox}>
@@ -303,17 +303,10 @@ const QuestionsListPage = ({
               const category = allSubcategories.find(sub => sub.id === categoryId);
               if (!category) return null;
               
-              const parentCategory = Object.values(basicCategories).find(
-                cat => cat.subcategories?.some(sub => sub.id === categoryId)
-              );
-              
               return (
                 <div 
                   key={categoryId} 
-                  style={{
-                    ...styles.categoryItem,
-                    background: parentCategory?.color || 'rgba(255,255,255,0.1)'
-                  }}
+                  style={styles.categoryItem}
                 >
                   {category.image && (
                     <img 
@@ -340,19 +333,10 @@ const QuestionsListPage = ({
                     key={`${categoryId}-${points}`}
                     onClick={() => {
                       if (!isAnswered) {
-                        console.log('Clicking cell:', { categoryId, points });
                         selectQuestion(categoryId, points);
                       }
                     }}
-                    style={{
-                      ...styles.pointsCell(isAnswered),
-                      cursor: isAnswered ? 'default' : 'pointer',
-                      // إضافة تأثير عند التحويم
-                      '&:hover': !isAnswered && {
-                        background: 'rgba(255,255,255,0.3)',
-                        transform: 'scale(1.05)'
-                      }
-                    }}
+                    style={styles.pointsCell(isAnswered)}
                   >
                     {isAnswered ? '' : points}
                   </div>

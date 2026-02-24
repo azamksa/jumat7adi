@@ -5,6 +5,7 @@ import QuestionsListPage from './components/QuestionsListPage';
 import QuestionPage from './components/QuestionPage';
 import AnswerPage from './components/AnswerPage';
 import Login from './components/Login';
+import ThemeToggle from './components/ThemeToggle';
 import { basicCategories } from './data/categories';
 import { questions } from './data/questions';
 
@@ -348,12 +349,15 @@ const FridayChallenge = () => {
   // إذا طُلبت صفحة تسجيل الدخول، اعرضها
   if (showLogin) {
     return (
-      <Login 
-        onLogin={handleLogin}
-        onRegister={handleRegister}
-        error={error}
-        setError={setError}
-      />
+      <>
+        <ThemeToggle position="login" />
+        <Login 
+          onLogin={handleLogin}
+          onRegister={handleRegister}
+          error={error}
+          setError={setError}
+        />
+      </>
     );
   }
 
@@ -363,6 +367,11 @@ const FridayChallenge = () => {
       animation: fadeOut ? 'fadeOut 0.3s ease-out forwards' : 'fadeIn 0.4s ease-in',
       opacity: 1
     }}>
+      {gameState === 'setup' && <ThemeToggle position="home" />}
+      {gameState === 'game' && <ThemeToggle position="questions" />}
+      {gameState === 'question' && <ThemeToggle position="hidden" />}
+      {gameState === 'answer' && <ThemeToggle position="hidden" />}
+      {gameState === 'results' && <ThemeToggle position="home" />}
       <style>{`
         @keyframes fadeOut {
           from {

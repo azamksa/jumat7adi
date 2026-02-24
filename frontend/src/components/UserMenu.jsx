@@ -1,16 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Box, 
   Button, 
   Menu, 
   MenuItem, 
-  Typography, 
   Avatar, 
   Divider,
   ListItemIcon 
 } from '@mui/material';
 import { 
-  AccountCircle, 
   Edit, 
   ExitToApp 
 } from '@mui/icons-material';
@@ -37,7 +35,6 @@ const UserMenu = ({ user, onEditProfile, onLogout }) => {
     onLogout();
   };
 
-  // تحديد الأحرف الأولى من الاسم
   const getInitials = (name) => {
     return name
       .split(' ')
@@ -57,28 +54,28 @@ const UserMenu = ({ user, onEditProfile, onLogout }) => {
       <Button
         onClick={handleClick}
         sx={{
-          background: 'rgba(0,0,0,0.7)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 138, 76, 0.3)',
-          borderRadius: '25px',
+          background: 'var(--bg-secondary)',
+          border: 'none',
+          borderRadius: 'var(--radius-full)',
           padding: '10px 20px',
-          color: '#FF8A4C',
+          color: 'var(--text-primary)',
           fontWeight: 'bold',
           fontSize: '16px',
           display: 'flex',
           alignItems: 'center',
           gap: 2,
+          boxShadow: 'var(--neu-shadow-raised)',
           '&:hover': {
-            background: 'rgba(0,0,0,0.8)',
-            borderColor: '#FF8A4C'
+            background: 'var(--color-secondary)',
+            boxShadow: 'var(--neu-shadow-hover)'
           }
         }}
         startIcon={
           <Avatar sx={{ 
             width: 32, 
             height: 32, 
-            bgcolor: '#FF8A4C',
-            color: '#fff',
+            bgcolor: 'var(--color-primary)',
+            color: 'var(--bg-secondary)',
             fontSize: '14px',
             fontWeight: 'bold'
           }}>
@@ -95,17 +92,17 @@ const UserMenu = ({ user, onEditProfile, onLogout }) => {
         onClose={handleClose}
         PaperProps={{
           sx: {
-            background: 'rgba(0,0,0,0.8)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 138, 76, 0.3)',
-            borderRadius: '15px',
+            background: 'var(--bg-secondary)',
+            border: 'none',
+            borderRadius: 'var(--radius-lg)',
             mt: 1,
+            boxShadow: 'var(--neu-shadow-raised)',
             '& .MuiMenuItem-root': {
-              color: 'white',
+              color: 'var(--text-primary)',
               fontSize: '16px',
               padding: '12px 20px',
               '&:hover': {
-                background: 'rgba(255, 138, 76, 0.1)'
+                background: 'var(--color-secondary)'
               }
             }
           }
@@ -120,16 +117,16 @@ const UserMenu = ({ user, onEditProfile, onLogout }) => {
         }}
       >
         <MenuItem onClick={handleEditProfile}>
-          <ListItemIcon sx={{ color: '#FF8A4C' }}>
+          <ListItemIcon sx={{ color: 'var(--color-primary)' }}>
             <Edit fontSize="small" />
           </ListItemIcon>
           تعديل البيانات الشخصية
         </MenuItem>
         
-        <Divider sx={{ borderColor: 'rgba(255, 138, 76, 0.2)' }} />
+        <Divider sx={{ borderColor: 'var(--color-secondary)' }} />
         
         <MenuItem onClick={handleLogout}>
-          <ListItemIcon sx={{ color: '#ff5252' }}>
+          <ListItemIcon sx={{ color: 'var(--color-error)' }}>
             <ExitToApp fontSize="small" />
           </ListItemIcon>
           تسجيل الخروج

@@ -6,27 +6,28 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== CSS Variables ===== */
+/* ===== CSS Variables - Dark Neumorphic Theme ===== */
 :root {
-  --primary-color: #003262;
+  --primary-color: #1F6AA5;
   --secondary-color: #E25822;
-  --accent-color: #1F6AA5;
-  --accent-light: #FF8A4C;
-  --background-light: #F1F5F9;
-  --primary-gradient: linear-gradient(135deg, #003262, #1F6AA5, #003262);
-  --secondary-gradient: linear-gradient(135deg, #003262, #E25822, #1F6AA5);
-  --accent-gradient: linear-gradient(135deg, #E25822, #FF8A4C);
-  --card-background: rgba(255, 255, 255, 0.1);
-  --card-background-dark: rgba(0, 10, 20, 0.92);
-  --text-primary: #FF8A4C;
-  --text-secondary: #e0e0e0;
-  --text-white: #ffffff;
-  --border-radius: 20px;
+  --accent-color: #FF8A4C;
+  --background-dark: #1a1a2e;
+  --background-card: #16213e;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --text-accent: #FF8A4C;
+  --border-radius: 16px;
   --border-radius-small: 12px;
-  --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.2);
-  --shadow-heavy: 0 15px 35px rgba(0, 0, 0, 0.3);
+  --border-radius-round: 50px;
   --animation-speed: 0.3s;
+  
+  /* Neumorphic Dark Shadows */
+  --neu-shadow-raised: 8px 8px 16px #0d0d1e, -8px -8px 16px #272744;
+  --neu-shadow-pressed: inset 4px 4px 8px #0d0d1e, inset -4px -4px 8px #272744;
+  --neu-shadow-soft: 4px 4px 8px #0d0d1e, -4px -4px 8px #272744;
+  --neu-shadow-hover: 12px 12px 24px #0d0d1e, -12px -12px 24px #272744;
 }
+
 
 /* ===== Global Reset ===== */
 * {
@@ -39,15 +40,14 @@ html {
   font-size: 16px;
   overflow-x: hidden;
   height: 100%;
-  background: var(--primary-gradient);
-  background-attachment: fixed;
+  background: var(--background-dark);
   font-family: 'Tajawal', 'Poppins', sans-serif;
 }
 
 body {
-  background: var(--primary-gradient);
+  background: var(--background-dark);
   min-height: 100vh;
-  color: var(--text-white);
+  color: var(--text-primary);
   padding: 0px;
   font-family: 'Tajawal', 'Poppins', sans-serif;
   font-size: 2.2rem;
@@ -55,16 +55,16 @@ body {
   font-weight: 500;
 }
 
+
 #root {
   width: 100%;
   height: auto;
   margin: 0;
   padding: 0px;
-  transform: none;
-  position: relative;
   min-height: 100vh;
   background: transparent;
 }
+
 
 /* ===== Main Game Container ===== */
 .game-container {
@@ -109,19 +109,19 @@ body {
   margin-bottom: 10px;
 }
 
-/* ===== Card Styles ===== */
+/* ===== Card Styles - Dark Neumorphic ===== */
 .card {
-  background: var(--card-background);
-  backdrop-filter: blur(10px);
+  background: var(--background-card);
   border-radius: var(--border-radius);
   padding: 80px 60px;
   margin: 15px auto;
   text-align: center;
-  box-shadow: var(--shadow-light);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--neu-shadow-raised);
   font-size: 2.5rem;
   max-width: 1200px;
+  color: var(--text-primary);
 }
+
 
 /* ===== Setup Page Styles ===== */
 .setup-card h2 {
@@ -156,18 +156,19 @@ body {
   width: 100%;
   padding: 12px 15px;
   border-radius: var(--border-radius-small);
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--text-white);
+  background: var(--background-dark);
+  border: none;
+  color: var(--text-primary);
   font-size: 1rem;
   transition: all var(--animation-speed) ease;
+  box-shadow: var(--neu-shadow-pressed);
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: #FF8A4C;
-  box-shadow: 0 0 0 3px rgba(255, 138, 76, 0.3);
+  box-shadow: var(--neu-shadow-raised);
 }
+
 
 .selection-info {
   text-align: center;
@@ -218,21 +219,23 @@ body {
 }
 
 .subcategory {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--background-card);
   border-radius: 10px;
   padding: 12px;
   transition: all var(--animation-speed) ease;
+  box-shadow: var(--neu-shadow-raised);
 }
 
 .subcategory:hover {
-  background: rgba(255, 255, 255, 0.25);
   transform: translateY(-3px);
+  box-shadow: var(--neu-shadow-hover);
 }
 
 .subcategory.selected {
-  background: rgba(255, 138, 76, 0.3);
-  border: 2px solid #FF8A4C;
+  box-shadow: var(--neu-shadow-pressed);
+  border: 2px solid var(--accent-color);
 }
+
 
 .subcategory-content {
   display: flex;
@@ -245,14 +248,15 @@ body {
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid var(--text-primary);
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border: 3px solid var(--accent-color);
+  background: var(--background-dark);
+  box-shadow: var(--neu-shadow-soft);
   margin-bottom: 5px;
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
+
 
 .subcategory-name {
   font-size: 1.1rem;
@@ -261,15 +265,16 @@ body {
 
 .error-message {
   color: #ff5252;
-  background: rgba(255, 82, 82, 0.1);
+  background: var(--background-card);
   padding: 12px 20px;
   border-radius: var(--border-radius-small);
   margin-bottom: 20px;
   text-align: center;
   font-weight: 500;
   font-size: 1rem;
-  border: 1px solid rgba(255, 82, 82, 0.3);
+  box-shadow: var(--neu-shadow-pressed);
 }
+
 
 .selected-categories {
   display: flex;
@@ -282,15 +287,18 @@ body {
 }
 
 .selected-category {
-  background: linear-gradient(45deg, #E25822, #FF8A4C);
+  background: var(--background-card);
+  color: var(--text-accent);
   padding: 10px 20px;
-  border-radius: 50px;
+  border-radius: var(--border-radius-round);
   display: flex;
   align-items: center;
   gap: 10px;
   font-weight: 500;
   font-size: 1.1rem;
+  box-shadow: var(--neu-shadow-raised);
 }
+
 
 .remove-btn {
   background: transparent;
@@ -312,12 +320,15 @@ body {
 }
 
 .instruction {
-  background: rgba(255,255,255,0.08);
+  background: var(--background-card);
   border-radius: var(--border-radius-small);
   padding: 18px 24px;
   min-width: 180px;
   text-align: center;
+  box-shadow: var(--neu-shadow-raised);
+  color: var(--text-primary);
 }
+
 
 .instruction .icon {
   font-size: 2.2rem;
@@ -332,32 +343,33 @@ body {
 }
 
 .start-button {
-  background: linear-gradient(90deg, var(--text-primary), #ffb300);
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--text-primary);
   font-size: 2.2rem;
   font-weight: bold;
   border: none;
-  border-radius: 30px;
+  border-radius: var(--border-radius-round);
   padding: 28px 60px;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  box-shadow: var(--neu-shadow-raised);
   transition: all var(--animation-speed) ease;
   min-width: 120px;
   min-height: 60px;
 }
 
 .start-button:disabled {
-  background: #888;
-  color: #fff;
+  background: var(--background-card);
+  color: var(--text-secondary);
   cursor: not-allowed;
+  box-shadow: var(--neu-shadow-pressed);
 }
 
 .start-button:hover:not(:disabled) {
-  background: linear-gradient(90deg, #fff, var(--text-primary));
-  color: #003262;
+  background: var(--secondary-color);
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(255, 138, 76, 0.4);
+  box-shadow: var(--neu-shadow-hover);
 }
+
 
 /* ===== Score Board Styles ===== */
 .score-board {
@@ -370,13 +382,16 @@ body {
 }
 
 .team-score {
-  background: rgba(255,255,255,0.08);
-  border-radius: 16px;
+  background: var(--background-card);
+  border-radius: var(--border-radius);
   padding: 30px 40px;
   min-width: 180px;
   text-align: center;
   font-size: 2.2rem;
+  box-shadow: var(--neu-shadow-raised);
+  color: var(--text-primary);
 }
+
 
 .score-edit {
   display: flex;
@@ -386,9 +401,9 @@ body {
 }
 
 .score-edit button {
-  background: #fff;
-  color: #222;
-  border: 2px solid var(--text-primary);
+  background: var(--background-card);
+  color: var(--text-primary);
+  border: none;
   border-radius: 50%;
   width: 38px;
   height: 38px;
@@ -396,17 +411,17 @@ body {
   font-weight: bold;
   cursor: pointer;
   transition: all var(--animation-speed) ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: var(--neu-shadow-raised);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .score-edit button:hover {
-  background: var(--text-primary);
-  color: #222;
-  border: 2px solid #fff;
+  background: var(--primary-color);
+  box-shadow: var(--neu-shadow-hover);
 }
+
 
 .game-title-container {
   text-align: center;
@@ -416,11 +431,12 @@ body {
 /* ===== Questions Grid Styles ===== */
 .questions-horizontal-grid {
   margin-top: 30px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 18px;
+  background: var(--background-card);
+  border-radius: var(--border-radius);
   padding: 20px 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  box-shadow: var(--neu-shadow-raised);
 }
+
 
 .categories-row {
   display: flex;
@@ -430,12 +446,15 @@ body {
 }
 
 .category-header-horizontal {
-  background: rgba(0,0,0,0.12);
+  background: var(--background-card);
   border-radius: var(--border-radius-small);
   padding: 10px 18px;
   text-align: center;
   min-width: 120px;
+  box-shadow: var(--neu-shadow-raised);
+  color: var(--text-primary);
 }
+
 
 .questions-row {
   display: flex;
@@ -445,8 +464,8 @@ body {
 }
 
 .question-point-horizontal {
-  background: linear-gradient(90deg, var(--text-primary), #ffb300);
-  color: #222;
+  background: var(--primary-color);
+  color: var(--text-primary);
   font-size: 2.5rem;
   font-weight: bold;
   border-radius: var(--border-radius-small);
@@ -455,23 +474,25 @@ body {
   text-align: center;
   cursor: pointer;
   transition: all var(--animation-speed) ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: var(--neu-shadow-raised);
   border: none;
   user-select: none;
 }
 
 .question-point-horizontal.answered {
-  background: #888;
-  color: #fff;
+  background: var(--background-card);
+  color: var(--text-secondary);
   cursor: not-allowed;
   text-decoration: line-through;
+  box-shadow: var(--neu-shadow-pressed);
 }
 
 .question-point-horizontal:hover:not(.answered) {
-  background: linear-gradient(90deg, #fff, var(--text-primary));
+  background: var(--secondary-color);
   transform: translateY(-3px);
-  box-shadow: 0 4px 15px rgba(255, 138, 76, 0.4);
+  box-shadow: var(--neu-shadow-hover);
 }
+
 
 .category-picker-info {
   text-align: center;
@@ -485,16 +506,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(34, 34, 34, 0.7);
-  border-radius: 16px;
+  background: var(--background-card);
+  border-radius: var(--border-radius);
   padding: 28px 60px;
   margin: 0 auto 24px auto;
   font-size: 2.5rem;
   font-weight: bold;
-  color: var(--text-primary);
+  color: var(--text-accent);
   max-width: 700px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  box-shadow: var(--neu-shadow-raised);
 }
+
 
 .turn-indicator .arrow {
   font-size: 2.2rem;
@@ -510,18 +532,20 @@ body {
 }
 
 .question-card {
-  background: var(--card-background-dark);
-  border-radius: 30px;
+  background: var(--background-card);
+  border-radius: var(--border-radius);
   padding: 80px 60px;
   max-width: 900px;
   width: 100%;
   min-height: 500px;
-  box-shadow: var(--shadow-heavy);
+  box-shadow: var(--neu-shadow-raised);
   display: flex;
   flex-direction: column;
   justify-content: center;
   font-size: 2.5rem;
+  color: var(--text-primary);
 }
+
 
 .question-header {
   display: flex;
@@ -531,7 +555,7 @@ body {
 }
 
 .back-button {
-  background: transparent;
+  background: var(--background-card);
   border: none;
   color: var(--text-primary);
   font-size: 1.3rem;
@@ -540,11 +564,14 @@ body {
   padding: 10px 15px;
   border-radius: var(--border-radius-small);
   transition: all var(--animation-speed) ease;
+  box-shadow: var(--neu-shadow-raised);
 }
 
 .back-button:hover {
-  background: rgba(255, 138, 76, 0.1);
+  background: var(--primary-color);
+  box-shadow: var(--neu-shadow-hover);
 }
+
 
 .team-turn {
   flex: 1;
@@ -559,9 +586,14 @@ body {
   align-items: center;
   gap: 8px;
   font-size: 2.2rem;
-  color: var(--text-primary);
+  color: var(--text-accent);
   font-weight: bold;
+  background: var(--background-card);
+  padding: 15px 25px;
+  border-radius: var(--border-radius-round);
+  box-shadow: var(--neu-shadow-raised);
 }
+
 
 .timer-icon {
   font-size: 1.7rem;
@@ -582,11 +614,12 @@ body {
 .big-question {
   font-size: 5rem;
   font-weight: bold;
-  color: #fff;
+  color: var(--text-primary);
   margin: 40px 0 20px 0;
   word-break: break-word;
   line-height: 1.2;
 }
+
 
 .timer-controls {
   display: flex;
@@ -596,8 +629,8 @@ body {
 }
 
 .control-btn {
-  background: var(--text-primary);
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--text-primary);
   border: none;
   border-radius: var(--border-radius);
   padding: 12px 25px;
@@ -605,13 +638,16 @@ body {
   font-weight: bold;
   cursor: pointer;
   transition: all var(--animation-speed) ease;
+  box-shadow: var(--neu-shadow-raised);
 }
 
 .control-btn:hover {
-  background: #fff;
-  color: var(--text-primary);
+  background: var(--secondary-color);
   transform: translateY(-2px);
+  box-shadow: var(--neu-shadow-hover);
 }
+
+
 
 .answer-section {
   margin-top: 30px;
@@ -632,8 +668,8 @@ body {
 }
 
 .answer-btn {
-  background: #fff;
-  color: #222;
+  background: var(--background-card);
+  color: var(--text-primary);
   border: none;
   border-radius: var(--border-radius);
   padding: 15px 35px;
@@ -644,27 +680,29 @@ body {
   margin-bottom: 10px;
   min-width: 150px;
   min-height: 70px;
+  box-shadow: var(--neu-shadow-raised);
 }
 
 .answer-btn.team1-btn {
-  background: #4CAF50;
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--text-primary);
 }
 
 .answer-btn.team2-btn {
-  background: #9C27B0;
-  color: #fff;
+  background: var(--secondary-color);
+  color: var(--text-primary);
 }
 
 .answer-btn.no-answer-btn {
-  background: #888;
-  color: #fff;
+  background: var(--background-card);
+  color: var(--text-secondary);
 }
 
 .answer-btn:hover {
-  opacity: 0.85;
   transform: translateY(-2px);
+  box-shadow: var(--neu-shadow-hover);
 }
+
 
 /* ===== Results Page Styles ===== */
 .results-container {
@@ -675,14 +713,16 @@ body {
 }
 
 .results-card {
-  background: var(--card-background-dark);
-  border-radius: 30px;
+  background: var(--background-card);
+  border-radius: var(--border-radius);
   padding: 80px 60px;
   max-width: 700px;
   width: 100%;
-  box-shadow: var(--shadow-heavy);
+  box-shadow: var(--neu-shadow-raised);
   text-align: center;
+  color: var(--text-primary);
 }
+
 
 .trophy-animation {
   font-size: 4rem;
@@ -703,9 +743,10 @@ body {
 
 .winner-subtitle {
   font-size: 1.3rem;
-  color: #fff;
+  color: var(--text-secondary);
   margin-bottom: 30px;
 }
+
 
 .scores-container {
   display: flex;
@@ -716,12 +757,14 @@ body {
 }
 
 .team-score-card {
-  background: rgba(255,255,255,0.08);
-  border-radius: 16px;
+  background: var(--background-card);
+  border-radius: var(--border-radius);
   padding: 18px 24px;
   min-width: 120px;
   text-align: center;
+  box-shadow: var(--neu-shadow-raised);
 }
+
 
 .score-value {
   font-size: 3rem;
@@ -738,23 +781,24 @@ body {
 }
 
 .new-game-btn {
-  background: linear-gradient(90deg, var(--text-primary), #ffb300);
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--text-primary);
   font-size: 1.2rem;
   font-weight: bold;
   border: none;
-  border-radius: 30px;
+  border-radius: var(--border-radius-round);
   padding: 14px 40px;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  box-shadow: var(--neu-shadow-raised);
   transition: all var(--animation-speed) ease;
 }
 
 .new-game-btn:hover {
-  background: linear-gradient(90deg, #fff, var(--text-primary));
-  color: #003262;
+  background: var(--secondary-color);
   transform: translateY(-2px);
+  box-shadow: var(--neu-shadow-hover);
 }
+
 
 /* ===== Login Page Styles (Compact Version) ===== */
 .login-container {
@@ -776,22 +820,22 @@ body {
 }
 
 .login-card {
-  background: var(--card-background);
-  backdrop-filter: blur(15px);
-  border-radius: 20px;
+  background: var(--background-card);
+  border-radius: var(--border-radius);
   padding: 30px 40px;
   margin: 0 auto;
   max-width: 900px;
   width: 80vw;
   max-height: 80vh;
-  box-shadow: var(--shadow-heavy);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--neu-shadow-raised);
   animation: slideInUp 0.4s ease-out;
   display: flex;
   flex-direction: column;
   justify-content: center;
   overflow-y: auto;
+  color: var(--text-primary);
 }
+
 
 @keyframes slideInUp {
   from {
@@ -828,25 +872,25 @@ body {
 .game-input {
   width: 100%;
   padding: 15px 20px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  color: var(--text-white);
+  border-radius: var(--border-radius-small);
+  background: var(--background-dark);
+  border: none;
+  color: var(--text-primary);
   font-size: 1.1rem;
   transition: all var(--animation-speed) ease;
   font-family: inherit;
+  box-shadow: var(--neu-shadow-pressed);
 }
 
 .game-input:focus {
   outline: none;
-  border-color: #FF8A4C;
-  box-shadow: 0 0 0 3px rgba(255, 138, 76, 0.2);
-  background: rgba(255, 255, 255, 0.15);
+  box-shadow: var(--neu-shadow-raised);
 }
 
 .game-input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-secondary);
 }
+
 
 .password-input-container {
   position: relative;
@@ -884,12 +928,12 @@ body {
 }
 
 .primary-button {
-  background: linear-gradient(90deg, var(--text-primary), #ffb300);
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--text-primary);
   font-size: 1.2rem;
   font-weight: bold;
   border: none;
-  border-radius: 12px;
+  border-radius: var(--border-radius-small);
   padding: 15px 30px;
   cursor: pointer;
   transition: all var(--animation-speed) ease;
@@ -897,33 +941,36 @@ body {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  box-shadow: 0 4px 15px rgba(255, 138, 76, 0.3);
+  box-shadow: var(--neu-shadow-raised);
 }
 
 .primary-button:hover {
-  background: linear-gradient(90deg, #fff, var(--text-primary));
-  color: #003262;
+  background: var(--secondary-color);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 138, 76, 0.4);
+  box-shadow: var(--neu-shadow-hover);
 }
 
+
 .secondary-button {
-  background: transparent;
-  color: #FF8A4C;
+  background: var(--background-card);
+  color: var(--text-accent);
   font-size: 1rem;
   font-weight: 500;
-  border: 2px solid #FF8A4C;
-  border-radius: 10px;
+  border: none;
+  border-radius: var(--border-radius-small);
   padding: 12px 25px;
   cursor: pointer;
   transition: all var(--animation-speed) ease;
+  box-shadow: var(--neu-shadow-raised);
 }
 
 .secondary-button:hover {
-  background: #FF8A4C;
-  color: #fff;
+  background: var(--accent-color);
+  color: var(--text-primary);
   transform: translateY(-1px);
+  box-shadow: var(--neu-shadow-hover);
 }
+
 
 /* ===== Notification Styles ===== */
 .notification-bar {
@@ -931,16 +978,17 @@ body {
   top: 30px;
   left: 50%;
   transform: translateX(-50%);
-  background: #ff5252;
-  color: #fff;
+  background: var(--secondary-color);
+  color: var(--text-primary);
   padding: 18px 35px;
-  border-radius: 16px;
+  border-radius: var(--border-radius);
   font-size: 1.3rem;
   font-weight: bold;
   z-index: 9999;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  box-shadow: var(--neu-shadow-raised);
   animation: fadeInDown 0.5s ease;
 }
+
 
 @keyframes fadeInDown {
   from {
@@ -1014,7 +1062,7 @@ body {
   }
 }
 
-/* ===== إضافة تأثيرات بصرية للثيم الموحد ===== */
+/* ===== Dark Theme Base ===== */
 .login-container::before {
   content: '';
   position: fixed;
@@ -1022,25 +1070,21 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--primary-gradient);
+  background: var(--background-dark);
   z-index: -1;
-  background-attachment: fixed;
 }
 
-/* تحسين مظهر الكروت لتناسب الثيم */
+/* Dark neumorphic cards */
 .card, .login-card, .question-card, .results-card {
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--background-card) !important;
+  box-shadow: var(--neu-shadow-raised);
 }
 
-/* إضافة تأثير التدرج للنصوص المهمة */
+/* Accent text for titles */
 .game-title, .winner-title {
-  background: linear-gradient(135deg, #FF8A4C, #E25822, #FF8A4C);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-accent);
 }
+
 /* شريط المستخدم العلوي */
 .user-bar {
   position: fixed;
@@ -1085,8 +1129,9 @@ body {
   position: absolute;
   top: 100%;
   right: 0;
-  background: white;
+  background: #F1F5F9;
   border-radius: 8px;
+
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   margin-top: 8px;
   overflow: hidden;
@@ -1155,9 +1200,10 @@ body {
 }
 
 .team-result {
-  background: white;
+  background: #F1F5F9;
   padding: 30px;
   border-radius: 15px;
+
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   min-width: 200px;
 }
