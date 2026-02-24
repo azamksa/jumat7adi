@@ -135,7 +135,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-slate-900 to-slate-950 flex items-center justify-center p-4" style={{ fontFamily: "'Tajawal', 'Poppins', sans-serif" }}>
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 flex items-center justify-center p-4" style={{ fontFamily: "'Tajawal', 'Poppins', sans-serif" }}>
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
@@ -144,9 +144,9 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
         </div>
 
         {/* Main Card */}
-        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <div className="bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-800">
           {/* Tab Navigation */}
-          <div className="flex border-b border-gray-200">
+          <div className="flex border-b border-gray-700">
             <button
               onClick={() => {
                 setIsRegistering(false);
@@ -154,8 +154,8 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
               }}
               className={`flex-1 py-4 px-6 font-semibold text-sm transition-all ${
                 !isRegistering
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-600 hover:bg-gray-50'
+                  ? 'bg-blue-700 text-white'
+                  : 'text-gray-300 hover:bg-gray-800'
               }`}
             >
               تسجيل الدخول
@@ -167,8 +167,8 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
               }}
               className={`flex-1 py-4 px-6 font-semibold text-sm transition-all ${
                 isRegistering
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-600 hover:bg-gray-50'
+                  ? 'bg-blue-700 text-white'
+                  : 'text-gray-300 hover:bg-gray-800'
               }`}
             >
               إنشاء حساب
@@ -195,7 +195,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
               {/* Name Field (Register Only) */}
               {isRegistering && (
                 <div className="mb-5">
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                  <label className="block text-gray-200 text-sm font-semibold mb-2">
                     الاسم
                   </label>
                   <div className="relative">
@@ -205,7 +205,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="أدخل اسمك الكامل"
-                      className="w-full pr-12 pl-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                      className="w-full pr-12 pl-4 py-3 border border-gray-700 bg-gray-800 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition"
                     />
                   </div>
                 </div>
@@ -213,7 +213,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
 
               {/* Email/Username Field */}
               <div className="mb-5">
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block text-gray-200 text-sm font-semibold mb-2">
                   {isRegistering ? 'البريد الإلكتروني' : 'البريد الإلكتروني أو اسم المستخدم'}
                 </label>
                 <div className="relative">
@@ -223,14 +223,14 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
                     value={emailOrName}
                     onChange={(e) => setEmailOrName(e.target.value)}
                     placeholder={isRegistering ? 'example@email.com' : 'البريد أو الاسم'}
-                    className="w-full pr-12 pl-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                    className="w-full pr-12 pl-4 py-3 border border-gray-700 bg-gray-800 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition"
                   />
                 </div>
               </div>
 
               {/* Password Field */}
               <div className="mb-5">
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block text-gray-200 text-sm font-semibold mb-2">
                   كلمة المرور
                 </label>
                 <div className="relative">
@@ -240,7 +240,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="أدخل كلمة المرور"
-                    className="w-full pr-12 pl-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                    className="w-full pr-12 pl-12 py-3 border border-gray-700 bg-gray-800 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition"
                   />
                   <button
                     type="button"
@@ -256,8 +256,8 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
                   <div className="mt-2">
                     <p className={`text-sm font-semibold ${
                       validatePasswordStrength(password)
-                        ? 'text-green-600'
-                        : 'text-orange-600'
+                        ? 'text-green-400'
+                        : 'text-orange-400'
                     }`}>
                       {getPasswordStrengthMessage()}
                     </p>
@@ -268,7 +268,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
               {/* Confirm Password Field (Register Only) */}
               {isRegistering && (
                 <div className="mb-6">
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                  <label className="block text-gray-200 text-sm font-semibold mb-2">
                     تأكيد كلمة المرور
                   </label>
                   <div className="relative">
@@ -278,7 +278,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="أعد إدخال كلمة المرور"
-                      className="w-full pr-12 pl-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                      className="w-full pr-12 pl-12 py-3 border border-gray-700 bg-gray-800 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition"
                     />
                     <button
                       type="button"
@@ -295,7 +295,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-3 px-4 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-blue-800 to-blue-900 text-white font-bold py-3 px-4 rounded-lg hover:from-blue-900 hover:to-gray-900 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>
@@ -312,7 +312,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
             </form>
 
             {/* Help Text */}
-            <p className="text-center text-gray-600 text-xs mt-4" style={{ fontFamily: "'Tajawal', sans-serif" }}>
+            <p className="text-center text-gray-400 text-xs mt-4" style={{ fontFamily: "'Tajawal', sans-serif" }}>
               {isRegistering
                 ? 'بإنشاء حساب، فإنك توافق على شروط الاستخدام'
                 : 'هل نسيت كلمة المرور؟ تواصل مع الدعم'}
@@ -321,7 +321,7 @@ const Login = ({ onLogin, onRegister, error, setError }) => {
         </div>
 
         {/* Server Status Warning */}
-        <div className="mt-6 p-4 bg-yellow-900 bg-opacity-50 border border-yellow-600 rounded-lg">
+        <div className="mt-6 p-4 bg-yellow-900 bg-opacity-40 border border-yellow-700 rounded-lg">
           <p className="text-yellow-100 text-sm text-center" style={{ fontFamily: "'Tajawal', sans-serif" }}>
             تأكد من تشغيل الخادم على http://localhost:5000
           </p>
